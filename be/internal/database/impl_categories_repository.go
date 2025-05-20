@@ -22,7 +22,7 @@ func (r *PostgreSQLCategoriesRepository) Create(Category *entity.Categories) (*e
 
 func (r *PostgreSQLCategoriesRepository) GetAll() ([]*entity.Categories, error) {
 	categories := []*entity.Categories{}
-	result := r.db.Model(entity.Categories{}).Find(categories)
+	result := r.db.Model(entity.Categories{}).Find(&categories)
 	return categories, result.Error
 }
 

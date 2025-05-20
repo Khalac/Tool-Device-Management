@@ -22,7 +22,7 @@ func (r *PostgreSQLDepartmentsRepository) Create(department *entity.Departments)
 
 func (r *PostgreSQLDepartmentsRepository) GetAll() ([]*entity.Departments, error) {
 	departments := []*entity.Departments{}
-	result := r.db.Model(entity.Departments{}).Preload("Location").Find(departments)
+	result := r.db.Model(entity.Departments{}).Preload("Location").Find(&departments)
 	return departments, result.Error
 }
 

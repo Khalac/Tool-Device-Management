@@ -22,7 +22,7 @@ func (r *PostgreSQLLocationRepository) Create(location *entity.Locations) (*enti
 
 func (r *PostgreSQLLocationRepository) GetAll() ([]*entity.Locations, error) {
 	locations := []*entity.Locations{}
-	result := r.db.Model(entity.Locations{}).Find(locations)
+	result := r.db.Model(entity.Locations{}).Find(&locations)
 	return locations, result.Error
 }
 

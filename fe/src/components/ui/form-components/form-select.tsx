@@ -16,7 +16,8 @@ type DataType = {
   id: number | string
   categoryName?: string
   departmentName?: string
-  name?: string
+  firstName?: string
+  lastName?: string
   value?: string
 }
 
@@ -25,11 +26,13 @@ export const FormSelect = ({
   label,
   placeholder,
   data,
+  onChange,
 }: {
   name: string
   label: string
   placeholder: string
   data: DataType[]
+  onChange?: (value: string) => void
 }) => {
   const { control } = useFormContext()
   return (
@@ -40,7 +43,12 @@ export const FormSelect = ({
         <FormItem>
           <Label>{label}</Label>
           <Select
-            onValueChange={field.onChange}
+            onValueChange={(value) => {
+              field.onChange(value)
+              if (onChange) {
+                onChange(value)
+              }
+            }}
             defaultValue={field.value}
           >
             <FormControl>
@@ -54,7 +62,7 @@ export const FormSelect = ({
                   key={d.id}
                   value={d.id.toString()}
                 >
-                  {d.categoryName || d.departmentName || d.name}
+                  {d.categoryName || d.departmentName || d.firstName + ' ' + d.lastName}
                 </SelectItem>
               ))}
             </SelectContent>

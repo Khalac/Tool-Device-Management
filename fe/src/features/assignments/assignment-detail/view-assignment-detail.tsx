@@ -88,7 +88,6 @@ const ViewAssignmentDetail = () => {
       setIsUpdate(false)
     })
   }
-
   const handleDepartmentChange = (newDepartmentId: string) => {
     setDepartmentId(newDepartmentId)
     form.setValue('userId', '')
@@ -104,7 +103,6 @@ const ViewAssignmentDetail = () => {
   if (!assignmentDetail) {
     return <AssignmentError id={id || ''} />
   }
-
   return (
     <div className='container mx-auto px-4 py-6 md:px-6'>
       <div className='flex flex-col gap-6'>
@@ -157,6 +155,7 @@ const ViewAssignmentDetail = () => {
                           users={users}
                           assignmentDetail={assignmentDetail}
                           isLoading={isLoadingUsers}
+                          departmentId={departmentId}
                         />
                       ) : (
                         <AssignmentUserAssign assignmentDetail={assignmentDetail} />
@@ -189,7 +188,14 @@ const ViewAssignmentDetail = () => {
             <CardFooter className='flex flex-col justify-end gap-3 sm:flex-row'>
               <Button
                 variant='outline'
-                onClick={() => setIsUpdate(false)}
+                onClick={() => {
+                  setIsUpdate(false)
+                  setDepartmentId('')
+                  form.reset({
+                    departmentId: undefined,
+                    userId: undefined,
+                  })
+                }}
                 disabled={isSubmitting}
               >
                 Cancel

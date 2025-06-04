@@ -19,15 +19,16 @@ interface AssignmentUserAssignUpdateProps {
   users: UserType[]
   assignmentDetail: AssignmentData
   isLoading?: boolean
+  departmentId: string
 }
 
 export const AssignmentUserAssignUpdate = ({
   users,
   assignmentDetail,
   isLoading = false,
+  departmentId,
 }: AssignmentUserAssignUpdateProps) => {
   const { control } = useFormContext()
-
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
       <div className='space-y-2'>
@@ -67,7 +68,7 @@ export const AssignmentUserAssignUpdate = ({
                   <Select
                     onValueChange={field.onChange}
                     value={field.value}
-                    disabled={isLoading}
+                    disabled={isLoading || !departmentId}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder='Select a user' />

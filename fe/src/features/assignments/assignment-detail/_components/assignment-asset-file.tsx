@@ -13,6 +13,7 @@ export const AssignmentAssetFile = ({ assignmentDetail }: { assignmentDetail: As
         className='w-full'
       >
         <Button
+          type='button'
           variant='outline'
           size='sm'
           className='flex items-center gap-2'

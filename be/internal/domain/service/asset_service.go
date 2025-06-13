@@ -228,6 +228,14 @@ func (service *AssetsService) UpdateAsset(userId int64, assetId int64, assetName
 		filedUpdate = append(filedUpdate, "category")
 	}
 	tx := service.repo.GetDB().Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+			panic(r)
+		} else if tx.Error != nil {
+			tx.Rollback()
+		}
+	}()
 	asset := entity.Assets{
 		Id:             assetId,
 		AssetName:      assetName,
@@ -294,6 +302,14 @@ func (service *AssetsService) DeleteAsset(userId int64, id int64) error {
 		return err
 	}
 	tx := service.repo.GetDB().Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+			panic(r)
+		} else if tx.Error != nil {
+			tx.Rollback()
+		}
+	}()
 	err = service.repo.DeleteAsset(id, tx)
 	if err != nil {
 		tx.Rollback()
@@ -350,6 +366,14 @@ func (service *AssetsService) UpdateAssetRetired(userId int64, id int64, Residua
 		return nil, errors.New("can't retired asset")
 	}
 	tx := service.repo.GetDB().Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+			panic(r)
+		} else if tx.Error != nil {
+			tx.Rollback()
+		}
+	}()
 	asset, err := service.repo.UpdateAssetLifeCycleStage(id, "Retired", tx)
 	if err != nil {
 		tx.Rollback()

@@ -16,20 +16,18 @@ export const AvatarUpload = ({ form, currentAvatar, userInitials }: AvatarUpload
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      // Validate file type
       if (!file.type.startsWith('image/')) {
-        form.setError('avatar', { message: 'Please select an image file' })
+        form.setError('image', { message: 'Please select an image file' })
         return
       }
 
-      // Validate file size (5MB)
       if (file.size > 5 * 1024 * 1024) {
-        form.setError('avatar', { message: 'File size must be less than 5MB' })
+        form.setError('image', { message: 'File size must be less than 5MB' })
         return
       }
 
-      form.setValue('avatar', file)
-      form.clearErrors('avatar')
+      form.setValue('image', file)
+      form.clearErrors('image')
       setPreviewUrl(URL.createObjectURL(file))
     }
   }

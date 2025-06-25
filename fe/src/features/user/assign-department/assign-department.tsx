@@ -108,7 +108,7 @@ export const AssignDepartment = () => {
           >
             <CardContent className='space-y-4'>
               {!isLoadingUsers && users.length === 0 ? (
-                <div className='rounded-md bg-gray-100 p-4 text-center font-medium text-black'>
+                <div className='bg-muted rounded-md p-4 text-center font-medium text-white'>
                   All users already have a department assigned.
                 </div>
               ) : (

@@ -1,5 +1,4 @@
 import axios from 'axios'
-//TODOL : can pass 2 things, url and file name
 export const urlToFile = async (url: string) => {
   try {
     let response = await axios.get(url, { responseType: 'blob' })

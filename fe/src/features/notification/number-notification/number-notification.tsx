@@ -22,6 +22,7 @@ const NumberNotification = () => {
   const [unreadCount, setUnreadCount] = useState(0)
   const [notifications, setNotifications] = useState<NotificationType[]>([])
   const [isPending, setIsPending] = useState(false)
+
   const getNotifications = async () => {
     setIsPending(true)
     const response = await tryCatch(getAllNotifications())
@@ -88,44 +89,51 @@ const NumberNotification = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align='end'
-          className='w-80'
+          className='w-80 p-0'
         >
-          <div className='flex items-center justify-between border-b px-4 py-2'>
+          <div className='bg-muted/50 flex items-center justify-between border-b px-4 py-2'>
             <span className='font-medium'>Notifications</span>
-            {notifications.length > 0 && <span className='text-muted-foreground text-sm'>{unreadCount} unread</span>}
+            {notifications.length > 0 && <span className='text-foreground/100 text-sm'>{unreadCount} unread</span>}
           </div>
-          <DropdownMenuItem className='cursor-pointer p-0'>
-            <div className='flex w-full flex-col'>
-              {notifications.length > 0 ? (
-                notifications.map((notification, index) => (
-                  <div
-                    key={index}
+
+          {notifications.length > 0 ? (
+            notifications.map(
+              (notification, index) => (
+                console.log('🚀 ~ NumberNotification ~ index:', index),
+                (
+                  <DropdownMenuItem
+                    key={notification.id}
+                    className={cn('focus:bg-accent p-0', 'cursor-pointer')}
                     onClick={() => clickNotification(notification.assetId.toString(), notification.id.toString())}
-                    className={cn(
-                      'hover:bg-accent p-3 transition-colors',
-                      'border-b last:border-b-0',
-                      notification.status === 'pending' && 'bg-accent/50',
-                      'cursor-pointer'
-                    )}
                   >
-                    <div className='flex items-start gap-2'>
-                      <div className='flex-1'>
-                        <p className={cn('text-sm', notification.status === 'pending' && 'font-medium')}>
-                          {notification.content}
-                        </p>
-                        <span className='text-muted-foreground text-xs'>
-                          {new Date(notification.notifyDate).toLocaleDateString()}
-                        </span>
+                    <div
+                      className={cn(
+                        'w-full p-3 transition-colors',
+                        'border-b last:border-b-0',
+                        notification.status === 'pending' && 'bg-accent/30'
+                      )}
+                    >
+                      <div className='flex items-start gap-2'>
+                        <div className='flex-1'>
+                          <p className={cn('text-sm', notification.status === 'pending' && 'font-medium')}>
+                            {notification.content}
+                          </p>
+                          <span className='text-muted-foreground text-xs'>
+                            {new Date(notification.notifyDate).toLocaleDateString()}
+                          </span>
+                        </div>
+                        {notification.status === 'pending' && (
+                          <div className='mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-blue-500' />
+                        )}
                       </div>
-                      {notification.status === 'pending' && <div className='mt-1 h-2 w-2 rounded-full bg-blue-500' />}
                     </div>
-                  </div>
-                ))
-              ) : (
-                <div className='text-muted-foreground p-4 text-center text-sm'>No notifications</div>
-              )}
-            </div>
-          </DropdownMenuItem>
+                  </DropdownMenuItem>
+                )
+              )
+            )
+          ) : (
+            <div className='text-muted-foreground p-4 text-center text-sm'>No notifications</div>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

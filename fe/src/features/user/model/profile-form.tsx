@@ -4,7 +4,7 @@ export const profileFormSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email('Invalid email format'),
-  avatar: z.instanceof(File).optional(),
+  image: z.instanceof(File).optional(),
 })
 
 export type ProfileFormType = z.infer<typeof profileFormSchema>

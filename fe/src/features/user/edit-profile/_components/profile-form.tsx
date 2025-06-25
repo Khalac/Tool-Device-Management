@@ -14,6 +14,7 @@ import {
   CardTitle,
   CardContent,
 } from '@/components/ui'
+import { X } from 'lucide-react'
 import { AvatarUpload } from './avatar-upload'
 import { profileFormSchema, type ProfileFormType } from '../../model/profile-form'
 
@@ -27,10 +28,11 @@ interface ProfileFormProps {
     department?: { departmentName: string } | null
   }
   onSubmit: (data: ProfileFormType) => void
+  onClose: () => void
   isLoading?: boolean
 }
 
-export const ProfileForm = ({ user, onSubmit, isLoading }: ProfileFormProps) => {
+export const ProfileForm = ({ user, onSubmit, onClose, isLoading }: ProfileFormProps) => {
   const form = useForm<ProfileFormType>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
@@ -43,7 +45,17 @@ export const ProfileForm = ({ user, onSubmit, isLoading }: ProfileFormProps) => 
   const userInitials = ((user.lastName?.[0] || '') + (user.firstName?.[0] || '')).toUpperCase()
 
   return (
-    <Card className='mx-auto max-w-2xl'>
+    <Card className='relative mx-auto max-w-2xl'>
+      <Button
+        type='button'
+        variant='ghost'
+        size='sm'
+        className='absolute top-2 right-2 h-8 w-8 p-0 hover:bg-gray-100'
+        onClick={onClose}
+      >
+        <X className='h-4 w-4' />
+      </Button>
+
       <CardHeader>
         <CardTitle>Edit Profile</CardTitle>
       </CardHeader>
@@ -53,14 +65,12 @@ export const ProfileForm = ({ user, onSubmit, isLoading }: ProfileFormProps) => 
             onSubmit={form.handleSubmit(onSubmit)}
             className='space-y-6'
           >
-            {/* Avatar Upload */}
             <AvatarUpload
               form={form}
               currentAvatar={user.avatar}
               userInitials={userInitials}
             />
 
-            {/* Profile Fields */}
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
               <FormField
                 control={form.control}
@@ -108,7 +118,6 @@ export const ProfileForm = ({ user, onSubmit, isLoading }: ProfileFormProps) => 
               )}
             />
 
-            {/* Read-only Info */}
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
               <div>
                 <FormLabel>Role</FormLabel>
@@ -129,13 +138,25 @@ export const ProfileForm = ({ user, onSubmit, isLoading }: ProfileFormProps) => 
               )}
             </div>
 
-            <Button
-              type='submit'
-              className='w-full'
-              disabled={isLoading}
-            >
-              {isLoading ? 'Updating...' : 'Update Profile'}
-            </Button>
+            <div className='flex gap-4'>
+              <Button
+                type='button'
+                variant='outline'
+                className='flex-1'
+                onClick={onClose}
+                disabled={isLoading}
+              >
+                Cancel
+              </Button>
+              <Button
+                type='submit'
+                variant='outline'
+                className='bg-primary hover:bg-primary/90 flex-1'
+                disabled={isLoading}
+              >
+                {isLoading ? 'Updating...' : 'Update Profile'}
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>

@@ -3,7 +3,6 @@ import { tryCatch } from '@/utils'
 import { httpRequest } from '@/utils'
 import type { AxiosError } from 'axios'
 
-// create async thunk to handle when user log in
 type DataLogInType = {
   email: string
   password: string

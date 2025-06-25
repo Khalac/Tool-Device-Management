@@ -24,7 +24,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     clearAuthState: (state) => {
-      // Reset state to initial values
       state.user = initialState.user
       state.accessToken = ''
       state.refreshToken = ''

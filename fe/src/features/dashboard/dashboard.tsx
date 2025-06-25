@@ -43,14 +43,12 @@ export const Dashboard = () => {
     setIsPending(true)
     try {
       if (Object.values(filterData).some((value) => value !== null && value !== '')) {
-        // If there are filters, use getDataAssetsFilter
         const response = await tryCatch(getDataAssetsFilter(filterData))
         if (!response.error) {
           setAssets(response.data.data)
           calculateStats(response.data.data)
         }
       } else {
-        // If no filters, use getAllAssets
         const response = await tryCatch(getAllAssets())
         if (!response.error) {
           setAssets(response.data.data)

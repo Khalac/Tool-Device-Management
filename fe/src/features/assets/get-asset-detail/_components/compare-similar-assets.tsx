@@ -55,15 +55,14 @@ export const CompareSimilarAssets = ({ currentAsset, className }: CompareSimilar
     <>
       <Dialog open={isDialogOpen}>
         <DialogTrigger asChild>
-          <Button
-            variant='outline'
+          <button
+            className={`flex w-full cursor-pointer font-semibold ${className}`}
             onClick={handleOpenDialog}
-            className={`flex w-full items-center gap-2 sm:w-auto ${className}`}
           >
-            <GitCompare className='mr-0.5 h-4 w-4' />
+            <GitCompare className='mr-2 h-4 w-4' />
             <span className='hidden sm:inline'>Compare with Similar</span>
             <span className='sm:hidden'>Compare with Similar</span>
-          </Button>
+          </button>
         </DialogTrigger>
 
         <DialogContent

@@ -1,5 +1,5 @@
 import { FormField, FormItem, FormControl, Input, Button } from '@/components/ui'
-import { FileText, Upload } from 'lucide-react'
+import { FileText, Upload, Paperclip } from 'lucide-react'
 import type { UseFormReturn } from 'react-hook-form'
 import type { CreateAssetFormType } from '../../create-new-asset'
 import { Link } from 'react-router-dom'
@@ -21,26 +21,36 @@ export const FieldFile = ({
   }
 
   return (
-    <>
-      <div className='flex flex-grow items-center justify-center space-y-4'>
-        {fileAttachmentName && (
-          <Link
-            to={fileAttachmentName}
-            download={true}
-          >
-            <div className='flex max-w-full items-center gap-3 rounded-md border p-3'>
-              <FileText className='h-6 w-6 flex-shrink-0' />
-              <div className='min-w-0 overflow-hidden'>
-                <p
-                  className='block max-w-[200px] truncate overflow-hidden font-medium break-all whitespace-nowrap'
-                  title={fileAttachmentName}
-                >
-                  {fileAttachmentName}
-                </p>
-                <p className='text-muted-foreground text-sm'>Attached document</p>
+    <div className='flex h-48 flex-col'>
+      <div className='relative mb-4 flex flex-grow items-center justify-center'>
+        {fileAttachmentName ? (
+          <>
+            <Paperclip className='text-muted-foreground/10 absolute z-0 h-20 w-20' />
+
+            <Link
+              to={fileAttachmentName}
+              download={true}
+              className='relative z-10'
+            >
+              <div className='bg-background/95 flex max-w-full items-center gap-3 rounded-md border p-3 backdrop-blur-sm'>
+                <FileText className='text-primary h-6 w-6 flex-shrink-0' />
+                <div className='min-w-0 overflow-hidden'>
+                  <p
+                    className='block max-w-[190px] truncate overflow-hidden font-medium break-all whitespace-nowrap'
+                    title={fileAttachmentName}
+                  >
+                    {fileAttachmentName}
+                  </p>
+                  <p className='text-muted-foreground text-sm'>Attached document</p>
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </>
+        ) : (
+          <div className='relative flex h-32 items-center justify-center rounded-md border border-dashed'>
+            <Paperclip className='text-muted-foreground/5 absolute z-0 h-16 w-16' />
+            <FileText className='text-muted-foreground relative z-10 h-10 w-10' />
+          </div>
         )}
       </div>
 
@@ -61,7 +71,7 @@ export const FieldFile = ({
                   type='button'
                   variant='outline'
                   className='w-full'
-                  onClick={() => document.getElementById('fileAttachment')?.click()}
+                  onClick={() => document.getElementById('imageUpload')?.click()}
                 >
                   <Upload className='mr-2 h-4 w-4' />
                   {fileAttachmentName ? 'Change File' : 'Upload File'}
@@ -71,6 +81,6 @@ export const FieldFile = ({
           </FormItem>
         )}
       />
-    </>
+    </div>
   )
 }

@@ -157,7 +157,7 @@ export const BillDetailModal = ({ bill, open, onClose }: BillDetailModalProps) =
   }
 
   const buyerInfo = {
-    name: bill.creator?.fullName || 'John Doe',
+    name: 'Ho Bao Quoc',
     taxCode: '',
     address: '533/8 Nguyen Tri Phuong, Ward 8, District 10, Ho Chi Minh City',
     phoneNumber: '032-35471411',

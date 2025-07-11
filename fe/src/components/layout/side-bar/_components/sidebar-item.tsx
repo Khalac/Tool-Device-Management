@@ -17,9 +17,9 @@ export const SidebarNav = () => {
   const canUpdateSchedule = role === 'admin' || role === 'assetManager'
   const canCreateSchedule = role === 'admin' || role === 'assetManager'
   const canTransferRequests = role === 'assetManager'
-  const canViewAssignments = role === 'admin' || role === 'assetManager'
+  const canViewAssignments = role === 'admin' || role === 'assetManager' || role === 'employee' || role === 'viewer'
   const canCreateTransfer = role === 'assetManager'
-  const canNotViewTransfer = role !== 'viewer'
+  const canNotViewTransfer = role !== 'employee'
   const data = {
     navMain: [
       {

@@ -96,7 +96,7 @@ const CreateNewAsset = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='space-y-6'
+                className='create-asset-form group space-y-6'
                 aria-disabled={isPendingGetData}
               >
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
@@ -112,19 +112,30 @@ const CreateNewAsset = () => {
                     label='Serial Number'
                     placeholder='Enter serial number'
                   />
-                  <FormSelect
-                    name='categoryId'
-                    label='Category'
-                    placeholder='Select a category'
-                    data={categories}
+
+                  <FormInput
+                    name='cost'
+                    type='number'
+                    label='Cost'
+                    placeholder='Enter asset cost'
+                    Icon={DollarSign}
                   />
 
-                  <FormSelect
-                    name='departmentId'
-                    label='Department'
-                    placeholder='Select a department'
-                    data={departments}
-                  />
+                  <div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
+                    <FormSelect
+                      name='departmentId'
+                      label='Department'
+                      placeholder='Select a department'
+                      data={departments}
+                    />
+                    <FormSelect
+                      name='categoryId'
+                      label='Category'
+                      placeholder='Select a category'
+                      data={categories}
+                    />
+                  </div>
+
                   <FormDatePicker
                     name='purchaseDate'
                     label='Purchase Date'
@@ -134,13 +145,6 @@ const CreateNewAsset = () => {
                   <FormDatePicker
                     name='warrantExpiry'
                     label='Warranty Expiry'
-                  />
-                  <FormInput
-                    name='cost'
-                    type='number'
-                    label='Cost'
-                    placeholder='Enter asset cost'
-                    Icon={DollarSign}
                   />
                 </div>
 
@@ -159,6 +163,7 @@ const CreateNewAsset = () => {
               </form>
             </Form>
           </CardContent>
+
           <CardFooter className='flex justify-between'>
             <FormButtonSubmit
               className='w-fit sm:w-auto'

@@ -94,7 +94,7 @@ const CreateMaintenanceSchedule = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='space-y-6'
+                className='create-maintenance-schedule group space-y-6'
               >
                 {isPending ? (
                   <div className='flex'>

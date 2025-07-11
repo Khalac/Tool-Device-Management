@@ -77,6 +77,6 @@ fe/
 `Manager (assign asset to employee) ` (Done)
 `Employee (see assets ,` `assign asset ,` (Done)
 `Admin doesn't have to approve ` (Done)
-**Admin assign asset -> Manager -> Employee** (In-progress)
+`Admin assign asset -> Manager -> Employee` (Done)
 **Employee assign to another employee in the same department** (In-progress)
-**Improve UI/UX: Form create , update asset, button, font, size,....** (In-progress)
+**Improve UI/UX: `Form create (Done)` , `Update asset (Done)`, `Assignment Details (Done)`, button, font, size,....** (In-progress)

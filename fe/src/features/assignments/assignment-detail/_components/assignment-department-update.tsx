@@ -12,18 +12,18 @@ export const AssignmentDepartmentUpdate = ({
   setDepartmentId: (departmentId: string) => void
 }) => {
   return (
-    <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+    <div className='grid grid-cols-1 gap-6'>
       <div className='space-y-2'>
-        <p className='text-muted-foreground text-sm'>Current Department</p>
+        <p className='text-sm font-semibold'>Current Department</p>
         <p className='font-medium'>
           {assignmentDetail.department.departmentName}
-          <span className='text-muted-foreground block text-xs'>
+          <span className='text-muted-foreground mt-1 block text-sm leading-relaxed break-words'>
             {assignmentDetail.department.location.locationAddress}
           </span>
         </p>
       </div>
 
-      <div className='space-y-2'>
+      <div className='new-department-form group space-y-2'>
         <FormSelect
           name='departmentId'
           label='Department'

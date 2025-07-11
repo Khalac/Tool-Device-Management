@@ -7,10 +7,6 @@ import {
   CardHeader,
   CardTitle,
   Button,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
   Form,
   FormInput,
   FormSelect,
@@ -138,7 +134,7 @@ const UpdateAssetInformation = () => {
   }
 
   return (
-    <div className='container mx-auto px-4 py-8'>
+    <div className='container mx-auto w-3/5 px-4 py-8'>
       <FormProvider {...form}>
         <div className='mb-6 flex flex-col items-center gap-5 md:flex-row md:justify-between md:gap-0'>
           <div className='flex items-center'>
@@ -158,72 +154,58 @@ const UpdateAssetInformation = () => {
             className='bg-primary hover:bg-primary/90 flex h-9 items-center justify-center gap-2 text-sm font-medium md:h-10 md:text-base'
             isPending={isPending}
             Icon={Save}
-            type='Submit'
+            type='Save Changes'
           />
         </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div
-              className='grid grid-cols-1 gap-6 lg:grid-cols-3'
-              style={{ gridAutoRows: '1fr' }}
-            >
-              <div className='lg:col-span-2'>
-                <Card className='mb-6 flex flex-grow flex-col'>
-                  <CardHeader>
-                    <CardTitle>Basic Information</CardTitle>
-                    <CardDescription>Update the primary details of this asset</CardDescription>
-                  </CardHeader>
-                  <CardContent className='flex-grow'>
-                    <div className='h-full space-y-6'>
-                      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                        <FormInput
-                          name='assetName'
-                          type='text'
-                          label='Asset Name'
-                          placeholder='Enter asset name'
-                        />
+            <div className='space-y-6'>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Basic Information</CardTitle>
+                  <CardDescription>Update the primary details of this asset</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className='space-y-6'>
+                    <div className='grid grid-cols-2 gap-4 lg:grid-cols-2'>
+                      <FormInput
+                        name='assetName'
+                        type='text'
+                        label='Asset Name'
+                        placeholder='Enter asset name'
+                      />
+                      <FormInput
+                        name='serialNumber'
+                        type='text'
+                        label='Serial Number'
+                        placeholder='Enter serial number'
+                      />
+                    </div>
 
-                        <FormInput
-                          name='serialNumber'
-                          type='text'
-                          label='Serial Number'
-                          placeholder='Enter serial number'
-                        />
-                      </div>
-
-                      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                        <FormSelect
-                          name='status'
-                          label='Status'
-                          placeholder='Select status'
-                          data={STATUS}
-                        />
-                        <FormSelect
-                          name='categoryId'
-                          label='Category'
-                          placeholder='Select category'
-                          data={categories}
-                        />
-                      </div>
-
+                    <div className='update-asset-information group grid grid-cols-1 gap-4 lg:grid-cols-3'>
+                      <FormSelect
+                        name='categoryId'
+                        label='Category'
+                        placeholder='Select category'
+                        data={categories}
+                      />
                       <FormSelect
                         name='departmentId'
                         label='Department'
                         placeholder='Select department'
                         data={departments}
                       />
-                    </div>
-                  </CardContent>
-                </Card>
 
-                <Card className='flex flex-col'>
-                  <CardHeader>
-                    <CardTitle>Financial Details</CardTitle>
-                    <CardDescription>Update cost and warranty information</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className='space-y-6'>
+                      <FormSelect
+                        name='status'
+                        label='Status'
+                        placeholder='Select status'
+                        data={STATUS}
+                      />
+                    </div>
+
+                    <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
                       <FormInput
                         name='cost'
                         type='number'
@@ -231,80 +213,48 @@ const UpdateAssetInformation = () => {
                         placeholder='Enter asset cost'
                         Icon={DollarSign}
                       />
-                      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                        <FormDatePicker
-                          name='purchaseDate'
-                          label='Purchase Date'
-                          fn={handlePurchaseDateChange}
-                        />
-                        <FormDatePicker
-                          name='warrantExpiry'
-                          label='Warranty Expiry'
-                        />
-                      </div>
+                      <FormDatePicker
+                        name='purchaseDate'
+                        label='Purchase Date'
+                        fn={handlePurchaseDateChange}
+                      />
+                      <FormDatePicker
+                        name='warrantExpiry'
+                        label='Warranty Expiry'
+                      />
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Asset Image</CardTitle>
+                    <CardDescription>Upload an image of this asset</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <FieldImage
+                      setImagePreview={setImagePreview}
+                      imagePreview={imagePreview || ''}
+                      form={form}
+                    />
                   </CardContent>
                 </Card>
-              </div>
 
-              <div className='flex h-full flex-col'>
-                <Tabs
-                  defaultValue='image'
-                  className='flex h-full flex-col'
-                >
-                  <TabsList className='w-full'>
-                    <TabsTrigger
-                      value='image'
-                      className='flex-1'
-                    >
-                      Image
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value='documents'
-                      className='flex-1'
-                    >
-                      Documents
-                    </TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent
-                    value='image'
-                    className='mt-4 flex flex-grow'
-                  >
-                    <Card className='flex w-full flex-col'>
-                      <CardHeader>
-                        <CardTitle>Asset Image</CardTitle>
-                        <CardDescription>Upload an image of this asset</CardDescription>
-                      </CardHeader>
-                      <CardContent className='flex flex-grow flex-col justify-between'>
-                        <FieldImage
-                          setImagePreview={setImagePreview}
-                          imagePreview={imagePreview || ''}
-                          form={form}
-                        />
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-
-                  <TabsContent
-                    value='documents'
-                    className='mt-4 flex flex-grow'
-                  >
-                    <Card className='flex w-full flex-col'>
-                      <CardHeader>
-                        <CardTitle>Attachments</CardTitle>
-                        <CardDescription>Add documentation for this asset</CardDescription>
-                      </CardHeader>
-                      <CardContent className='flex flex-grow flex-col justify-between'>
-                        <FieldFile
-                          form={form}
-                          fileAttachmentName={fileAttachmentName || ''}
-                          setFileAttachmentName={setFileAttachmentName}
-                        />
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-                </Tabs>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Attachments</CardTitle>
+                    <CardDescription>Add documentation for this asset</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <FieldFile
+                      form={form}
+                      fileAttachmentName={fileAttachmentName || ''}
+                      setFileAttachmentName={setFileAttachmentName}
+                    />
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </form>

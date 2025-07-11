@@ -28,7 +28,7 @@ export const FormDatePicker = ({ name, label, fn }: { name: string; label: strin
               <FormControl>
                 <Button
                   variant={'outline'}
-                  className={`w-full pl-3 text-left font-normal ${!field.value && 'text-muted-foreground'}`}
+                  className={`w-full pl-3 text-left font-normal group-[.create-maintenance-schedule]:w-60 ${!field.value && 'text-muted-foreground'}`}
                 >
                   {field.value ? format(field.value, 'PPP') : <span>Select date</span>}
                   <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />

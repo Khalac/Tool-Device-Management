@@ -1,5 +1,5 @@
 import { FormField, FormItem, FormControl, Input, Button } from '@/components/ui'
-import { ImageIcon, Upload } from 'lucide-react'
+import { ImageIcon, Upload, Image } from 'lucide-react'
 import type { UseFormReturn } from 'react-hook-form'
 import type { CreateAssetFormType } from '../../create-new-asset'
 export const FieldImage = ({
@@ -19,19 +19,24 @@ export const FieldImage = ({
     }
   }
   return (
-    <>
-      <div className='flex flex-grow items-center justify-center space-y-4'>
+    <div className='flex h-48 flex-col'>
+      <div className='relative mb-4 flex flex-grow items-center justify-center'>
         {imagePreview ? (
-          <div className='flex-grow overflow-hidden'>
-            <img
-              src={imagePreview}
-              alt='Asset preview'
-              className='m-auto max-h-[300px] rounded-md object-contain p-8'
-            />
-          </div>
+          <>
+            <Image className='text-muted-foreground/10 absolute z-0 h-20 w-20' />
+
+            <div className='relative z-10 flex-grow overflow-hidden'>
+              <img
+                src={imagePreview}
+                alt='Asset preview'
+                className='m-auto max-h-[120px] rounded-md object-contain'
+              />
+            </div>
+          </>
         ) : (
-          <div className='flex h-40 items-center justify-center rounded-md border border-dashed'>
-            <ImageIcon className='text-muted-foreground h-10 w-10' />
+          <div className='relative flex h-32 items-center justify-center rounded-md border border-dashed'>
+            <Image className='text-muted-foreground/5 absolute z-0 h-16 w-16' />
+            <ImageIcon className='text-muted-foreground relative z-10 h-10 w-10' />
           </div>
         )}
       </div>
@@ -64,6 +69,6 @@ export const FieldImage = ({
           </FormItem>
         )}
       />
-    </>
+    </div>
   )
 }

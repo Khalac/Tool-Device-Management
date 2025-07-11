@@ -22,7 +22,7 @@ export const FormInput = ({
       control={control}
       render={({ field }) => (
         <FormItem>
-          <Label className='text-sm font-medium'>{label}</Label>
+          <Label>{label}</Label>
           <FormControl>
             <div className='relative'>
               {Icon && (

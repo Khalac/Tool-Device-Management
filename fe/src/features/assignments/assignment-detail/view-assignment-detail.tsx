@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, Button, Separator, Form } from '@/components/ui'
-import { ArrowLeft, MapPin, User, Package, Loader2 } from 'lucide-react'
+import { ArrowLeft, MapPin, User, Package, Loader2, FileText } from 'lucide-react'
 import type { AssignmentData } from '../get-all-assignments/model/type'
 import { getData, tryCatch } from '@/utils'
 import { getAssignmentData, UpdateAssignment } from '../api'
@@ -106,7 +106,7 @@ const ViewAssignmentDetail = () => {
   }
 
   return (
-    <div className='container mx-auto px-4 py-6 md:px-6'>
+    <div className='container mx-auto max-w-6xl px-4 py-6 md:px-6'>
       <div className='flex flex-col gap-6'>
         <div className='flex flex-col justify-between gap-4 sm:flex-row sm:items-center'>
           <Button
@@ -122,7 +122,9 @@ const ViewAssignmentDetail = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle className='text-2xl'>Assignment Details</CardTitle>
+            <CardTitle className='flex items-center text-2xl'>
+              <FileText className='mr-2 h-5 w-5' /> Assignment Details
+            </CardTitle>
           </CardHeader>
           <FormProvider {...form}>
             <Form {...form}>
@@ -131,56 +133,61 @@ const ViewAssignmentDetail = () => {
                 aria-disabled={isSubmitting}
               >
                 <CardContent className='space-y-6'>
-                  <div className='space-y-4'>
-                    <h3 className='flex items-center text-lg font-semibold'>
-                      <Package className='mr-2 h-5 w-5' />
-                      Asset Information
-                    </h3>
-                    <Separator />
-
-                    <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-                      <AssignmentAssetName assignmentDetail={assignmentDetail} />
-                      <AssignmentAssetStatus assignmentDetail={assignmentDetail} />
-                      <AssignmentAssetImage assignmentDetail={assignmentDetail} />
-                      <AssignmentAssetFile assignmentDetail={assignmentDetail} />
+                  <div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
+                    <div className='space-y-4'>
+                      <h3 className='flex items-center text-lg font-semibold'>
+                        <Package className='mr-2 h-5 w-5' />
+                        Asset Information
+                      </h3>
+                      <Separator />
+                      <div className='grid grid-cols-1 gap-6'>
+                        <div className='flex items-center gap-20'>
+                          <AssignmentAssetName assignmentDetail={assignmentDetail} />
+                          <AssignmentAssetStatus assignmentDetail={assignmentDetail} />
+                        </div>
+                        <AssignmentAssetImage assignmentDetail={assignmentDetail} />
+                        <AssignmentAssetFile assignmentDetail={assignmentDetail} />
+                      </div>
                     </div>
-                  </div>
-                  <div className='space-y-4'>
-                    <h3 className='flex items-center text-lg font-semibold'>
-                      <User className='mr-2 h-5 w-5' />
-                      Assignment Users
-                    </h3>
-                    <Separator />
-                    <div>
-                      {isUpdate ? (
-                        <AssignmentUserAssignUpdate
-                          departmentId={departmentId}
-                          users={users}
-                          assignmentDetail={assignmentDetail}
-                          isLoading={isLoadingUsers}
-                        />
-                      ) : (
-                        <AssignmentUserAssign assignmentDetail={assignmentDetail} />
-                      )}
+                    <div className='space-y-8'>
+                      <div className='space-y-4'>
+                        <h3 className='flex items-center text-lg font-semibold'>
+                          <User className='mr-2 h-5 w-5' />
+                          Assignment Users
+                        </h3>
+                        <Separator />
+                        <div>
+                          {isUpdate ? (
+                            <AssignmentUserAssignUpdate
+                              departmentId={departmentId}
+                              users={users}
+                              assignmentDetail={assignmentDetail}
+                              isLoading={isLoadingUsers}
+                            />
+                          ) : (
+                            <AssignmentUserAssign assignmentDetail={assignmentDetail} />
+                          )}
+                        </div>
+                      </div>
+                      <div className='space-y-4'>
+                        <h3 className='flex items-center text-lg font-semibold'>
+                          <MapPin className='mr-2 h-5 w-5' />
+                          Department Information
+                        </h3>
+                        <Separator />
+                        <div className='grid w-full grid-cols-1 gap-4'>
+                          {isUpdate ? (
+                            <AssignmentDepartmentUpdate
+                              departments={departments}
+                              assignmentDetail={assignmentDetail}
+                              setDepartmentId={handleDepartmentChange}
+                            />
+                          ) : (
+                            <AssignmentDepartment assignmentDetail={assignmentDetail} />
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className='space-y-4'>
-                    <h3 className='flex items-center text-lg font-semibold'>
-                      <MapPin className='mr-2 h-5 w-5' />
-                      Department Information
-                    </h3>
-                    <Separator />
-
-                    {isUpdate ? (
-                      <AssignmentDepartmentUpdate
-                        departments={departments}
-                        assignmentDetail={assignmentDetail}
-                        setDepartmentId={handleDepartmentChange}
-                      />
-                    ) : (
-                      <AssignmentDepartment assignmentDetail={assignmentDetail} />
-                    )}
                   </div>
                 </CardContent>
               </form>

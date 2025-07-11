@@ -89,7 +89,7 @@ export const AssignRole = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='space-y-6'
+            className='user-assign-role group space-y-6'
           >
             <CardContent className='space-y-4'>
               {isLoadingUsers ? (

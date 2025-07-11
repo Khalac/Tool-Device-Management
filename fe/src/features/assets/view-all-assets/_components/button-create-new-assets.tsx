@@ -6,7 +6,7 @@ export const ButtonCreateNewAssets = () => {
   const navigate = useNavigate()
   const user = useAppSelector((state) => state.auth.user)
 
-  if (user.role.slug === 'viewer') {
+  if (user.role.slug === 'employee') {
     return null
   }
   return (

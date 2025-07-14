@@ -81,7 +81,7 @@ export const TrendCharts = ({
   return (
     <div className={`space-y-4 sm:space-y-6 ${className}`}>
       <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
-        <Card className='w-full transition-all duration-200 dark:border-gray-700 dark:bg-gray-800/50'>
+        <Card className='dark:bg-card w-full transition-all duration-200 dark:border-gray-700'>
           <CardHeader className='p-3 sm:p-4'>
             <CardTitle className='text-base sm:text-lg dark:text-gray-200'>
               <div className='flex items-center gap-2'>
@@ -138,7 +138,7 @@ export const TrendCharts = ({
           </CardContent>
         </Card>
 
-        <Card className='w-full transition-all duration-200 dark:border-gray-700 dark:bg-gray-800/50'>
+        <Card className='dark:bg-card w-full transition-all duration-200 dark:border-gray-700'>
           <CardHeader className='p-3 sm:p-4'>
             <CardTitle className='text-base sm:text-lg dark:text-gray-200'>
               <div className='flex items-center gap-2'>
@@ -190,7 +190,7 @@ export const TrendCharts = ({
       </div>
 
       <div className='grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2'>
-        <Card className='transition-all duration-200 dark:border-gray-700 dark:bg-gray-800/50'>
+        <Card className='dark:bg-card transition-all duration-200 dark:border-gray-700'>
           <CardHeader>
             <CardTitle className='text-base sm:text-lg dark:text-gray-200'>
               <div className='flex items-center gap-2'>
@@ -252,7 +252,7 @@ export const TrendCharts = ({
           showAnimation={true}
           animationDelay={2000}
           height='h-[250px] sm:h-[300px]'
-          className='dark:border-gray-700 dark:bg-gray-800/50'
+          className='dark:bg-card dark:border-gray-700'
         />
       </div>
     </div>

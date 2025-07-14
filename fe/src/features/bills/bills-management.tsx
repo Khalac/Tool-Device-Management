@@ -13,6 +13,7 @@ import type { BillType, BillFilterType } from './model/bill-types'
 import { tryCatch } from '@/utils'
 import Cookies from 'js-cookie'
 import { useSearchParams } from 'react-router-dom'
+import { formatCurrency } from '../dashboard/utils/statistics-calculator'
 
 export const BillsManagement = () => {
   const [bills, setBills] = useState<BillType[]>([])
@@ -170,7 +171,6 @@ export const BillsManagement = () => {
       categoryName: bill.assets?.category?.categoryName || 'N/A',
       createdBy: bill.creator?.fullName || 'Unknown',
       createdAt: new Date(bill.createAt).toLocaleDateString(),
-      updatedAt: new Date(bill.updateAt).toLocaleDateString(),
     }))
 
     const headers = [
@@ -182,7 +182,6 @@ export const BillsManagement = () => {
       'Category',
       'Created By',
       'Created Date',
-      'Updated Date',
     ]
 
     const csvContent = [
@@ -197,7 +196,6 @@ export const BillsManagement = () => {
           `"${bill.categoryName}"`,
           `"${bill.createdBy}"`,
           bill.createdAt,
-          bill.updatedAt,
         ].join(',')
       ),
     ].join('\n')
@@ -269,22 +267,39 @@ export const BillsManagement = () => {
         onReset={handleResetFilters}
       />
 
-      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6'>
-        <Card className='relative overflow-hidden'>
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-7'>
+        <Card className='relative gap-0 overflow-hidden'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-muted-foreground text-sm font-medium'>Total Bills</CardTitle>
-            <div className='rounded-full bg-blue-500/10 p-2'>
-              <Receipt className='h-4 w-4 text-blue-600' />
+            <div className='rounded-full bg-cyan-500/10 p-2'>
+              <Receipt className='h-4 w-4 text-cyan-600 dark:text-cyan-400' />
             </div>
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{bills.length}</div>
-            <p className='text-muted-foreground truncate text-xs'>${totalCost.toLocaleString()} total value</p>
+            <div className='text-2xl font-bold text-cyan-600 dark:text-cyan-400'>{bills.length}</div>
+            <p className='text-muted-foreground truncate text-xs'>
+              {bills.length > 0 ? `${((bills.length / bills.length) * 100).toFixed(1)}% of total bills` : 'No bills'}
+            </p>
           </CardContent>
-          <div className='absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-blue-500 to-blue-600' />
+          <div className='absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-cyan-500 to-cyan-600' />
+        </Card>
+        <Card className='relative gap-0 overflow-hidden'>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-muted-foreground text-sm font-medium'>Total Value</CardTitle>
+            <div className='rounded-full bg-cyan-500/10 p-2'>
+              <Receipt className='h-4 w-4 text-cyan-600 dark:text-cyan-400' />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className='text-2xl font-bold text-cyan-600 dark:text-cyan-400'>{formatCurrency(totalCost)}</div>
+            <p className='text-muted-foreground truncate text-xs'>
+              Increased ${formatCurrency(totalCost)} compared to last month
+            </p>
+          </CardContent>
+          <div className='absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-cyan-500 to-cyan-600' />
         </Card>
 
-        <Card className='relative overflow-hidden'>
+        <Card className='relative gap-0 overflow-hidden'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-muted-foreground text-sm font-medium'>Unpaid</CardTitle>
             <div className='rounded-full bg-red-500/10 p-2'>
@@ -300,7 +315,7 @@ export const BillsManagement = () => {
           <div className='absolute bottom-0 left-0 h-1 w-full bg-red-500' />
         </Card>
 
-        <Card className='relative overflow-hidden'>
+        <Card className='relative gap-0 overflow-hidden'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-muted-foreground text-sm font-medium'>Paid</CardTitle>
             <div className='rounded-full bg-green-500/10 p-2'>
@@ -316,7 +331,20 @@ export const BillsManagement = () => {
           <div className='absolute bottom-0 left-0 h-1 w-full bg-green-500' />
         </Card>
 
-        <Card className='relative overflow-hidden'>
+        <Card className='relative gap-0 overflow-hidden'>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-muted-foreground text-sm font-medium'>Total Categories</CardTitle>
+            <div className='rounded-full bg-purple-500/10 p-2'>
+              <FileText className='h-4 w-4 text-purple-600' />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className='text-2xl font-bold text-purple-600'>{uniqueCategories.length}</div>
+            <p className='text-muted-foreground truncate text-xs'>{uniqueCategories.join(', ') || 'N/A'}</p>
+          </CardContent>
+          <div className='absolute bottom-0 left-0 h-1 w-full bg-purple-500' />
+        </Card>
+        <Card className='relative gap-0 overflow-hidden'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-muted-foreground text-sm font-medium'>Highest Bill</CardTitle>
             <div className='rounded-full bg-orange-500/10 p-2'>
@@ -334,21 +362,7 @@ export const BillsManagement = () => {
           <div className='absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-orange-500 to-orange-600' />
         </Card>
 
-        <Card className='relative overflow-hidden'>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-muted-foreground text-sm font-medium'>Total Categories</CardTitle>
-            <div className='rounded-full bg-purple-500/10 p-2'>
-              <FileText className='h-4 w-4 text-purple-600' />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className='text-2xl font-bold text-purple-600'>{uniqueCategories.length}</div>
-            <p className='text-muted-foreground truncate text-xs'>{uniqueCategories.join(', ') || 'N/A'}</p>
-          </CardContent>
-          <div className='absolute bottom-0 left-0 h-1 w-full bg-purple-500' />
-        </Card>
-
-        <Card className='relative overflow-hidden'>
+        <Card className='relative gap-0 overflow-hidden'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-muted-foreground text-sm font-medium'>Lowest Bill</CardTitle>
             <div className='rounded-full bg-yellow-500/10 p-2'>

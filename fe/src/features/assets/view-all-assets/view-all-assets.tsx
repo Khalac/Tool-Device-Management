@@ -33,7 +33,19 @@ const ViewAllAssets = () => {
     setIspending(false)
   }
   const filterData = useDebounce(filteredAssets, 1000)
-
+  const handleRemoveFilter = (filterType: 'status' | 'category' | 'department') => {
+    setFilteredAssets((prev) => {
+      const newState = { ...prev }
+      if (filterType === 'status') {
+        newState.status = null
+      } else if (filterType === 'category') {
+        newState.categoryId = null
+      } else if (filterType === 'department') {
+        newState.departmentId = null
+      }
+      return newState
+    })
+  }
   useEffect(() => {
     getAssetsData()
   }, [])
@@ -62,7 +74,49 @@ const ViewAllAssets = () => {
     setSearchParam(searchParam)
     getAssetsData()
   }, [filterData])
+  const handleStatClick = (filterType: 'total' | 'new' | 'in-use' | 'maintenance' | 'retired') => {
+    const newFilter = { ...filteredAssets }
 
+    switch (filterType) {
+      case 'total':
+        newFilter.status = null
+        break
+      case 'new':
+        newFilter.status = 'New'
+        break
+      case 'in-use':
+        newFilter.status = 'In Use'
+        break
+      case 'maintenance':
+        newFilter.status = 'Under Maintenance'
+        break
+      case 'retired':
+        newFilter.status = 'Disposed'
+        break
+    }
+
+    setFilteredAssets(newFilter)
+  }
+
+  const handleCategoryClick = (categoryName: string) => {
+    const category = assets.find((asset) => asset.category.categoryName === categoryName)
+    if (category) {
+      setFilteredAssets((prev) => ({
+        ...prev,
+        categoryId: category.category.id?.toString() || null,
+      }))
+    }
+  }
+
+  const handleDepartmentClick = (departmentName: string) => {
+    const department = assets.find((asset) => asset.department.departmentName === departmentName)
+    if (department) {
+      setFilteredAssets((prev) => ({
+        ...prev,
+        departmentId: department.department.id?.toString() || null,
+      }))
+    }
+  }
   return (
     <div className='space-y-6'>
       <ButtonViewType
@@ -84,6 +138,11 @@ const ViewAllAssets = () => {
           <CardStatusStatistic
             isPending={isPending}
             assets={assets}
+            currentFilter={filteredAssets}
+            onRemoveFilter={handleRemoveFilter}
+            onStatClick={handleStatClick}
+            onCategoryClick={handleCategoryClick}
+            onDepartmentClick={handleDepartmentClick}
           />
 
           <FilterAssets

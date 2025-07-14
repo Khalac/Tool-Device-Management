@@ -34,6 +34,7 @@ interface MonthlyReportProps {
 
 export const MonthlyReport = ({
   assets,
+
   className = '',
   initialDateFilter,
   onDateFilterChange,
@@ -200,6 +201,48 @@ export const MonthlyReport = ({
     { key: 'overview', label: 'Overview', icon: FileText },
     { key: 'comparison', label: 'Comparison', icon: GitCompare },
   ]
+  const handleStatClick = (filterType: 'total' | 'new' | 'in-use' | 'maintenance' | 'retired') => {
+    const newFilter = { ...assetFilter }
+
+    switch (filterType) {
+      case 'total':
+        newFilter.status = null
+        break
+      case 'new':
+        newFilter.status = 'New'
+        break
+      case 'in-use':
+        newFilter.status = 'In Use'
+        break
+      case 'maintenance':
+        newFilter.status = 'Under Maintenance'
+        break
+      case 'retired':
+        newFilter.status = 'Disposed'
+        break
+    }
+
+    handleAssetFilterChange(newFilter)
+  }
+  const handleCategoryClick = (categoryName: string) => {
+    const category = assets.find((asset) => asset.category.categoryName === categoryName)
+    if (category) {
+      handleAssetFilterChange((prev) => ({
+        ...prev,
+        categoryId: category.category.id?.toString() || null,
+      }))
+    }
+  }
+
+  const handleDepartmentClick = (departmentName: string) => {
+    const department = assets.find((asset) => asset.department.departmentName === departmentName)
+    if (department) {
+      handleAssetFilterChange((prev) => ({
+        ...prev,
+        departmentId: department.department.id?.toString() || null,
+      }))
+    }
+  }
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -324,6 +367,11 @@ export const MonthlyReport = ({
           {activeTab === 'overview' && (
             <div className='space-y-6'>
               <StatisticsCards
+                onCategoryClick={handleCategoryClick}
+                onDepartmentClick={handleDepartmentClick}
+                onStatClick={handleStatClick}
+                currentFilter={assetFilter}
+                assets={filteredAssets}
                 stats={monthlyStats}
                 showComparison={!!comparisonData}
                 comparisonData={

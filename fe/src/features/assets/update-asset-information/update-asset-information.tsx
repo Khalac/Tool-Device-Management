@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import {
   Card,
@@ -13,7 +13,7 @@ import {
   FormDatePicker,
   FormButtonSubmit,
 } from '@/components/ui'
-import { ArrowLeft, Save, DollarSign } from 'lucide-react'
+import { Save, DollarSign, Settings, Image, FileText, Undo } from 'lucide-react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -114,6 +114,7 @@ const UpdateAssetInformation = () => {
     navigate(`/assets/${id}`)
     setIsPending(false)
   }
+
   const handlePurchaseDateChange = (value: Date) => {
     form.setValue('purchaseDate', value)
     const endDate = form.getValues('warrantExpiry')
@@ -125,6 +126,10 @@ const UpdateAssetInformation = () => {
     }
   }
 
+  const handleCancel = () => {
+    navigate(-1)
+  }
+
   if (isGetDataPending) {
     return <IsGettingData />
   }
@@ -134,131 +139,148 @@ const UpdateAssetInformation = () => {
   }
 
   return (
-    <div className='container mx-auto w-3/5 px-4 py-8'>
+    <div className='container mx-auto w-5/9 px-4'>
       <FormProvider {...form}>
-        <div className='mb-6 flex flex-col items-center gap-5 md:flex-row md:justify-between md:gap-0'>
-          <div className='flex items-center'>
-            <Link to={`/assets/${id}`}>
-              <Button
-                variant='ghost'
-                className='mr-4'
-                onClick={() => navigate(-1)}
-              >
-                <ArrowLeft className='h-5 w-5' />
-              </Button>
-            </Link>
-            <h1 className='text-3xl font-semibold'>Update Asset</h1>
-          </div>
-          <FormButtonSubmit
-            onSubmit={onSubmit}
-            className='bg-primary hover:bg-primary/90 flex h-9 items-center justify-center gap-2 text-sm font-medium md:h-10 md:text-base'
-            isPending={isPending}
-            Icon={Save}
-            type='Save Changes'
-          />
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className='flex items-center text-xl'>
+              <Settings className='mr-2 h-5 w-5' />
+              Update Asset Information
+            </CardTitle>
+            <CardDescription>Update all asset details and information</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className='space-y-4'>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className='flex items-center'>
+                        <FileText className='mr-2 h-5 w-5' />
+                        Basic Information
+                      </CardTitle>
+                      <CardDescription>Update the primary details of this asset</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className='space-y-4'>
+                        <div className='grid grid-cols-2 gap-4 lg:grid-cols-2'>
+                          <FormInput
+                            name='assetName'
+                            type='text'
+                            label='Asset Name'
+                            placeholder='Enter asset name'
+                          />
+                          <FormInput
+                            name='serialNumber'
+                            type='text'
+                            label='Serial Number'
+                            placeholder='Enter serial number'
+                          />
+                        </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className='space-y-6'>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Basic Information</CardTitle>
-                  <CardDescription>Update the primary details of this asset</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className='space-y-6'>
-                    <div className='grid grid-cols-2 gap-4 lg:grid-cols-2'>
-                      <FormInput
-                        name='assetName'
-                        type='text'
-                        label='Asset Name'
-                        placeholder='Enter asset name'
-                      />
-                      <FormInput
-                        name='serialNumber'
-                        type='text'
-                        label='Serial Number'
-                        placeholder='Enter serial number'
-                      />
-                    </div>
+                        <div className='update-asset-information group grid grid-cols-1 gap-4 lg:grid-cols-3'>
+                          <FormSelect
+                            name='categoryId'
+                            label='Category'
+                            placeholder='Select category'
+                            data={categories}
+                          />
+                          <FormSelect
+                            name='departmentId'
+                            label='Department'
+                            placeholder='Select department'
+                            data={departments}
+                          />
+                          <FormSelect
+                            name='status'
+                            label='Status'
+                            placeholder='Select status'
+                            data={STATUS}
+                          />
+                        </div>
 
-                    <div className='update-asset-information group grid grid-cols-1 gap-4 lg:grid-cols-3'>
-                      <FormSelect
-                        name='categoryId'
-                        label='Category'
-                        placeholder='Select category'
-                        data={categories}
-                      />
-                      <FormSelect
-                        name='departmentId'
-                        label='Department'
-                        placeholder='Select department'
-                        data={departments}
-                      />
+                        <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
+                          <FormInput
+                            name='cost'
+                            type='number'
+                            label='Cost'
+                            placeholder='Enter asset cost'
+                            Icon={DollarSign}
+                          />
+                          <FormDatePicker
+                            name='purchaseDate'
+                            label='Purchase Date'
+                            fn={handlePurchaseDateChange}
+                          />
+                          <FormDatePicker
+                            name='warrantExpiry'
+                            label='Warranty Expiry'
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                      <FormSelect
-                        name='status'
-                        label='Status'
-                        placeholder='Select status'
-                        data={STATUS}
-                      />
-                    </div>
+                  <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className='flex items-center'>
+                          <Image className='mr-2 h-5 w-5' />
+                          Asset Image
+                        </CardTitle>
+                        <CardDescription>Upload an image of this asset</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <FieldImage
+                          setImagePreview={setImagePreview}
+                          imagePreview={imagePreview || ''}
+                          form={form}
+                        />
+                      </CardContent>
+                    </Card>
 
-                    <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
-                      <FormInput
-                        name='cost'
-                        type='number'
-                        label='Cost'
-                        placeholder='Enter asset cost'
-                        Icon={DollarSign}
-                      />
-                      <FormDatePicker
-                        name='purchaseDate'
-                        label='Purchase Date'
-                        fn={handlePurchaseDateChange}
-                      />
-                      <FormDatePicker
-                        name='warrantExpiry'
-                        label='Warranty Expiry'
-                      />
-                    </div>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className='flex items-center'>
+                          <FileText className='mr-2 h-5 w-5' />
+                          Attachments
+                        </CardTitle>
+                        <CardDescription>Add documentation for this asset</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <FieldFile
+                          form={form}
+                          fileAttachmentName={fileAttachmentName || ''}
+                          setFileAttachmentName={setFileAttachmentName}
+                        />
+                      </CardContent>
+                    </Card>
                   </div>
-                </CardContent>
-              </Card>
 
-              <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Asset Image</CardTitle>
-                    <CardDescription>Upload an image of this asset</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <FieldImage
-                      setImagePreview={setImagePreview}
-                      imagePreview={imagePreview || ''}
-                      form={form}
+                  <div className='mt-2 flex justify-between'>
+                    <FormButtonSubmit
+                      onSubmit={onSubmit}
+                      className='bg-primary hover:bg-primary/90 flex h-8 items-center justify-center gap-2 text-sm font-medium'
+                      isPending={isPending}
+                      Icon={Save}
+                      type='Save Changes'
                     />
-                  </CardContent>
-                </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Attachments</CardTitle>
-                    <CardDescription>Add documentation for this asset</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <FieldFile
-                      form={form}
-                      fileAttachmentName={fileAttachmentName || ''}
-                      setFileAttachmentName={setFileAttachmentName}
-                    />
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </form>
-        </Form>
+                    <Button
+                      type='button'
+                      variant='outline'
+                      onClick={handleCancel}
+                      className='flex h-8 items-center justify-center gap-2 text-sm font-medium'
+                    >
+                      <Undo className='h-4 w-4' />
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
       </FormProvider>
     </div>
   )

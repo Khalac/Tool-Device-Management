@@ -65,6 +65,64 @@ export const Dashboard = () => {
     }
   }
 
+  const handleStatClick = (filterType: 'total' | 'new' | 'in-use' | 'maintenance' | 'retired') => {
+    const newFilter = { ...filteredAssets }
+
+    switch (filterType) {
+      case 'total':
+        newFilter.status = null
+        break
+      case 'new':
+        newFilter.status = 'New'
+        break
+      case 'in-use':
+        newFilter.status = 'In Use'
+        break
+      case 'maintenance':
+        newFilter.status = 'Under Maintenance'
+        break
+      case 'retired':
+        newFilter.status = 'Disposed'
+        break
+    }
+
+    setFilteredAssets(newFilter)
+  }
+
+  const handleCategoryClick = (categoryName: string) => {
+    const category = assets.find((asset) => asset.category.categoryName === categoryName)
+    if (category) {
+      setFilteredAssets((prev) => ({
+        ...prev,
+        categoryId: category.category.id?.toString() || null,
+      }))
+    }
+  }
+
+  const handleDepartmentClick = (departmentName: string) => {
+    const department = assets.find((asset) => asset.department.departmentName === departmentName)
+    if (department) {
+      setFilteredAssets((prev) => ({
+        ...prev,
+        departmentId: department.department.id?.toString() || null,
+      }))
+    }
+  }
+
+  const handleRemoveFilter = (filterType: 'status' | 'category' | 'department') => {
+    setFilteredAssets((prev) => {
+      const newState = { ...prev }
+      if (filterType === 'status') {
+        newState.status = null
+      } else if (filterType === 'category') {
+        newState.categoryId = null
+      } else if (filterType === 'department') {
+        newState.departmentId = null
+      }
+      return newState
+    })
+  }
+
   useEffect(() => {
     if (filteredAssets.assetName) {
       searchParam.set('assetName', filteredAssets.assetName)
@@ -92,9 +150,11 @@ export const Dashboard = () => {
   useEffect(() => {
     fetchAssets()
   }, [filterData])
+
   const handleNavigateToReports = () => {
     navigate('/statistics-reports')
   }
+
   const views = [
     {
       key: 'dashboard',
@@ -148,9 +208,14 @@ export const Dashboard = () => {
       />
 
       <DashboardStats
+        onRemoveFilter={handleRemoveFilter}
         stats={stats}
         assets={assets}
         isPending={isPending}
+        onStatClick={handleStatClick}
+        onCategoryClick={handleCategoryClick}
+        onDepartmentClick={handleDepartmentClick}
+        currentFilter={filteredAssets}
       />
     </div>
   )

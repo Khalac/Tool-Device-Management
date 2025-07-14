@@ -16,7 +16,7 @@ import {
   FormDatePicker,
   FormButtonSubmit,
 } from '@/components/ui'
-import { DollarSign, Laptop } from 'lucide-react'
+import { DollarSign, Laptop, Save, Undo } from 'lucide-react'
 import { getAllDepartment, getAllCategories, createNewAsset } from '../api'
 import { type CreateAssetFormType, createAssetFormSchema } from './model/schema'
 import { getData, tryCatch } from '@/utils'
@@ -168,11 +168,14 @@ const CreateNewAsset = () => {
             <FormButtonSubmit
               className='w-fit sm:w-auto'
               isPending={isPending}
-              Icon={Laptop}
+              Icon={Save}
               type='Save'
               onSubmit={onSubmit}
             />
-            <ButtonCancel isPending={isPending} />
+            <ButtonCancel
+              isPending={isPending}
+              Icon={<Undo className='h-4 w-4' />}
+            />
           </CardFooter>
         </FormProvider>
       </Card>

@@ -67,12 +67,24 @@ func (service *AssignmentService) Update(userId, assignmentId int64, userIdAssig
 	}
 	var assignUser *entity.Users
 	if byUser.Role.Slug == "employee" {
-		userManager, err := service.userRepo.FindManager(byUser.Id)
+		ownAssetUser, err := service.userRepo.FindByUserId(*assignment.UserId)
 		if err != nil {
 			return nil, err
 		}
-		assignUser = userManager
-		userIdAssign = &userManager.Id
+		userManager, err := service.userRepo.FindManager(ownAssetUser.Id)
+		if err != nil {
+			return nil, err
+		}
+		if (userIdAssign == nil) || (userManager.Id == *userIdAssign) || (ownAssetUser.DepartmentId == nil) || (byUser.DepartmentId == nil) || (*ownAssetUser.DepartmentId != *byUser.DepartmentId) {
+			return nil, fmt.Errorf("You can only assign to employee within the same department.")
+		}
+		assignUser, err = service.userRepo.FindByUserId(*userIdAssign)
+		if err != nil {
+			return nil, err
+		}
+		if (assignUser.DepartmentId == nil) || (*assignUser.DepartmentId != *ownAssetUser.DepartmentId) {
+			return nil, fmt.Errorf("You can only assign to employee within the same department.")
+		}
 	} else {
 		if userIdAssign != nil {
 			assignUser, err = service.userRepo.FindByUserId(*userIdAssign)

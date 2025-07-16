@@ -80,3 +80,6 @@ fe/
 `Admin assign asset -> Manager -> Employee` (Done)
 `Employee assign to another employee in the same department` (Done)
 `Improve UI/UX: Form create , Update asset , Assignment Details , button, font, size,....`(Done)
+**Calendar Integration** (In-progress)
+**Selling multiple products in a single bill** (In-progress)
+**Add the new information such as: proformance, chip, ram,...** (In-progress)

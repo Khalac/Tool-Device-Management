@@ -86,11 +86,11 @@ const CreateNewAsset = () => {
       <Card>
         <FormProvider {...form}>
           <CardHeader>
-            <CardTitle className='flex items-center text-2xl'>
-              <Laptop className='mr-2 h-6 w-6' />
+            <CardTitle className='text-primary flex items-center text-2xl'>
+              <Laptop className='text-primary mr-2 h-6 w-6' />
               Create New Asset
             </CardTitle>
-            <CardDescription>Add a new asset to the inventory system</CardDescription>
+            <CardDescription className='text-primary'>Add a new asset to the inventory system</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -101,12 +101,14 @@ const CreateNewAsset = () => {
               >
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                   <FormInput
+                    highlightOnValue={false}
                     name='assetName'
                     type='text'
                     label='Asset Name'
                     placeholder='Enter asset name'
                   />
                   <FormInput
+                    highlightOnValue={false}
                     name='serialNumber'
                     type='text'
                     label='Serial Number'
@@ -114,6 +116,7 @@ const CreateNewAsset = () => {
                   />
 
                   <FormInput
+                    highlightOnValue={false}
                     name='cost'
                     type='number'
                     label='Cost'
@@ -123,12 +126,14 @@ const CreateNewAsset = () => {
 
                   <div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
                     <FormSelect
+                      highlightOnValue={false}
                       name='departmentId'
                       label='Department'
                       placeholder='Select a department'
                       data={departments}
                     />
                     <FormSelect
+                      highlightOnValue={false}
                       name='categoryId'
                       label='Category'
                       placeholder='Select a category'
@@ -137,12 +142,14 @@ const CreateNewAsset = () => {
                   </div>
 
                   <FormDatePicker
+                    highlightOnValue={false}
                     name='purchaseDate'
                     label='Purchase Date'
                     fn={handlePurchaseDateChange}
                   />
 
                   <FormDatePicker
+                    highlightOnValue={false}
                     name='warrantExpiry'
                     label='Warranty Expiry'
                   />
@@ -150,11 +157,13 @@ const CreateNewAsset = () => {
 
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                   <FileField
+                    highlightOnValue={false}
                     form={form}
                     fileName={fileName}
                     setFileName={setFileName}
                   />
                   <ImageField
+                    highlightOnValue={false}
                     form={form}
                     imageName={imageName}
                     setImageName={setImageName}
@@ -164,17 +173,17 @@ const CreateNewAsset = () => {
             </Form>
           </CardContent>
 
-          <CardFooter className='flex justify-between'>
+          <CardFooter className='flex justify-end gap-2'>
+            <ButtonCancel
+              isPending={isPending}
+              Icon={<Undo className='h-4 w-4' />}
+            />
             <FormButtonSubmit
               className='w-fit sm:w-auto'
               isPending={isPending}
               Icon={Save}
-              type='Save'
+              type='Create Asset'
               onSubmit={onSubmit}
-            />
-            <ButtonCancel
-              isPending={isPending}
-              Icon={<Undo className='h-4 w-4' />}
             />
           </CardFooter>
         </FormProvider>

@@ -87,17 +87,23 @@ export const ViewCardsDataAssets = ({ assets }: { assets: AssetsType[] }) => {
                       <span className='max-w-[120px] truncate font-medium'>{asset.category?.categoryName}</span>
                     </div>
                   </div>
+                  <div className='space-y-2 text-sm'>
+                    <div className='flex items-center justify-between gap-3'>
+                      <span className='text-muted-foreground'>Cost:</span>
+                      <span className='max-w-[120px] truncate font-medium'>${asset.cost}</span>
+                    </div>
+                  </div>
                 </CardContent>
               </div>
               <CardFooter className=''>
                 <Button
                   variant='outline'
                   size='sm'
-                  className='w-full'
+                  className='border-primary text-primary hover:text-primary/80 w-full'
                   asChild
                 >
                   <Link to={`/assets/${asset.id}`}>
-                    <Info className='mr-2 h-4 w-4' />
+                    <Info className='text-primary mr-2 h-4 w-4' />
                     View Details
                   </Link>
                 </Button>

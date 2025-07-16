@@ -64,8 +64,8 @@ export const BillsFilter = ({ filters, setFilters, onReset }: BillsFilterProps) 
   return (
     <Card>
       <CardHeader className='gap-0 pb-0'>
-        <CardTitle className='flex items-center text-lg'>
-          <Filter className='mr-2 h-4 w-4' />
+        <CardTitle className='text-primary flex items-center text-lg'>
+          <Filter className='text-primary mr-2 h-4 w-4' />
           Filter Bills
         </CardTitle>
       </CardHeader>
@@ -89,7 +89,10 @@ export const BillsFilter = ({ filters, setFilters, onReset }: BillsFilterProps) 
                 onValueChange={(value) => setFilters({ ...filters, categoryId: value || null })}
                 disabled={isLoading}
               >
-                <SelectTrigger className='mt-2 h-10 w-full'>
+                <SelectTrigger
+                  value={filters.categoryId || ''}
+                  className='mt-2 h-10 w-full'
+                >
                   <SelectValue placeholder='Select category' />
                 </SelectTrigger>
                 <SelectContent>
@@ -111,7 +114,10 @@ export const BillsFilter = ({ filters, setFilters, onReset }: BillsFilterProps) 
                 value={filters.statusBill || ''}
                 onValueChange={(value) => setFilters({ ...filters, statusBill: value as 'Unpaid' | 'Paid' | null })}
               >
-                <SelectTrigger className='mt-2 h-10 w-full'>
+                <SelectTrigger
+                  value={filters.statusBill || ''}
+                  className='mt-2 h-10 w-full'
+                >
                   <SelectValue placeholder='Select status' />
                 </SelectTrigger>
                 <SelectContent>

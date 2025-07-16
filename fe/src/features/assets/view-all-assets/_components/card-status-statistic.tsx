@@ -1,5 +1,5 @@
 import { Card, CardContent, CardTitle } from '@/components/ui'
-import { Package, CheckCircle, Users, AlertTriangle, X, Box, Briefcase } from 'lucide-react'
+import { Package, CheckCircle, Users, AlertTriangle, X, Box, Briefcase, StopCircle } from 'lucide-react'
 import type { AssetsType } from '../model'
 
 interface CardStatusStatisticProps {
@@ -105,7 +105,7 @@ export const CardStatusStatistic = ({
         {isCardActive('new') && (
           <button
             onClick={(e) => handleRemoveFilterClick(e, 'status')}
-            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-emerald-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-emerald-400 sm:h-5 sm:w-5 dark:bg-emerald-700 dark:hover:bg-emerald-600'
           >
             <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
           </button>
@@ -139,7 +139,7 @@ export const CardStatusStatistic = ({
         {isCardActive('in-use') && (
           <button
             onClick={(e) => handleRemoveFilterClick(e, 'status')}
-            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-blue-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-blue-400 sm:h-5 sm:w-5 dark:bg-blue-700 dark:hover:bg-blue-600'
           >
             <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
           </button>
@@ -173,7 +173,7 @@ export const CardStatusStatistic = ({
         {isCardActive('maintenance') && (
           <button
             onClick={(e) => handleRemoveFilterClick(e, 'status')}
-            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-amber-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-amber-400 sm:h-5 sm:w-5 dark:bg-amber-700 dark:hover:bg-amber-600'
           >
             <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
           </button>
@@ -207,7 +207,7 @@ export const CardStatusStatistic = ({
         {isCardActive('retired') && (
           <button
             onClick={(e) => handleRemoveFilterClick(e, 'status')}
-            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-400 sm:h-5 sm:w-5 dark:bg-red-700 dark:hover:bg-red-600'
           >
             <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
           </button>
@@ -218,7 +218,7 @@ export const CardStatusStatistic = ({
               Retired/Disposed
             </CardTitle>
             <div className='rounded-full bg-red-50 p-1.5 transition-all duration-300 group-hover:scale-110 sm:p-2 dark:bg-red-950/50'>
-              <X className='h-3 w-3 text-red-500 sm:h-4 sm:w-4 dark:text-red-400' />
+              <StopCircle className='h-3 w-3 text-red-500 sm:h-4 sm:w-4 dark:text-red-400' />
             </div>
           </div>
           <div className='space-y-1'>
@@ -240,7 +240,7 @@ export const CardStatusStatistic = ({
         {isCategoryActive() && (
           <button
             onClick={(e) => handleRemoveFilterClick(e, 'category')}
-            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-indigo-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-indigo-400 sm:h-5 sm:w-5 dark:bg-indigo-700 dark:hover:bg-indigo-600'
           >
             <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
           </button>
@@ -285,7 +285,7 @@ export const CardStatusStatistic = ({
         {isDepartmentActive() && (
           <button
             onClick={(e) => handleRemoveFilterClick(e, 'department')}
-            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+            className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-teal-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-teal-400 sm:h-5 sm:w-5 dark:bg-teal-700 dark:hover:bg-teal-600'
           >
             <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
           </button>

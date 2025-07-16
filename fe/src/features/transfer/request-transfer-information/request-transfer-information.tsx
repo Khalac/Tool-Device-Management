@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter, Button, Separator } from '@/components/ui'
-import { ArrowLeft, User, Pen, FileText, Loader2 } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, Button, Badge } from '@/components/ui'
+import { ArrowLeft, User, FileText, Loader2, Box } from 'lucide-react'
 import type { RequestTransferType } from '../all-request-transfer/model/type'
 import { toast } from 'sonner'
 import { getData, tryCatch } from '@/utils'
@@ -13,7 +13,6 @@ import {
   ButtonRejectRequest,
   ComponentGetInformationError,
   RequestDescription,
-  StatusAndButtonGoBack,
   UserRequestInformation,
 } from './_components'
 import { DialogSelectAsset } from './dialog-select-asset'
@@ -25,6 +24,7 @@ const RequestTransferInformation = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   const getTransferRequestData = async () => {
     setIsLoading(true)
     await getData(() => getRequestTransferInformation(id || ''), setTransferRequest)
@@ -50,7 +50,6 @@ const RequestTransferInformation = () => {
 
   const handleApprove = async (values: ApproveFormValues) => {
     setIsProcessing(true)
-
     const data = await tryCatch(approveRequestTransfer(values.assetId, id || ''))
     if (data.error) {
       toast.error(data.error.message || 'Failed to approve transfer request')
@@ -77,7 +76,7 @@ const RequestTransferInformation = () => {
   }
 
   return (
-    <div className='container mx-auto px-4 py-6'>
+    <div className='container mx-auto max-w-2xl px-4 py-2'>
       <DialogSelectAsset
         categoryId={requestTransfer.category.id.toString()}
         departmentId={requestTransfer.user.departmentId.toString()}
@@ -86,68 +85,91 @@ const RequestTransferInformation = () => {
         handleApprove={handleApprove}
         isProcessing={isProcessing}
       />
-      <div className='flex flex-col space-y-6'>
-        <StatusAndButtonGoBack requestTransfer={requestTransfer} />
 
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-2xl'>Transfer Request Details</CardTitle>
-          </CardHeader>
-          <CardContent className='space-y-6'>
-            <div className='space-y-4'>
-              <h3 className='flex items-center text-lg font-semibold'>
-                <User className='mr-2 h-5 w-5' />
-                Requester Information
-              </h3>
-              <Separator />
-              <UserRequestInformation requestTransfer={requestTransfer} />
-            </div>
-
-            <div className='space-y-4'>
-              <h3 className='flex items-center text-lg font-semibold'>
-                <Pen className='mr-2 h-5 w-5' />
-                Category
-              </h3>
-              <Separator />
-              <AssetCategoryRequestInformation requestTransfer={requestTransfer} />
-            </div>
-
-            <div className='space-y-4'>
-              <h3 className='flex items-center text-lg font-semibold'>
-                <FileText className='mr-2 h-5 w-5' />
-                Request Details
-              </h3>
-              <Separator />
-              <RequestDescription requestTransfer={requestTransfer} />
-            </div>
-          </CardContent>
-
-          <CardFooter>
-            <div className='flex w-full justify-end space-x-2'>
-              {requestTransfer.status === 'Pending' ? (
-                <>
-                  <ButtonRejectRequest
-                    isProcessing={isProcessing}
-                    handleReject={handleReject}
-                  />
-                  <ButtonApproveRequest
-                    isProcessing={isProcessing}
-                    openApprovalDialog={() => setIsDialogOpen(true)}
-                  />
-                </>
-              ) : (
-                <Button
-                  variant='outline'
-                  onClick={() => navigate('/transfers')}
-                >
-                  <ArrowLeft className='mr-2 h-4 w-4' />
-                  Back to All Requests
-                </Button>
-              )}
-            </div>
-          </CardFooter>
-        </Card>
+      <div className='mb-4 flex items-center justify-between'>
+        <Button
+          variant='link'
+          onClick={() => navigate('/transfers')}
+          className='text-muted-foreground px-0'
+        >
+          <ArrowLeft className='mr-2 h-4 w-4' />
+          Back to Requests
+        </Button>
+        <div className='flex items-center gap-3 text-sm'>
+          <span className='text-black'>Request ID:</span>
+          <span className='text-primary font-medium'>#{id}</span>
+          <Badge
+            variant='outline'
+            className='border-yellow-400 bg-yellow-100 text-yellow-700'
+          >
+            {requestTransfer.status}
+          </Badge>
+        </div>
       </div>
+
+      <Card className='gap-2 shadow-sm'>
+        <CardHeader>
+          <CardTitle className='flex items-center text-xl'>
+            <FileText className='mr-2 h-5 w-5' /> Transfer Request Details
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className='space-y-6'>
+          <div className='bg-muted/20 mt-0 rounded-md border p-4'>
+            <h3 className='text-muted-foreground text-primary mb-2 flex items-center text-base font-semibold'>
+              <User className='text-primary mr-2 h-4 w-4' />
+              Requester Information
+            </h3>
+            <UserRequestInformation requestTransfer={requestTransfer} />
+          </div>
+
+          <div className='bg-muted/20 rounded-md border p-4'>
+            <h3 className='text-muted-foreground text-primary mb-2 flex items-center text-base font-semibold'>
+              <Box className='text-primary mr-2 h-4 w-4' />
+              Category
+            </h3>
+            <AssetCategoryRequestInformation requestTransfer={requestTransfer} />
+          </div>
+
+          <div className='bg-muted/20 rounded-md border p-4'>
+            <h3 className='text-muted-foreground text-primary mb-2 flex items-center text-base font-semibold'>
+              <FileText className='text-primary mr-2 h-4 w-4' />
+              Request Details
+            </h3>
+            <RequestDescription requestTransfer={requestTransfer} />
+          </div>
+        </CardContent>
+
+        <CardFooter className='pt-3'>
+          {requestTransfer.status === 'Pending' ? (
+            <div className='grid w-full grid-cols-2 gap-3'>
+              <div className='justify-self-start'>
+                <ButtonApproveRequest
+                  isProcessing={isProcessing}
+                  openApprovalDialog={() => setIsDialogOpen(true)}
+                />
+              </div>
+
+              <div className='justify-self-end'>
+                <ButtonRejectRequest
+                  isProcessing={isProcessing}
+                  handleReject={handleReject}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className='flex w-full justify-end'>
+              <Button
+                variant='outline'
+                onClick={() => navigate('/transfers')}
+              >
+                <ArrowLeft className='mr-2 h-4 w-4' />
+                Back to All Requests
+              </Button>
+            </div>
+          )}
+        </CardFooter>
+      </Card>
     </div>
   )
 }

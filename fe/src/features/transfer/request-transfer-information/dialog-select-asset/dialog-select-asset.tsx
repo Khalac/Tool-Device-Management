@@ -9,7 +9,7 @@ import {
   Form,
   FormSelect,
 } from '@/components/ui'
-import { Check, Loader2, Package } from 'lucide-react'
+import { Check, Loader2, Package, Undo } from 'lucide-react'
 import { type ApproveFormValues, approveFormSchema } from './model'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -87,11 +87,13 @@ export const DialogSelectAsset = ({
 
         <DialogFooter>
           <Button
+            className='border-primary text-primary hover:text-primary/80'
             variant='outline'
             type='button'
             onClick={() => setIsDialogOpen(false)}
             disabled={isProcessing}
           >
+            <Undo className='h-4 w-4' />
             Cancel
           </Button>
           <Button
@@ -106,7 +108,7 @@ export const DialogSelectAsset = ({
               </>
             ) : (
               <>
-                <Check className='mr-2 h-4 w-4' />
+                <Check className='mr-1 h-4 w-4' />
                 Confirm Transfer
               </>
             )}

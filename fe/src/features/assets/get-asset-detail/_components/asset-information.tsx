@@ -14,7 +14,7 @@ export const AssetInformation = ({ asset }: { asset: AssetsType }) => {
       <div className='space-y-1'>
         <h3 className='text-muted-foreground text-sm font-medium'>Asset Type</h3>
         <p className='flex items-center font-medium'>
-          <Laptop className='text-primary mr-2 h-4 w-4' />
+          <Laptop className='mr-2 h-4 w-4' />
           {asset.category?.categoryName}
         </p>
       </div>
@@ -22,7 +22,7 @@ export const AssetInformation = ({ asset }: { asset: AssetsType }) => {
       <div className='space-y-1'>
         <h3 className='text-muted-foreground text-sm font-medium'>Serial Number</h3>
         <p className='flex items-center font-medium'>
-          <Tag className='text-primary mr-2 h-4 w-4' />
+          <Tag className='mr-2 h-4 w-4' />
           {asset.serialNumber}
         </p>
       </div>
@@ -30,7 +30,7 @@ export const AssetInformation = ({ asset }: { asset: AssetsType }) => {
       <div className='space-y-1'>
         <h3 className='text-muted-foreground text-sm font-medium'>Purchase Date</h3>
         <p className='flex items-center font-medium'>
-          <Calendar className='text-primary mr-2 h-4 w-4' />
+          <Calendar className='mr-2 h-4 w-4' />
           {format(new Date(asset.purchaseDate), 'PPP')}
         </p>
       </div>
@@ -38,7 +38,7 @@ export const AssetInformation = ({ asset }: { asset: AssetsType }) => {
       <div className='space-y-1'>
         <h3 className='text-muted-foreground text-sm font-medium'>Warranty Expiry</h3>
         <p className='flex items-center font-medium'>
-          <Clock className='text-primary mr-2 h-4 w-4' />
+          <Clock className='mr-2 h-4 w-4' />
           {format(new Date(asset.warrantExpiry), 'PPP')}
         </p>
       </div>
@@ -46,7 +46,7 @@ export const AssetInformation = ({ asset }: { asset: AssetsType }) => {
       <div className='space-y-1'>
         <h3 className='text-muted-foreground text-sm font-medium'>Department</h3>
         <p className='flex items-center font-medium'>
-          <Building className='text-primary mr-2 h-4 w-4' />
+          <Building className='mr-2 h-4 w-4' />
           {asset.department?.departmentName}
         </p>
       </div>
@@ -54,7 +54,7 @@ export const AssetInformation = ({ asset }: { asset: AssetsType }) => {
       <div className='space-y-1'>
         <h3 className='text-muted-foreground text-sm font-medium'>Cost</h3>
         <p className='flex items-center font-medium'>
-          <DollarSign className='text-primary mr-2 h-4 w-4' />
+          <DollarSign className='mr-2 h-4 w-4' />
           {asset.cost}
         </p>
       </div>
@@ -63,7 +63,7 @@ export const AssetInformation = ({ asset }: { asset: AssetsType }) => {
         <div>
           <h3 className='text-muted-foreground text-sm font-medium'>Owner</h3>
           <p className='flex items-center font-medium'>
-            <User className='text-primary mr-2 h-4 w-4' />
+            <User className='mr-2 h-4 w-4' />
             {asset.owner?.firstName + ' ' + asset.owner?.lastName}
           </p>
         </div>

@@ -659,9 +659,9 @@ export const ExportMonthlyReport = ({ data, assets, dateFilter, onExport }: Expo
           variant='outline'
           size='sm'
           disabled={isExporting}
-          className='h-9'
+          className='text-primary border-primary hover:bg-primary/10 hover:text-primary h-9'
         >
-          <Download className='mr-2 h-4 w-4' />
+          <Download className='text-primary mr-2 h-4 w-4' />
           {isExporting ? 'Exporting...' : 'Export Report'}
         </Button>
       </DropdownMenuTrigger>

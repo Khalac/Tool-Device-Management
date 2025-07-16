@@ -175,6 +175,7 @@ export const columns = (refreshData: () => void): ColumnDef<RequestTransferType>
           variant='outline'
           size='sm'
           asChild
+          className='border-primary text-primary hover:text-primary/80'
         >
           <Link to={`/transfers/${id}`}>View Details</Link>
         </Button>

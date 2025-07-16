@@ -126,11 +126,11 @@ const ViewAllAssets = () => {
       <Card>
         <CardHeader className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
           <div>
-            <CardTitle className='flex items-center text-2xl'>
-              <Laptop className='mr-2 h-5 w-5' />
+            <CardTitle className='text-primary flex items-center text-2xl'>
+              <Laptop className='text-primary mr-2 h-5 w-5' />
               Asset Management
             </CardTitle>
-            <CardDescription>View and manage all company assets</CardDescription>
+            <CardDescription className='text-primary'>View and manage all company assets</CardDescription>
           </div>
           <ButtonCreateNewAssets />
         </CardHeader>

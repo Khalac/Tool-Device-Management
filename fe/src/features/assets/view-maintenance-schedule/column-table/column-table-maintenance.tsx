@@ -34,7 +34,7 @@ export const columnTableMaintenance = ({
   },
   {
     accessorKey: 'asset.status',
-    header: 'Status',
+    header: 'Asset Status',
     cell: ({ row }) => (
       <Badge
         variant='outline'
@@ -54,7 +54,7 @@ export const columnTableMaintenance = ({
   },
   {
     id: 'actions',
-    header: '',
+    header: 'Actions',
     cell: ({ row }) => {
       const id = row.original.id
       const status = row.original.asset.status
@@ -62,6 +62,8 @@ export const columnTableMaintenance = ({
       const role = useAppSelector((state) => state.auth.user?.role.slug)
       const startDate = row.original.startDate
       const endDate = row.original.endDate
+      const isUnderMaintenance = status === 'Under Maintenance'
+      const isEmployee = role === 'employee'
       return (
         <div className='flex items-center gap-2'>
           <UpdateMaintenanceSchedule
@@ -73,21 +75,28 @@ export const columnTableMaintenance = ({
             onSuccessUpdate={onSuccessUpdate}
           />
           <Button
+            className='border-primary text-primary hover:text-primary/80'
             variant='outline'
             size='sm'
             asChild
           >
             <Link to={`/assets/${row.original.asset.id}`}>View Asset</Link>
           </Button>
-          {role !== 'employee' && status !== 'Under Maintenance' && (
+          {!isEmployee && (
             <Button
+              className={`border-primary text-primary hover:text-primary/80 ${
+                isUnderMaintenance ? 'cursor-not-allowed opacity-50' : ''
+              }`}
               variant='outline'
               size='sm'
+              disabled={isUnderMaintenance}
               onClick={() => {
-                setIsDialogOpen(true)
+                if (!isUnderMaintenance) {
+                  setIsDialogOpen(true)
+                }
               }}
             >
-              <Calendar className='mr-2 h-4 w-4' />
+              <Calendar className='text-primary mr-1 h-4 w-4' />
               Update Schedule
             </Button>
           )}

@@ -139,15 +139,15 @@ const UpdateAssetInformation = () => {
   }
 
   return (
-    <div className='container mx-auto w-5/9 px-4'>
+    <div className='container mx-auto w-full px-4 sm:w-full md:w-7/9 lg:w-7/9 xl:w-5/9'>
       <FormProvider {...form}>
         <Card>
           <CardHeader>
-            <CardTitle className='flex items-center text-xl'>
-              <Settings className='mr-2 h-5 w-5' />
+            <CardTitle className='text-primary flex items-center text-xl'>
+              <Settings className='text-primary mr-2 h-5 w-5' />
               Update Asset Information
             </CardTitle>
-            <CardDescription>Update all asset details and information</CardDescription>
+            <CardDescription className='text-primary'>Update all asset details and information</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -165,12 +165,14 @@ const UpdateAssetInformation = () => {
                       <div className='space-y-4'>
                         <div className='grid grid-cols-2 gap-4 lg:grid-cols-2'>
                           <FormInput
+                            highlightOnValue={false}
                             name='assetName'
                             type='text'
                             label='Asset Name'
                             placeholder='Enter asset name'
                           />
                           <FormInput
+                            highlightOnValue={false}
                             name='serialNumber'
                             type='text'
                             label='Serial Number'
@@ -180,18 +182,21 @@ const UpdateAssetInformation = () => {
 
                         <div className='update-asset-information group grid grid-cols-1 gap-4 lg:grid-cols-3'>
                           <FormSelect
+                            highlightOnValue={false}
                             name='categoryId'
                             label='Category'
                             placeholder='Select category'
                             data={categories}
                           />
                           <FormSelect
+                            highlightOnValue={false}
                             name='departmentId'
                             label='Department'
                             placeholder='Select department'
                             data={departments}
                           />
                           <FormSelect
+                            highlightOnValue={false}
                             name='status'
                             label='Status'
                             placeholder='Select status'
@@ -201,6 +206,7 @@ const UpdateAssetInformation = () => {
 
                         <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
                           <FormInput
+                            highlightOnValue={false}
                             name='cost'
                             type='number'
                             label='Cost'
@@ -208,11 +214,13 @@ const UpdateAssetInformation = () => {
                             Icon={DollarSign}
                           />
                           <FormDatePicker
+                            highlightOnValue={false}
                             name='purchaseDate'
                             label='Purchase Date'
                             fn={handlePurchaseDateChange}
                           />
                           <FormDatePicker
+                            highlightOnValue={false}
                             name='warrantExpiry'
                             label='Warranty Expiry'
                           />
@@ -257,7 +265,16 @@ const UpdateAssetInformation = () => {
                     </Card>
                   </div>
 
-                  <div className='mt-2 flex justify-between'>
+                  <div className='mt-2 flex justify-end gap-2'>
+                    <Button
+                      type='button'
+                      variant='outline'
+                      onClick={handleCancel}
+                      className='border-primary text-primary hover:text-primary/80 flex h-8 items-center justify-center gap-2 text-sm font-medium'
+                    >
+                      <Undo className='h-4 w-4' />
+                      Cancel
+                    </Button>
                     <FormButtonSubmit
                       onSubmit={onSubmit}
                       className='bg-primary hover:bg-primary/90 flex h-8 items-center justify-center gap-2 text-sm font-medium'
@@ -265,16 +282,6 @@ const UpdateAssetInformation = () => {
                       Icon={Save}
                       type='Save Changes'
                     />
-
-                    <Button
-                      type='button'
-                      variant='outline'
-                      onClick={handleCancel}
-                      className='flex h-8 items-center justify-center gap-2 text-sm font-medium'
-                    >
-                      <Undo className='h-4 w-4' />
-                      Cancel
-                    </Button>
                   </div>
                 </div>
               </form>

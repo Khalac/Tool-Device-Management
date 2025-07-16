@@ -99,10 +99,10 @@ export const columnsAssignmentsTable: ColumnDef<AssignmentData>[] = [
       return (
         <Button
           variant='outline'
-          className='w-fit'
+          className='border-primary text-primary hover:text-primary/80 w-fit'
         >
           <Link to={`/assignments/${assetId}`}>
-            <span className='text-sm font-medium'>View</span>
+            <span className='text-sm font-medium'>View Details</span>
           </Link>
         </Button>
       )

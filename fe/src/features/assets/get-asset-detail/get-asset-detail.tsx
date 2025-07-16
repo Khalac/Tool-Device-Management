@@ -86,7 +86,7 @@ const GetAssetDetail = () => {
 
   return (
     <div className='container mx-auto px-4 py-4 sm:py-8'>
-      <div className='mx-auto w-3/5'>
+      <div className='mx-auto lg:w-4/5 xl:w-3/5'>
         <div className='mb-6 flex items-center gap-4'>
           <Link to='/assets'>
             <Button
@@ -205,7 +205,7 @@ const GetAssetDetail = () => {
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={deletingAsset}
-        title='Confirm Delete'
+        title='Confirm Delete Asset'
         itemName={asset?.assetName}
         isLoading={isDeleting}
       />

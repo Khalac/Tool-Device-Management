@@ -15,7 +15,7 @@ export const AssetNameFilter = ({
         <Search className='text-muted-foreground absolute top-2.5 left-2 h-4 w-4' />
         <Input
           placeholder='Filter by asset name...'
-          className='pl-8'
+          className='mt-1 pl-8'
           value={filters.assetName}
           onChange={(e) => setFilters((prev) => ({ ...prev, assetName: e.target.value }))}
         />

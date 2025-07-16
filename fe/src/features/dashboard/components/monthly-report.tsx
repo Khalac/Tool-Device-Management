@@ -249,8 +249,8 @@ export const MonthlyReport = ({
       <Card>
         <CardHeader>
           <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
-            <CardTitle className='flex items-center gap-2 text-2xl'>
-              <FileText className='h-6 w-6' />
+            <CardTitle className='text-primary flex items-center gap-2 text-2xl'>
+              <FileText className='text-primary h-6 w-6' />
               Reports - {getDateRangeText(dateFilter)}
             </CardTitle>
 
@@ -260,10 +260,10 @@ export const MonthlyReport = ({
                   variant='outline'
                   size='default'
                   onClick={handleClearAllFilters}
-                  className='h-9 gap-2'
+                  className='h-9 gap-2 border-red-500 text-red-500 hover:bg-red-500/10 hover:text-red-500'
                   type='button'
                 >
-                  <X className='h-4 w-4' />
+                  <X className='h-4 w-4 text-red-500' />
                   Clear All
                 </Button>
               )}
@@ -424,8 +424,8 @@ export const MonthlyReport = ({
       <Card>
         <CardHeader>
           <CardTitle>
-            <div className='flex items-center gap-2'>
-              <FileText className='h-5 w-5' />
+            <div className='text-primary flex items-center gap-2'>
+              <FileText className='text-primary h-5 w-5' />
               Report Summary
             </div>
           </CardTitle>

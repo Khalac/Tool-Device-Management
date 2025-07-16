@@ -21,8 +21,8 @@ export const FieldFile = ({
   }
 
   return (
-    <div className='flex h-48 flex-col'>
-      <div className='relative mb-4 flex flex-grow items-center justify-center'>
+    <div className='flex h-48 w-full flex-col'>
+      <div className='relative mb-4 flex w-full flex-grow items-center justify-center'>
         {fileAttachmentName ? (
           <>
             <Paperclip className='text-muted-foreground/10 absolute z-0 h-20 w-20' />
@@ -30,13 +30,13 @@ export const FieldFile = ({
             <Link
               to={fileAttachmentName}
               download={true}
-              className='relative z-10'
+              className='relative z-10 w-full'
             >
-              <div className='bg-background/95 flex max-w-full items-center gap-3 rounded-md border p-3 backdrop-blur-sm'>
-                <FileText className='text-primary h-6 w-6 flex-shrink-0' />
-                <div className='min-w-0 overflow-hidden'>
+              <div className='bg-background/95 flex w-full max-w-full items-center gap-3 rounded-md border p-3 backdrop-blur-sm'>
+                <FileText className='h-6 w-6 flex-shrink-0' />
+                <div className='w-full min-w-0 overflow-hidden'>
                   <p
-                    className='block max-w-[190px] truncate overflow-hidden font-medium break-all whitespace-nowrap'
+                    className='block max-w-[350px] truncate overflow-hidden font-medium break-all whitespace-nowrap'
                     title={fileAttachmentName}
                   >
                     {fileAttachmentName}
@@ -47,7 +47,7 @@ export const FieldFile = ({
             </Link>
           </>
         ) : (
-          <div className='relative flex h-32 items-center justify-center rounded-md border border-dashed'>
+          <div className='relative flex h-32 w-full items-center justify-center rounded-md border border-dashed'>
             <Paperclip className='text-muted-foreground/5 absolute z-0 h-16 w-16' />
             <FileText className='text-muted-foreground relative z-10 h-10 w-10' />
           </div>
@@ -59,8 +59,8 @@ export const FieldFile = ({
         name='file'
         render={() => (
           <FormItem>
-            <FormControl>
-              <div>
+            <FormControl highlightOnValue={false}>
+              <div className='w-full'>
                 <Input
                   type='file'
                   id='fileAttachment'

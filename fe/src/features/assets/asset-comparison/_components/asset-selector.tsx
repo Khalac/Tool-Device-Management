@@ -154,7 +154,7 @@ export const AssetSelector = ({
                 onClick={() => setIsOpen(true)}
               >
                 <CardContent className='flex h-full items-center justify-center p-3'>
-                  <div className='text-muted-foreground flex items-center gap-2 py-3'>
+                  <div className='text-muted-foreground flex items-center gap-2 py-0'>
                     <Plus className='h-4 w-4' />
                     <span className='text-sm'>Add Asset</span>
                   </div>

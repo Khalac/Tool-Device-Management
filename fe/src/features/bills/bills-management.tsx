@@ -241,20 +241,23 @@ export const BillsManagement = () => {
     <div className='space-y-4 p-4 sm:space-y-6 sm:p-6'>
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div>
-          <CardTitle className='flex items-center text-2xl'>
-            <Receipt className='mr-2 h-5 w-5' />
+          <CardTitle className='text-primary flex items-center text-2xl font-bold'>
+            <Receipt
+              strokeWidth={2.5}
+              className='text-primary mr-2 h-5 w-5'
+            />
             Bills Management
           </CardTitle>
-          <CardDescription>Manage and track all bills for your assets</CardDescription>
+          <CardDescription className='text-primary'>Manage and track all bills for your assets</CardDescription>
         </div>
         <div className='flex gap-2'>
           <Button
             variant='outline'
             onClick={generateMonthlyReport}
-            className='flex items-center gap-2'
+            className='text-primary border-primary hover:bg-primary/10 hover:text-primary flex items-center gap-2'
             disabled={bills.length === 0}
           >
-            <Download className='h-4 w-4' />
+            <Download className='text-primary h-4 w-4' />
             Export Report
           </Button>
           <CreateBillModal onBillCreated={handleBillCreated} />

@@ -67,7 +67,10 @@ export function SidebarMainContent({
               </Collapsible>
             ) : (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  asChild
+                  tooltip={item.title}
+                >
                   <Link to={item.url}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>

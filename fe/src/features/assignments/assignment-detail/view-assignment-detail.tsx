@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, Button, Separator, Form } from '@/components/ui'
-import { ArrowLeft, MapPin, User, Package, Loader2, FileText } from 'lucide-react'
+import { ArrowLeft, MapPin, User, Package, Loader2, FileText, Undo } from 'lucide-react'
 import type { AssignmentData } from '../get-all-assignments/model/type'
 import { getData, tryCatch } from '@/utils'
 import { getAssignmentData, UpdateAssignment } from '../api'
@@ -16,15 +16,18 @@ import {
   AssignmentUserAssign,
   AssignmentUserAssignUpdate,
 } from './_components'
-import { getAllUsersOfDepartment, type UserType } from '@/features/user'
+import { getAllUsersOfDepartment, type UserProfile, type UserType } from '@/features/user'
 import { getAllDepartment } from '@/features/assets/api'
 import type { DepartmentType } from '@/features/assets'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { type UpdateAssignmentForm, updateAssignmentSchema } from './model'
 import { toast } from 'sonner'
+import { useAppSelector } from '@/hooks'
 
 const ViewAssignmentDetail = () => {
+  const user = useAppSelector((state) => state.auth.user) as unknown as UserProfile
+  const userRole = user?.role?.slug
   const { id } = useParams()
   const navigate = useNavigate()
   const [isPending, setIsPending] = useState(true)
@@ -60,6 +63,14 @@ const ViewAssignmentDetail = () => {
     setIsLoadingUsers(false)
   }
 
+  const loadEmployeeDepartmentUsers = async () => {
+    if (userRole === 'employee' && user?.department?.id) {
+      setIsLoadingUsers(true)
+      await getData(() => getAllUsersOfDepartment(user?.department?.id.toString() || ''), setUsers)
+      setIsLoadingUsers(false)
+    }
+  }
+
   useEffect(() => {
     const loadInitialData = async () => {
       setIsPending(true)
@@ -71,11 +82,15 @@ const ViewAssignmentDetail = () => {
   }, [id])
 
   useEffect(() => {
-    if (departmentId) {
+    if (departmentId && userRole !== 'employee') {
       getUserOfDepartment(departmentId)
     }
-  }, [departmentId])
-
+  }, [departmentId, userRole])
+  useEffect(() => {
+    if (isUpdate && userRole === 'employee') {
+      loadEmployeeDepartmentUsers()
+    }
+  }, [isUpdate, userRole])
   const onSubmit = async (data: UpdateAssignmentForm) => {
     setIsSubmitting(true)
     const response = await tryCatch(UpdateAssignment(id || '', data))
@@ -93,6 +108,7 @@ const ViewAssignmentDetail = () => {
     setDepartmentId(newDepartmentId)
     form.setValue('userId', '')
   }
+  const isEmployee = userRole === 'employee'
   if (isPending) {
     return (
       <div className='flex h-[70vh] items-center justify-center'>
@@ -163,6 +179,7 @@ const ViewAssignmentDetail = () => {
                               users={users}
                               assignmentDetail={assignmentDetail}
                               isLoading={isLoadingUsers}
+                              isEmployee={isEmployee}
                             />
                           ) : (
                             <AssignmentUserAssign assignmentDetail={assignmentDetail} />
@@ -181,6 +198,7 @@ const ViewAssignmentDetail = () => {
                               departments={departments}
                               assignmentDetail={assignmentDetail}
                               setDepartmentId={handleDepartmentChange}
+                              isEmployee={isEmployee}
                             />
                           ) : (
                             <AssignmentDepartment assignmentDetail={assignmentDetail} />
@@ -194,46 +212,58 @@ const ViewAssignmentDetail = () => {
             </Form>
           </FormProvider>
           {isUpdate ? (
-            <CardFooter className='flex flex-col justify-end gap-3 sm:flex-row'>
-              <Button
-                variant='outline'
-                onClick={() => setIsUpdate(false)}
-                disabled={isSubmitting}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={form.handleSubmit(onSubmit)}
-                disabled={isSubmitting || !form.formState.isDirty}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                    Updating...
-                  </>
-                ) : (
-                  'Done'
-                )}
-              </Button>
+            <CardFooter className='flex justify-end'>
+              <div className='flex gap-3'>
+                <Button
+                  variant='outline'
+                  onClick={() => setIsUpdate(false)}
+                  disabled={isSubmitting}
+                  className='border-primary text-primary hover:text-primary/80'
+                  size='sm'
+                >
+                  <Undo className='h-4 w-4' />
+                  Cancel
+                </Button>
+                <Button
+                  onClick={form.handleSubmit(onSubmit)}
+                  disabled={isSubmitting || !form.formState.isDirty}
+                  size='sm'
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                      Updating...
+                    </>
+                  ) : (
+                    'Done'
+                  )}
+                </Button>
+              </div>
             </CardFooter>
           ) : (
-            <CardFooter className='flex flex-col justify-end gap-3 sm:flex-row'>
-              <Button
-                variant='outline'
-                onClick={() => navigate('/assignments')}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={() => {
-                  setIsUpdate(true)
-                  form.setValue('departmentId', '')
-                  form.setValue('userId', '')
-                  setDepartmentId('')
-                }}
-              >
-                Edit Assignment
-              </Button>
+            <CardFooter className='flex justify-end'>
+              <div className='flex gap-3'>
+                <Button
+                  variant='outline'
+                  onClick={() => navigate('/assignments')}
+                  className='border-primary text-primary hover:text-primary/80'
+                  size='sm'
+                >
+                  <Undo className='h-4 w-4' />
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    setIsUpdate(true)
+                    form.setValue('departmentId', '')
+                    form.setValue('userId', '')
+                    setDepartmentId('')
+                  }}
+                  size='sm'
+                >
+                  Edit Assignment
+                </Button>
+              </div>
             </CardFooter>
           )}
         </Card>

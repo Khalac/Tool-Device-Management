@@ -32,7 +32,10 @@ export const DepartmentsFilter = ({
       value={filteredAssets.departmentId || ''}
       onValueChange={(value) => setFilteredAssets({ ...filteredAssets, departmentId: value || null })}
     >
-      <SelectTrigger className='w-full md:w-[180px]'>
+      <SelectTrigger
+        value={filteredAssets.departmentId || ''}
+        className='w-full md:w-[180px]'
+      >
         <SelectValue placeholder='Department'>
           {filteredAssets.departmentId &&
             departments.find((department) => department.id.toString() === filteredAssets.departmentId)?.departmentName}

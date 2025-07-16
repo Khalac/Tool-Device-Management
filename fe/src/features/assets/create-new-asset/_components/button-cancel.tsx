@@ -6,6 +6,7 @@ export const ButtonCancel = ({ isPending }: { isPending: boolean; Icon: React.Re
   const navigate = useNavigate()
   return (
     <Button
+      className='border-primary text-primary hover:text-primary/80'
       variant='outline'
       onClick={() => navigate(-1)}
       disabled={isPending}

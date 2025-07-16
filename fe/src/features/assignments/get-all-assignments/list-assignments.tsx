@@ -60,11 +60,11 @@ const ListAssignments = () => {
       <CardHeader>
         <div className='flex items-center space-x-4'>
           <div className='flex-1 space-y-1'>
-            <CardTitle className='flex items-center gap-2 text-2xl'>
-              <ClipboardList className='h-6 w-6' />
+            <CardTitle className='text-primary flex items-center gap-2 text-2xl'>
+              <ClipboardList className='text-primary h-6 w-6' />
               Asset Assignments
             </CardTitle>
-            <CardDescription>View and manage all asset assignments</CardDescription>
+            <CardDescription className='text-primary'>View and manage all asset assignments</CardDescription>
           </div>
         </div>
       </CardHeader>

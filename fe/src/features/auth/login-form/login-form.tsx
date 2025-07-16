@@ -59,6 +59,7 @@ const LoginForm = () => {
             className='space-y-4 sm:space-y-5'
           >
             <FormInput
+              highlightOnValue={false}
               name='email'
               type='email'
               label='Email Address'
@@ -67,13 +68,17 @@ const LoginForm = () => {
             />
 
             <FormInput
+              highlightOnValue={false}
               name='password'
               type='password'
               label='Password'
               Icon={Lock}
               placeholder='••••••••'
             />
-            <RememberMeField form={form} />
+            <RememberMeField
+              highlightOnValue={false}
+              form={form}
+            />
             <FormButtonSubmit
               className='bg-primary hover:bg-primary/90 mt-5 flex h-9 w-full items-center justify-center gap-1.5 text-sm font-medium sm:mt-6 sm:h-10 sm:gap-2 sm:text-base'
               isPending={isPending}

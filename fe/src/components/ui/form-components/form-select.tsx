@@ -31,12 +31,14 @@ export const FormSelect = ({
   placeholder,
   data,
   onChange,
+  highlightOnValue = true,
 }: {
   name: string
   label: string
   placeholder: string
   data: DataType[]
   onChange?: (value: string) => void
+  highlightOnValue?: boolean
 }) => {
   const { control } = useFormContext()
   return (
@@ -53,11 +55,11 @@ export const FormSelect = ({
                 onChange(value)
               }
             }}
-            disabled={data.length === 0}
+            // disabled={data.length === 0}
             value={field.value}
           >
-            <FormControl>
-              <SelectTrigger className='w-full group-[.create-asset-form]:w-full group-[.create-maintenance-schedule]:w-60 group-[.new-department-form]:w-52 group-[.user-assign-role]:w-35'>
+            <FormControl highlightOnValue={highlightOnValue}>
+              <SelectTrigger className='w-full group-[.create-asset-form]:w-full group-[.create-maintenance-schedule]:w-full group-[.new-department-form]:w-52 group-[.user-assign-role]:w-35'>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>

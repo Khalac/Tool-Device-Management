@@ -84,8 +84,8 @@ export const TrendCharts = ({
         <Card className='dark:bg-card w-full transition-all duration-200 dark:border-gray-700'>
           <CardHeader className='p-3 sm:p-4'>
             <CardTitle className='text-base sm:text-lg dark:text-gray-200'>
-              <div className='flex items-center gap-2'>
-                <ChartBarIcon className='h-4 w-4 sm:h-5 sm:w-5' />
+              <div className='text-primary flex items-center gap-2'>
+                <ChartBarIcon className='text-primary h-4 w-4 sm:h-5 sm:w-5' />
                 Asset Count Trend
               </div>
             </CardTitle>
@@ -141,8 +141,8 @@ export const TrendCharts = ({
         <Card className='dark:bg-card w-full transition-all duration-200 dark:border-gray-700'>
           <CardHeader className='p-3 sm:p-4'>
             <CardTitle className='text-base sm:text-lg dark:text-gray-200'>
-              <div className='flex items-center gap-2'>
-                <ChartBarIcon className='h-4 w-4 sm:h-5 sm:w-5' />
+              <div className='text-primary flex items-center gap-2'>
+                <ChartBarIcon className='text-primary h-4 w-4 sm:h-5 sm:w-5' />
                 Asset Value Trend
               </div>
             </CardTitle>
@@ -193,8 +193,8 @@ export const TrendCharts = ({
         <Card className='dark:bg-card transition-all duration-200 dark:border-gray-700'>
           <CardHeader>
             <CardTitle className='text-base sm:text-lg dark:text-gray-200'>
-              <div className='flex items-center gap-2'>
-                <ChartBarIcon className='h-5 w-5' />
+              <div className='text-primary flex items-center gap-2'>
+                <ChartBarIcon className='text-primary h-5 w-5' />
                 Assets by Department
               </div>
             </CardTitle>
@@ -245,14 +245,14 @@ export const TrendCharts = ({
         </Card>
 
         <ReusablePieChart
-          icon={<PieChart className='h-5 w-5' />}
+          icon={<PieChart className='text-primary h-5 w-5' />}
           data={groupedData}
           title='Asset Status Distribution'
           isPending={isPending}
           showAnimation={true}
           animationDelay={2000}
           height='h-[250px] sm:h-[300px]'
-          className='dark:bg-card dark:border-gray-700'
+          className='dark:bg-card text-primary dark:border-gray-700'
         />
       </div>
     </div>

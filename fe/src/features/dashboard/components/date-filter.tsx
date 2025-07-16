@@ -137,7 +137,10 @@ export const DateFilter = ({
                 })
               }
             >
-              <SelectTrigger className='h-10 w-30 sm:w-45'>
+              <SelectTrigger
+                value={dateFilter.year?.toString() || 'all'}
+                className='h-10 w-30 sm:w-45'
+              >
                 <SelectValue placeholder='All Years' />
               </SelectTrigger>
               <SelectContent>
@@ -165,7 +168,10 @@ export const DateFilter = ({
                 })
               }
             >
-              <SelectTrigger className='h-10 w-30 sm:w-45'>
+              <SelectTrigger
+                value={dateFilter.month?.toString() || 'all'}
+                className='h-10 w-30 sm:w-45'
+              >
                 <SelectValue placeholder='All Months' />
               </SelectTrigger>
               <SelectContent>

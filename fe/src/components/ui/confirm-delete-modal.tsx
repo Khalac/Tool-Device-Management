@@ -1,4 +1,4 @@
-import { Trash2, X } from 'lucide-react'
+import { Trash2, Undo, X } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -24,7 +24,7 @@ export const ConfirmDeleteModal = ({
   isOpen,
   onClose,
   onConfirm,
-  title = 'Confirm Delete',
+  title = 'Confirm Delete Asset',
   description,
   itemName,
   isLoading = false,
@@ -51,7 +51,7 @@ export const ConfirmDeleteModal = ({
         <DialogHeader className='text-center'>
           <div className='mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20'>
             <div className='flex h-10 w-10 items-center justify-center rounded-full bg-red-500/20 dark:bg-red-500/30'>
-              <Trash2 className='h-5 w-5 text-red-600 dark:text-red-400' />
+              <Trash2 className='animate-shake-trash h-5 w-5 text-red-600 dark:text-red-400' />
             </div>
           </div>
 
@@ -66,6 +66,15 @@ export const ConfirmDeleteModal = ({
 
         <DialogFooter className='flex gap-3 sm:gap-3'>
           <Button
+            variant='outline'
+            onClick={onClose}
+            disabled={isLoading}
+            className='border-primary text-primary hover:text-primary/80 flex-1 sm:flex-initial'
+          >
+            <Undo className='text-primary h-4 w-4' />
+            Cancel
+          </Button>
+          <Button
             variant='destructive'
             onClick={onConfirm}
             disabled={isLoading}
@@ -79,17 +88,9 @@ export const ConfirmDeleteModal = ({
             ) : (
               <>
                 <Trash2 className='mr-0 h-4 w-4' />
-                Delete
+                Delete Asset
               </>
             )}
-          </Button>
-          <Button
-            variant='outline'
-            onClick={onClose}
-            disabled={isLoading}
-            className='flex-1 sm:flex-initial'
-          >
-            Cancel
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -11,6 +11,8 @@ import {
   Box,
   Briefcase,
   X,
+  StopCircle,
+  Laptop,
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -74,7 +76,12 @@ export const DashboardStats = ({
         <div className='grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2'>
           <Card>
             <CardHeader className='pb-3 sm:pb-6'>
-              <CardTitle className='text-base sm:text-lg'>Asset Status Distribution</CardTitle>
+              <CardTitle className='text-base text-sky-700 sm:text-lg'>
+                <div className='flex items-center gap-2 text-sky-700'>
+                  <PieChart className='h-5 w-5 text-sky-700' />
+                  Asset Status Distribution
+                </div>
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className='text-muted-foreground flex h-[250px] items-center justify-center sm:h-[300px]'>
@@ -89,8 +96,8 @@ export const DashboardStats = ({
           <Card>
             <CardHeader className='pb-3 sm:pb-6'>
               <CardTitle className='text-base sm:text-lg'>
-                <div className='flex items-center gap-2'>
-                  <ClockIcon className='h-5 w-5' />
+                <div className='text-primary flex items-center gap-2'>
+                  <ClockIcon className='text-primary h-5 w-5' />
                   Recent Purchased Assets
                 </div>
               </CardTitle>
@@ -209,7 +216,7 @@ export const DashboardStats = ({
           {isCardActive('new') && (
             <button
               onClick={(e) => handleRemoveFilterClick(e, 'status')}
-              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-emerald-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-emerald-400 sm:h-5 sm:w-5 dark:bg-emerald-700 dark:hover:bg-emerald-600'
             >
               <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
             </button>
@@ -243,7 +250,7 @@ export const DashboardStats = ({
           {isCardActive('in-use') && (
             <button
               onClick={(e) => handleRemoveFilterClick(e, 'status')}
-              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-blue-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-blue-400 sm:h-5 sm:w-5 dark:bg-blue-700 dark:hover:bg-blue-600'
             >
               <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
             </button>
@@ -277,7 +284,7 @@ export const DashboardStats = ({
           {isCardActive('maintenance') && (
             <button
               onClick={(e) => handleRemoveFilterClick(e, 'status')}
-              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-amber-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-amber-400 sm:h-5 sm:w-5 dark:bg-amber-700 dark:hover:bg-amber-600'
             >
               <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
             </button>
@@ -311,7 +318,7 @@ export const DashboardStats = ({
           {isCardActive('retired') && (
             <button
               onClick={(e) => handleRemoveFilterClick(e, 'status')}
-              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-400 sm:h-5 sm:w-5 dark:bg-red-700 dark:hover:bg-red-600'
             >
               <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
             </button>
@@ -322,7 +329,7 @@ export const DashboardStats = ({
                 Retired/Disposed
               </CardTitle>
               <div className='rounded-full bg-red-50 p-1.5 transition-all duration-300 group-hover:scale-110 sm:p-2 dark:bg-red-950/50'>
-                <X className='h-3 w-3 text-red-500 sm:h-4 sm:w-4 dark:text-red-400' />
+                <StopCircle className='h-3 w-3 text-red-500 sm:h-4 sm:w-4 dark:text-red-400' />
               </div>
             </div>
             <div className='space-y-1'>
@@ -344,7 +351,7 @@ export const DashboardStats = ({
           {isCategoryActive() && (
             <button
               onClick={(e) => handleRemoveFilterClick(e, 'category')}
-              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-indigo-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-indigo-400 sm:h-5 sm:w-5 dark:bg-indigo-700 dark:hover:bg-indigo-600'
             >
               <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
             </button>
@@ -389,7 +396,7 @@ export const DashboardStats = ({
           {isDepartmentActive() && (
             <button
               onClick={(e) => handleRemoveFilterClick(e, 'department')}
-              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-red-500 sm:h-5 sm:w-5'
+              className='absolute -top-0.5 -right-0.5 z-10 flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-teal-300 text-white shadow-md transition-all duration-200 hover:scale-110 hover:bg-teal-400 sm:h-5 sm:w-5 dark:bg-teal-700 dark:hover:bg-teal-600'
             >
               <X className='h-2.5 w-2.5 sm:h-3 sm:w-3' />
             </button>
@@ -429,19 +436,20 @@ export const DashboardStats = ({
 
       <div className='grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2'>
         <ReusablePieChart
-          icon={<PieChart className='h-5 w-5' />}
+          icon={<PieChart className='text-primary h-5 w-5' />}
           data={pieChartData}
           title='Asset Status Distribution'
           isPending={isPending}
           showAnimation={true}
           animationDelay={2000}
+          className='text-primary'
         />
 
         <Card className='transition-shadow duration-200 hover:shadow-lg'>
           <CardHeader className='pb-0 sm:pb-0'>
             <CardTitle className='text-base sm:text-lg'>
-              <div className='flex items-center gap-2'>
-                <ClockIcon className='h-5 w-5' />
+              <div className='text-primary flex items-center gap-2'>
+                <ClockIcon className='text-primary h-5 w-5' />
                 Recent Purchased Assets
               </div>
             </CardTitle>
@@ -449,7 +457,7 @@ export const DashboardStats = ({
           <CardContent>
             {isPending ? (
               <div className='flex h-[250px] items-center justify-center sm:h-[300px] lg:h-[350px]'>
-                <Loader2 className='h-6 w-6 animate-spin sm:h-8 sm:w-8' />
+                <Loader2 className='text-primary h-6 w-6 animate-spin sm:h-8 sm:w-8' />
               </div>
             ) : (
               <div className='space-y-3 sm:space-y-4'>
@@ -459,12 +467,15 @@ export const DashboardStats = ({
                   .reverse()
                   .map((asset) => (
                     <div
-                      className='hover:bg-muted/50 flex items-center rounded-lg border border-transparent p-2 transition-all duration-200 hover:cursor-pointer hover:shadow-md sm:p-3'
+                      className='hover:bg-muted/50 border-b-muted-foreground/20 flex items-center rounded-lg border border-b-2 border-transparent p-2 transition-all duration-200 hover:cursor-pointer hover:shadow-md sm:p-3'
                       key={asset.id}
                       onClick={() => navigate(`/assets/${asset.id}`)}
                     >
                       <div className='min-w-0 flex-1 space-y-1'>
-                        <p className='truncate text-xs leading-none font-medium sm:text-sm'>{asset.assetName}</p>
+                        <div className='flex items-center gap-2 truncate text-xs leading-none font-medium sm:text-sm'>
+                          <Laptop className='h-4 w-4 shrink-0' />
+                          <p className='truncate'>{asset.assetName}</p>
+                        </div>
                         <p className='text-muted-foreground truncate text-xs sm:text-sm'>
                           {asset.category.categoryName} • {asset.status} • ${asset.cost}
                         </p>

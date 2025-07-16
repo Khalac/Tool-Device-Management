@@ -9,7 +9,7 @@ import {
   Form,
   FormDatePicker,
 } from '@/components/ui'
-import { Check, Loader2 } from 'lucide-react'
+import { Check, Loader2, Undo } from 'lucide-react'
 import { FormProvider, useForm, useFormState } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useEffect, useState } from 'react'
@@ -106,18 +106,21 @@ const UpdateMaintenanceSchedule = ({
               className='space-y-4'
             >
               <FormDatePicker
+                highlightOnValue={false}
                 name='startDate'
                 label='Start Date'
                 fn={handleStartDateChange}
               />
 
               <FormDatePicker
+                highlightOnValue={false}
                 name='endDate'
                 label='End Date'
               />
 
               <DialogFooter>
                 <Button
+                  className='border-primary text-primary hover:text-primary/80'
                   variant='outline'
                   type='button'
                   onClick={() => {
@@ -129,6 +132,7 @@ const UpdateMaintenanceSchedule = ({
                   }}
                   disabled={isProcessing}
                 >
+                  <Undo className='text-primary h-4 w-4' />
                   Cancel
                 </Button>
                 <Button
@@ -142,8 +146,8 @@ const UpdateMaintenanceSchedule = ({
                     </>
                   ) : (
                     <>
-                      <Check className='mr-2 h-4 w-4' />
-                      Update Schedule
+                      <Check className='mr-1 h-4 w-4' />
+                      Save Schedule
                     </>
                   )}
                 </Button>

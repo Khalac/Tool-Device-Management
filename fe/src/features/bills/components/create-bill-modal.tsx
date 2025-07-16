@@ -17,7 +17,7 @@ import {
   Input,
   Label,
 } from '@/components/ui'
-import { Plus, Receipt, File, Image, X } from 'lucide-react'
+import { Plus, Receipt, File, Image, X, Undo } from 'lucide-react'
 import { createBill } from '../api/create-bill'
 import { getAllAssets } from '@/features/assets/api/get-all-assets'
 import { createBillSchema, type CreateBillFormType } from '../model/create-bill-schema'
@@ -275,8 +275,8 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
 
       <DialogContent className='max-h-[90vh] !max-w-2xl overflow-y-auto'>
         <DialogHeader>
-          <DialogTitle className='flex items-center text-xl'>
-            <Receipt className='mr-2 h-5 w-5' />
+          <DialogTitle className='text-primary flex items-center text-xl'>
+            <Receipt className='text-primary mr-2 h-5 w-5' />
             Create New Bill
           </DialogTitle>
         </DialogHeader>
@@ -362,6 +362,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
               <div className='space-y-2'>
                 <Label htmlFor='description'>Description *</Label>
                 <Input
+                  highlightOnValue={false}
                   id='description'
                   placeholder='Enter bill description...'
                   className='h-9'
@@ -476,7 +477,9 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
               variant='outline'
               onClick={handleCancel}
               disabled={isSubmitting}
+              className='border-primary text-primary hover:text-primary/80'
             >
+              <Undo className='h-4 w-4' />
               Cancel
             </Button>
             <Button

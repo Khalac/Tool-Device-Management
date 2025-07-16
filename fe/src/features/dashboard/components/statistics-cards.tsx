@@ -10,7 +10,7 @@ import {
   Users,
   Briefcase,
   Box,
-  X,
+  StopCircle,
 } from 'lucide-react'
 import type { MonthlyStats } from '../model'
 import { formatCurrency, formatNumber, formatPercentage } from '../utils'
@@ -299,7 +299,7 @@ export const StatisticsCards = ({
               Retired/Disposed
             </CardTitle>
             <div className='rounded-full bg-red-50 p-1.5 transition-all duration-300 group-hover:scale-110 sm:p-2 dark:bg-red-950/50'>
-              <X className='h-3 w-3 text-red-500 sm:h-4 sm:w-4 dark:text-red-400' />
+              <StopCircle className='h-3 w-3 text-red-500 sm:h-4 sm:w-4 dark:text-red-400' />
             </div>
           </div>
           <div className='space-y-1'>

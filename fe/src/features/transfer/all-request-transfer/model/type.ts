@@ -12,6 +12,6 @@ export type RequestTransferType = {
     firstName: string
     lastName: string
     email: string
-    departmentId: number
+    departmentId: string
   }
 }

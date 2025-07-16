@@ -2,14 +2,20 @@ import { FormControl, FormField, FormItem, FormMessage, Checkbox, Label } from '
 import type { DataLoginType } from '../model'
 import type { UseFormReturn } from 'react-hook-form'
 
-export const RememberMeField = ({ form }: { form: UseFormReturn<DataLoginType> }) => {
+export const RememberMeField = ({
+  form,
+  highlightOnValue,
+}: {
+  form: UseFormReturn<DataLoginType>
+  highlightOnValue?: boolean
+}) => {
   return (
     <FormField
       name='rememberMe'
       control={form.control}
       render={({ field }) => (
         <FormItem>
-          <FormControl>
+          <FormControl highlightOnValue={highlightOnValue}>
             <div className='mt-2 flex items-center'>
               <Checkbox
                 checked={field.value}

@@ -49,11 +49,11 @@ const ViewMaintenanceSchedule = () => {
     <div className='container mx-auto space-y-6 px-4 py-6'>
       <div className='flex flex-col justify-between gap-4 md:flex-row md:items-center'>
         <div>
-          <h1 className='flex items-center text-2xl font-bold'>
-            <Wrench className='mr-2 h-6 w-6' />
+          <h1 className='text-primary flex items-center text-2xl font-bold'>
+            <Wrench className='text-primary mr-2 h-6 w-6' />
             Asset Maintenance Schedule
           </h1>
-          <p className='text-muted-foreground'>View and manage maintenance schedules for all assets</p>
+          <p className='text-primary'>View and manage maintenance schedules for all assets</p>
         </div>
 
         <Button

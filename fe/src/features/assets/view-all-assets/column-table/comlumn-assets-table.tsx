@@ -9,9 +9,14 @@ export const columnsAssetsTable: ColumnDef<AssetsType>[] = [
     accessorKey: 'id',
     header: 'ID',
   },
+
   {
     accessorKey: 'assetName',
     header: 'Asset Name',
+  },
+  {
+    accessorKey: 'serialNumber',
+    header: 'Serial Number',
   },
   {
     accessorKey: 'category.categoryName',
@@ -19,7 +24,7 @@ export const columnsAssetsTable: ColumnDef<AssetsType>[] = [
   },
   {
     accessorKey: 'department.departmentName',
-    header: 'Department Name',
+    header: 'Department',
   },
   {
     accessorKey: 'department.location.locationAddress',
@@ -29,7 +34,7 @@ export const columnsAssetsTable: ColumnDef<AssetsType>[] = [
 
       return (
         <div
-          className='max-w-[100px] truncate'
+          className='max-w-[300px] truncate'
           title={location}
         >
           {location}
@@ -39,7 +44,7 @@ export const columnsAssetsTable: ColumnDef<AssetsType>[] = [
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: 'Asset Status',
     cell: ({ row }) => {
       const status = row.getValue('status') as AssetStatus
 
@@ -88,10 +93,10 @@ export const columnsAssetsTable: ColumnDef<AssetsType>[] = [
       return (
         <Button
           variant='outline'
-          className='w-fit'
+          className='border-primary text-primary hover:text-primary/80 w-fit'
         >
           <Link to={`/assets/${assetId}`}>
-            <span className='text-sm font-medium'>View</span>
+            <span className='text-sm font-medium'>View Details</span>
           </Link>
         </Button>
       )

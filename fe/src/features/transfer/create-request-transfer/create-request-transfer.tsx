@@ -11,7 +11,7 @@ import {
   FormSelect,
   FormButtonSubmit,
 } from '@/components/ui'
-import { ArrowLeft, Send, Loader2 } from 'lucide-react'
+import { ArrowLeft, Send, Loader2, Undo } from 'lucide-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { tryCatch, getData } from '@/utils'
@@ -110,18 +110,20 @@ const CreateTransferRequest = () => {
 
                 <CardFooter className='flex justify-between border-t pt-6'>
                   <Button
+                    className='border-primary text-primary hover:text-primary/80'
                     type='button'
                     variant='outline'
                     onClick={() => navigate('/transfers')}
                     disabled={isSubmitting}
                   >
+                    <Undo className='h-4 w-4' />
                     Cancel
                   </Button>
                   <FormButtonSubmit
                     isPending={isSubmitting}
                     className='flex items-center gap-2'
                     Icon={isSubmitting ? Loader2 : Send}
-                    type='submit'
+                    type='Submit Request'
                     onSubmit={onSubmit}
                   />
                 </CardFooter>

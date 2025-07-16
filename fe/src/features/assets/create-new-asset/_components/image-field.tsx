@@ -7,10 +7,12 @@ export const ImageField = ({
   form,
   imageName,
   setImageName,
+  highlightOnValue = true,
 }: {
   form: UseFormReturn<CreateAssetFormType>
   imageName: string
   setImageName: React.Dispatch<React.SetStateAction<string>>
+  highlightOnValue?: boolean
 }) => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -27,8 +29,8 @@ export const ImageField = ({
       render={() => (
         <FormItem>
           <FormLabel>Asset Image</FormLabel>
-          <FormControl>
-            <div className='flex w-full flex-col items-center justify-center'>
+          <FormControl highlightOnValue={highlightOnValue}>
+            <div className='flex w-full flex-col items-center justify-center truncate'>
               <label
                 htmlFor='image-upload'
                 className='flex h-28 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-slate-900 dark:hover:border-gray-500'

@@ -14,7 +14,10 @@ export const StatusFilter = ({
       value={filteredAssets.status || ''}
       onValueChange={(value) => setFilteredAssets({ ...filteredAssets, status: value || null })}
     >
-      <SelectTrigger className='w-full md:w-[180px]'>
+      <SelectTrigger
+        value={filteredAssets.status || ''}
+        className='w-full md:w-[180px]'
+      >
         <SelectValue placeholder='Status' />
       </SelectTrigger>
       <SelectContent>

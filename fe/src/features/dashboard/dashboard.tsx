@@ -178,11 +178,14 @@ export const Dashboard = () => {
     <div className='space-y-4 p-4 sm:space-y-6 sm:p-6'>
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div>
-          <CardTitle className='flex items-center text-2xl'>
-            <AreaChart className='mr-2 h-5 w-5' />
+          <CardTitle className='text-primary flex items-center text-2xl font-bold'>
+            <AreaChart
+              strokeWidth={2.5}
+              className='text-primary mr-2 h-5 w-5'
+            />
             Dashboard
           </CardTitle>
-          <CardDescription>Overview of key metrics and recent activity</CardDescription>
+          <CardDescription className='text-primary'>Overview of key metrics and recent activity</CardDescription>
         </div>
         {views.length > 1 && (
           <div className='flex gap-2'>

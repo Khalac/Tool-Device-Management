@@ -49,7 +49,7 @@
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
+  --primary: rgb(17, 160, 160);
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
@@ -194,4 +194,38 @@
 
 .dark .comparison-table-header {
   background: hsl(var(--card));
+}
+.recharts-rectangle.recharts-tooltip-cursor {
+  fill: #1a56c2;
+}
+@keyframes pulse-amber {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+.animate-amber-pulse {
+  animation: pulse-amber 1.5s infinite ease-in-out;
+}
+
+@keyframes shake-trash {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+.animate-shake-trash {
+  animation: shake-trash 1.5s infinite ease-in-out;
 }

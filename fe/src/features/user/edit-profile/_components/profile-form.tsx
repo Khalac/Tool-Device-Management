@@ -80,8 +80,9 @@ export const ProfileForm = ({ user, onSubmit, onClose, isLoading }: ProfileFormP
                       <User className='h-4 w-4' />
                       First Name
                     </FormLabel>
-                    <FormControl>
+                    <FormControl highlightOnValue={false}>
                       <Input
+                        highlightOnValue={false}
                         {...field}
                         placeholder='Enter your first name'
                       />
@@ -100,8 +101,9 @@ export const ProfileForm = ({ user, onSubmit, onClose, isLoading }: ProfileFormP
                       <User className='h-4 w-4' />
                       Last Name
                     </FormLabel>
-                    <FormControl>
+                    <FormControl highlightOnValue={false}>
                       <Input
+                        highlightOnValue={false}
                         {...field}
                         placeholder='Enter your last name'
                       />
@@ -121,8 +123,9 @@ export const ProfileForm = ({ user, onSubmit, onClose, isLoading }: ProfileFormP
                     <Mail className='h-4 w-4' />
                     Email
                   </FormLabel>
-                  <FormControl>
+                  <FormControl highlightOnValue={false}>
                     <Input
+                      highlightOnValue={false}
                       {...field}
                       disabled
                       placeholder='Email address'
@@ -140,6 +143,7 @@ export const ProfileForm = ({ user, onSubmit, onClose, isLoading }: ProfileFormP
                   Role
                 </FormLabel>
                 <Input
+                  highlightOnValue={false}
                   className='text-foreground mt-2 font-medium'
                   value={user.role.slug}
                   disabled
@@ -153,6 +157,7 @@ export const ProfileForm = ({ user, onSubmit, onClose, isLoading }: ProfileFormP
                     Department
                   </FormLabel>
                   <Input
+                    highlightOnValue={false}
                     className='text-foreground mt-2 font-medium'
                     value={user.department.departmentName}
                     disabled

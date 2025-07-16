@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, Check, Undo } from 'lucide-react'
 
 interface ConfirmStatusModalProps {
   open: boolean
@@ -25,23 +25,33 @@ export const ConfirmStatusModal = ({ open, onClose, onConfirm, billNumber }: Con
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <div className='flex items-center gap-2'>
-              <AlertCircle className='text-600 h-5 w-5' />
-              <span>Confirm Status Change</span>
+            <div className='mb-2 flex items-center justify-center'>
+              <div className='rounded-full border-2 border-amber-200 bg-amber-100 p-3'>
+                <AlertCircle className='animate-amber-pulse h-8 w-8 text-amber-500' />
+              </div>
             </div>
+            <span className='mt-1 block text-center text-xl font-semibold'>Confirm Status Change</span>{' '}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className='mt-2 text-center text-gray-600'>
             Are you sure you want to mark bill #{billNumber} as paid? This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
+        <DialogFooter className='mt-1 flex justify-center gap-2'>
           <Button
+            className='border-primary text-primary hover:text-primary/80'
             variant='outline'
             onClick={onClose}
           >
+            <Undo className='h-4 w-4' />
             Cancel
           </Button>
-          <Button onClick={onConfirm}>Confirm</Button>
+          <Button
+            onClick={onConfirm}
+            className='bg-primary hover:bg-primary/80 flex items-center gap-1 text-white'
+          >
+            <Check className='h-4 w-4' />
+            Confirm Change
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

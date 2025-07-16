@@ -8,12 +8,14 @@ export const FormInput = ({
   label,
   Icon,
   placeholder,
+  highlightOnValue = true,
 }: {
   name: string
   type: string
   label: string
   placeholder: string
   Icon?: React.ElementType
+  highlightOnValue?: boolean
 }) => {
   const { control } = useFormContext()
   return (
@@ -23,7 +25,7 @@ export const FormInput = ({
       render={({ field }) => (
         <FormItem>
           <Label>{label}</Label>
-          <FormControl>
+          <FormControl highlightOnValue={highlightOnValue}>
             <div className='relative'>
               {Icon && (
                 <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
@@ -31,6 +33,7 @@ export const FormInput = ({
                 </div>
               )}
               <Input
+                highlightOnValue={false}
                 type={type}
                 placeholder={placeholder || ''}
                 className={cn('h-9 text-sm', {

@@ -72,9 +72,9 @@ export const CompareSimilarAssets = ({ currentAsset, className }: CompareSimilar
           showCloseButton={false}
         >
           <DialogHeader className='pb-0'>
-            <DialogTitle className='flex items-center justify-between text-xl font-semibold'>
+            <DialogTitle className='text-primary flex items-center justify-between text-xl font-semibold'>
               <div className='flex items-center gap-2'>
-                <GitCompare className='h-5 w-5' />
+                <GitCompare className='text-primary h-5 w-5' />
                 Device Comparison
               </div>
               <Button

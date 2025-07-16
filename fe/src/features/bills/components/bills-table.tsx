@@ -233,6 +233,7 @@ export const BillsTable = ({ bills, isLoading, onStatusChange }: BillsTableProps
         return (
           <div className='flex items-center gap-2'>
             <Button
+              className='border-primary text-primary hover:text-primary/80'
               variant='outline'
               size='sm'
               onClick={(e) => {
@@ -241,7 +242,7 @@ export const BillsTable = ({ bills, isLoading, onStatusChange }: BillsTableProps
               }}
               title='View Details'
             >
-              <Eye className='h-4 w-4' />
+              <Eye className='text-primary h-4 w-4' />
             </Button>
 
             <div
@@ -257,9 +258,9 @@ export const BillsTable = ({ bills, isLoading, onStatusChange }: BillsTableProps
                 }}
                 title='Update Status'
                 disabled={isPaid}
-                className={` ${isPaid ? 'cursor-not-allowed opacity-50' : ''} group-hover:relative`}
+                className={`border-primary text-primary hover:text-primary/80 ${isPaid ? 'cursor-not-allowed opacity-50' : ''} group-hover:relative`}
               >
-                <Edit className='h-4 w-4' />
+                <Edit className='text-primary h-4 w-4' />
               </Button>
             </div>
 

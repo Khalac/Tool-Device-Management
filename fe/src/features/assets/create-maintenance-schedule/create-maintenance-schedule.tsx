@@ -11,7 +11,7 @@ import {
 } from '@/components/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Calendar, Loader2 } from 'lucide-react'
+import { Calendar, Loader2, Undo } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
@@ -81,11 +81,11 @@ const CreateMaintenanceSchedule = () => {
     <div className='container mx-auto py-10'>
       <Card className='mx-auto max-w-2xl'>
         <CardHeader>
-          <CardTitle className='flex items-center gap-2'>
-            <Calendar className='h-5 w-5' />
+          <CardTitle className='text-primary flex items-center gap-2'>
+            <Calendar className='text-primary h-5 w-5' />
             Create Maintenance Schedule
           </CardTitle>
-          <CardDescription>
+          <CardDescription className='text-primary'>
             Schedule maintenance for an asset by selecting dates and the asset to maintain.
           </CardDescription>
         </CardHeader>
@@ -96,36 +96,45 @@ const CreateMaintenanceSchedule = () => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className='create-maintenance-schedule group space-y-6'
               >
-                {isPending ? (
-                  <div className='flex'>
-                    <Loader2 className='text-muted-foreground h-6 w-6 animate-spin' />
+                <div>
+                  {isPending ? (
+                    <div className='flex'>
+                      <Loader2 className='text-muted-foreground h-6 w-6 animate-spin' />
+                    </div>
+                  ) : (
+                    <FormSelect
+                      name='assetId'
+                      label='Select Asset'
+                      placeholder='Select an asset'
+                      data={assets}
+                    />
+                  )}
+                </div>
+
+                <div className='flex flex-col gap-4 sm:flex-row sm:gap-6'>
+                  <div className='flex-1'>
+                    <FormDatePicker
+                      name='startDate'
+                      label='Start Date'
+                      fn={handleStartDateChange}
+                    />
                   </div>
-                ) : (
-                  <FormSelect
-                    name='assetId'
-                    label='Select Asset'
-                    placeholder='Select an asset'
-                    data={assets}
-                  />
-                )}
-
-                <FormDatePicker
-                  name='startDate'
-                  label='Start Date'
-                  fn={handleStartDateChange}
-                />
-
-                <FormDatePicker
-                  name='endDate'
-                  label='End Date'
-                />
+                  <div className='flex-1'>
+                    <FormDatePicker
+                      name='endDate'
+                      label='End Date'
+                    />
+                  </div>
+                </div>
 
                 <div className='flex justify-end space-x-4'>
                   <Button
                     variant='outline'
                     onClick={() => navigate('/assets/maintenance-schedule')}
                     type='button'
+                    className='border-primary text-primary hover:text-primary/80'
                   >
+                    <Undo className='h-4 w-4' />
                     Cancel
                   </Button>
                   <Button

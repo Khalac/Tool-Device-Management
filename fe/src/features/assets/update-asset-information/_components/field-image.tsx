@@ -46,7 +46,7 @@ export const FieldImage = ({
         name='image'
         render={() => (
           <FormItem>
-            <FormControl>
+            <FormControl highlightOnValue={false}>
               <div>
                 <Input
                   type='file'

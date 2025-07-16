@@ -7,10 +7,12 @@ export const FileField = ({
   form,
   fileName,
   setFileName,
+  highlightOnValue = true,
 }: {
   form: UseFormReturn<CreateAssetFormType>
   fileName: string
   setFileName: React.Dispatch<React.SetStateAction<string>>
+  highlightOnValue?: boolean
 }) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -27,7 +29,7 @@ export const FileField = ({
       render={({}) => (
         <FormItem>
           <FormLabel>Attachment</FormLabel>
-          <FormControl>
+          <FormControl highlightOnValue={highlightOnValue}>
             <div className='flex w-full flex-col items-center justify-center'>
               <label
                 htmlFor='file-upload'

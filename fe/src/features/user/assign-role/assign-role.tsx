@@ -9,8 +9,9 @@ import {
   Form,
   FormSelect,
   FormButtonSubmit,
+  Button,
 } from '@/components/ui'
-import { Shield, Loader2 } from 'lucide-react'
+import { Shield, Loader2, Undo } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getData, tryCatch } from '@/utils'
@@ -19,8 +20,10 @@ import type { UserType } from '../model'
 import type { Roles } from './model'
 import { type AssignRoleType, assignRoleSchema } from './model/schema'
 import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 
 export const AssignRole = () => {
+  const navigate = useNavigate()
   const [users, setUsers] = useState<UserType[]>([])
   const [isLoadingUsers, setIsLoadingUsers] = useState(false)
   const [isLoadingRoles, setIsLoadingRoles] = useState(false)
@@ -30,6 +33,7 @@ export const AssignRole = () => {
 
   const form = useForm<AssignRoleType>({
     resolver: zodResolver(assignRoleSchema),
+    mode: 'onChange',
     defaultValues: {
       userId: '',
       role: '',
@@ -79,11 +83,13 @@ export const AssignRole = () => {
     <div className='container mx-auto px-4 py-6'>
       <Card className='mx-auto w-full max-w-2xl'>
         <CardHeader>
-          <CardTitle className='flex items-center gap-2 text-2xl'>
-            <Shield className='h-6 w-6' />
+          <CardTitle className='text-primary flex items-center gap-2 text-2xl'>
+            <Shield className='text-primary h-6 w-6' />
             Assign User Role
           </CardTitle>
-          <CardDescription>Select a user and assign them an appropriate role in the system</CardDescription>
+          <CardDescription className='text-primary'>
+            Select a user and assign them an appropriate role in the system
+          </CardDescription>
         </CardHeader>
 
         <Form {...form}>
@@ -139,6 +145,16 @@ export const AssignRole = () => {
             </CardContent>
 
             <CardFooter className='flex justify-end space-x-2 border-t pt-4'>
+              <Button
+                type='button'
+                className='border-primary text-primary hover:text-primary/80'
+                variant='outline'
+                onClick={() => navigate(-1)}
+                disabled={isSubmitting}
+              >
+                <Undo className='h-4 w-4' />
+                Cancel
+              </Button>
               <FormButtonSubmit
                 isPending={isSubmitting}
                 className='flex items-center gap-2'

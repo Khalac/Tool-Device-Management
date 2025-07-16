@@ -31,7 +31,10 @@ export const CategoriesFilter = ({
       value={filteredAssets.categoryId || ''}
       onValueChange={(value) => setFilteredAssets({ ...filteredAssets, categoryId: value || null })}
     >
-      <SelectTrigger className='w-full md:w-[180px]'>
+      <SelectTrigger
+        value={filteredAssets.categoryId || ''}
+        className='w-full md:w-[180px]'
+      >
         <SelectValue placeholder='Category'>
           {filteredAssets.categoryId &&
             categories.find((category) => category.id.toString() === filteredAssets.categoryId)?.categoryName}

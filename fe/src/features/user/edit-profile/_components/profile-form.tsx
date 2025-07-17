@@ -14,7 +14,7 @@ import {
   CardTitle,
   CardContent,
 } from '@/components/ui'
-import { X, Pencil, User, Mail, Shield, Building2 } from 'lucide-react'
+import { X, Pencil, User, Mail, Shield, Building2, Undo, Check } from 'lucide-react'
 import { AvatarUpload } from './avatar-upload'
 import { profileFormSchema, type ProfileFormType } from '../../model/profile-form'
 import type { UserProfile } from '../../model/profile-form'
@@ -53,8 +53,8 @@ export const ProfileForm = ({ user, onSubmit, onClose, isLoading }: ProfileFormP
       </Button>
 
       <CardHeader>
-        <CardTitle className='flex items-center gap-2'>
-          <Pencil className='h-5 w-5' />
+        <CardTitle className='text-primary flex items-center gap-2'>
+          <Pencil className='text-primary h-5 w-5' />
           Edit Profile
         </CardTitle>
       </CardHeader>
@@ -166,23 +166,25 @@ export const ProfileForm = ({ user, onSubmit, onClose, isLoading }: ProfileFormP
               )}
             </div>
 
-            <div className='mt-4 flex justify-between'>
+            <div className='mt-4 flex justify-end gap-2'>
+              <Button
+                type='button'
+                variant='outline'
+                className='text-primary border-primary hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/10 dark:hover:text-primary w-auto'
+                onClick={onClose}
+                disabled={isLoading}
+              >
+                <Undo className='text-primary h-4 w-4' />
+                Cancel
+              </Button>
               <Button
                 type='submit'
                 disabled={isSubmitDisabled}
                 size='sm'
-                className='w-fit'
+                className='h-9 w-fit'
               >
+                <Check className='h-4 w-4' />
                 {isLoading ? 'Updating...' : 'Update Profile'}
-              </Button>
-              <Button
-                type='button'
-                variant='outline'
-                className='w-auto'
-                onClick={onClose}
-                disabled={isLoading}
-              >
-                Cancel
               </Button>
             </div>
           </form>

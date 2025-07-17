@@ -52,8 +52,8 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedFiles, setSelectedFiles] = useState<{
-    fileAttachment?: File
-    imageUpload?: File
+    fileAttachmentBill?: File
+    imageUploadBill?: File
   }>({})
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -72,8 +72,8 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
       assetId: '',
       description: '',
       statusBill: 'Unpaid',
-      fileAttachment: '',
-      imageUpload: '',
+      fileAttachmentBill: '',
+      imageUploadBill: '',
     },
   })
 
@@ -132,7 +132,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
   const selectedAssetData = selectedAsset ? assets.find((a) => a.id === selectedAsset) : null
   console.log('🚀 ~ CreateBillModal ~ selectedAssetData:', selectedAssetData?.status)
 
-  const handleFileUpload = (type: 'fileAttachment' | 'imageUpload', file: File | null) => {
+  const handleFileUpload = (type: 'fileAttachmentBill' | 'imageUploadBill', file: File | null) => {
     if (file) {
       setSelectedFiles((prev) => ({ ...prev, [type]: file }))
       setValue(type, file)
@@ -146,12 +146,12 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
     }
   }
 
-  const removeFile = (type: 'fileAttachment' | 'imageUpload') => {
+  const removeFile = (type: 'fileAttachmentBill' | 'imageUploadBill') => {
     handleFileUpload(type, null)
-    if (type === 'fileAttachment' && fileInputRef.current) {
+    if (type === 'fileAttachmentBill' && fileInputRef.current) {
       fileInputRef.current.value = ''
     }
-    if (type === 'imageUpload' && imageInputRef.current) {
+    if (type === 'imageUploadBill' && imageInputRef.current) {
       imageInputRef.current.value = ''
     }
   }
@@ -188,8 +188,8 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
         assetId: parseInt(data.assetId, 10),
         description: data.description,
         statusBill: data.statusBill,
-        fileAttachment: selectedFiles.fileAttachment || undefined,
-        imageUpload: selectedFiles.imageUpload || undefined,
+        fileAttachmentBill: selectedFiles.fileAttachmentBill || undefined,
+        imageUploadBill: selectedFiles.imageUploadBill || undefined,
       }
       console.log('🚀 ~ onSubmit ~ formValues:', formValues)
 
@@ -202,11 +202,11 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
         console.log(`${key}:`, value)
       }
 
-      if (selectedFiles.fileAttachment) {
-        formData.append('fileAttachment', selectedFiles.fileAttachment)
+      if (selectedFiles.fileAttachmentBill) {
+        formData.append('file', selectedFiles.fileAttachmentBill)
       }
-      if (selectedFiles.imageUpload) {
-        formData.append('imageUpload', selectedFiles.imageUpload)
+      if (selectedFiles.imageUploadBill) {
+        formData.append('image', selectedFiles.imageUploadBill)
       }
 
       const response = await tryCatch(createBill(formData))
@@ -225,8 +225,8 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
           createdBy: response.data?.data?.createdBy || 1,
           createAt: response.data?.data?.createdAt || new Date().toISOString(),
           updateAt: response.data?.data?.updatedAt || new Date().toISOString(),
-          fileAttachment: response.data?.data?.fileAttachment,
-          imageUpload: response.data?.data?.imageUpload,
+          fileAttachmentBill: response.data?.data?.fileAttachmentBill,
+          imageUploadBill: response.data?.data?.imageUploadBill,
         }
 
         onBillCreated(newBill)
@@ -273,7 +273,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className='max-h-[90vh] !max-w-2xl overflow-y-auto'>
+      <DialogContent className='max-h-[90vh] !max-w-2xl overflow-y-auto max-[430px]:w-[90%]'>
         <DialogHeader>
           <DialogTitle className='text-primary flex items-center text-xl'>
             <Receipt className='text-primary mr-2 h-5 w-5' />
@@ -413,24 +413,24 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                       accept='.pdf,.doc,.docx,.txt'
                       onChange={(e) => {
                         const file = e.target.files?.[0]
-                        handleFileUpload('fileAttachment', file || null)
+                        handleFileUpload('fileAttachmentBill', file || null)
                       }}
                       className='flex-1'
                     />
-                    {selectedFiles.fileAttachment && (
+                    {selectedFiles.fileAttachmentBill && (
                       <Button
                         type='button'
                         variant='outline'
                         size='sm'
-                        onClick={() => removeFile('fileAttachment')}
+                        onClick={() => removeFile('fileAttachmentBill')}
                       >
                         <X className='h-4 w-4' />
                       </Button>
                     )}
                   </div>
 
-                  {selectedFiles.fileAttachment && (
-                    <p className='text-xs text-gray-600'>Selected: {selectedFiles.fileAttachment.name}</p>
+                  {selectedFiles.fileAttachmentBill && (
+                    <p className='text-xs text-gray-600'>Selected: {selectedFiles.fileAttachmentBill.name}</p>
                   )}
                 </div>
 
@@ -447,24 +447,24 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                       accept='image/*'
                       onChange={(e) => {
                         const file = e.target.files?.[0]
-                        handleFileUpload('imageUpload', file || null)
+                        handleFileUpload('imageUploadBill', file || null)
                       }}
                       className='flex-1'
                     />
-                    {selectedFiles.imageUpload && (
+                    {selectedFiles.imageUploadBill && (
                       <Button
                         type='button'
                         variant='outline'
                         size='sm'
-                        onClick={() => removeFile('imageUpload')}
+                        onClick={() => removeFile('imageUploadBill')}
                       >
                         <X className='h-4 w-4' />
                       </Button>
                     )}
                   </div>
 
-                  {selectedFiles.imageUpload && (
-                    <p className='text-xs text-gray-600'>Selected: {selectedFiles.imageUpload.name}</p>
+                  {selectedFiles.imageUploadBill && (
+                    <p className='text-xs text-gray-600'>Selected: {selectedFiles.imageUploadBill.name}</p>
                   )}
                 </div>
               </div>

@@ -68,7 +68,7 @@ export const ComparisonTable = ({ assets }: ComparisonTableProps) => {
     switch (field.type) {
       case 'image':
         return (
-          <div className='bg-muted/50 mx-auto flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg border'>
+          <div className='bg-muted/50 mx-auto flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg border-none'>
             {value ? (
               <img
                 src={value}
@@ -113,8 +113,8 @@ export const ComparisonTable = ({ assets }: ComparisonTableProps) => {
   return (
     <Card className='pt-6 pb-0'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-4'>
-        <CardTitle className='flex items-center gap-2'>
-          <Info className='h-5 w-5' />
+        <CardTitle className='text-primary flex items-center gap-2'>
+          <Info className='text-primary h-5 w-5' />
           Asset Information
         </CardTitle>
         <div className='flex items-center space-x-2'>

@@ -28,8 +28,8 @@ export const TabUpcomingSchedules = ({
     >
       <Card>
         <CardHeader className='pb-2'>
-          <CardTitle className='text-lg'>Scheduled Maintenance</CardTitle>
-          <CardDescription>Assets scheduled for maintenance</CardDescription>
+          <CardTitle className='text-primary text-lg'>Scheduled Maintenance</CardTitle>
+          <CardDescription className='text-primary'>Assets scheduled for maintenance</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (

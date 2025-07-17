@@ -11,16 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui'
-import { type UserProfile, type UserType } from '@/features/user'
+import { type UserType } from '@/features/user'
 import { type AssignmentData } from '../../get-all-assignments/model/type'
 import { Loader2 } from 'lucide-react'
-import { useAppSelector } from '@/hooks'
+
 interface AssignmentUserAssignUpdateProps {
   users: UserType[]
   assignmentDetail: AssignmentData
   isLoading?: boolean
   departmentId?: string
-  isEmployee?: boolean
 }
 
 export const AssignmentUserAssignUpdate = ({
@@ -28,13 +27,8 @@ export const AssignmentUserAssignUpdate = ({
   assignmentDetail,
   isLoading = false,
   departmentId,
-  isEmployee = false,
 }: AssignmentUserAssignUpdateProps) => {
-  const user = useAppSelector((state) => state.auth.user) as unknown as UserProfile
-
-  const filteredEmployees = users.filter((emp) => emp.email !== user.email)
   const { control } = useFormContext()
-  const isSelectDisabled = isEmployee ? isLoading : isLoading || !departmentId
 
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
@@ -64,7 +58,7 @@ export const AssignmentUserAssignUpdate = ({
           name='userId'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{isEmployee ? 'Change Assigned To (Your Department)' : 'Change Assigned To'}</FormLabel>
+              <FormLabel>Change Assigned To</FormLabel>
               <FormControl>
                 {isLoading ? (
                   <div className='flex h-10 items-center'>
@@ -75,13 +69,13 @@ export const AssignmentUserAssignUpdate = ({
                   <Select
                     onValueChange={field.onChange}
                     value={field.value}
-                    disabled={isSelectDisabled}
+                    disabled={isLoading || !departmentId}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder='Select a user ' />
+                      <SelectValue placeholder='Select a user' />
                     </SelectTrigger>
                     <SelectContent>
-                      {filteredEmployees.map((user) => (
+                      {users.map((user) => (
                         <SelectItem
                           key={user.id}
                           value={user.id.toString()}

@@ -47,7 +47,7 @@ export const ConfirmStatusModal = ({ open, onClose, onConfirm, billNumber }: Con
           </Button>
           <Button
             onClick={onConfirm}
-            className='bg-primary hover:bg-primary/80 flex items-center gap-1 text-white'
+            className='bg-primary hover:bg-primary/80 dark:hover:bg-primary/90 flex items-center gap-1 text-white dark:text-black dark:hover:text-black/80'
           >
             <Check className='h-4 w-4' />
             Confirm Change

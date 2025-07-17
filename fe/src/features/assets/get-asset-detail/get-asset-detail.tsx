@@ -117,7 +117,7 @@ const GetAssetDetail = () => {
                       <Button
                         variant='ghost'
                         size='icon'
-                        className='absolute top-2 right-2'
+                        className='absolute right-2'
                       >
                         <MoreVertical className='text-muted-foreground h-4 w-4' />
                       </Button>

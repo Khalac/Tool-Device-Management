@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui'
-import { Paperclip, Image as ImageIcon } from 'lucide-react'
+import { Paperclip, Image as ImageIcon, FileText, InfoIcon } from 'lucide-react'
 import type { BillType } from '../model/bill-types'
 import { BillQR } from './bill-qr'
 
@@ -84,11 +84,11 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
   // }
 
   const hasFileAttachment = () => {
-    return bill.fileAttachment && bill.fileAttachment.trim() !== '' && bill.fileAttachment !== 'null'
+    return bill.fileAttachmentBill && bill.fileAttachmentBill.trim() !== '' && bill.fileAttachmentBill !== 'null'
   }
 
   const hasImageUpload = () => {
-    return bill.imageUpload && bill.imageUpload.trim() !== '' && bill.imageUpload !== 'null'
+    return bill.imageUploadBill && bill.imageUploadBill.trim() !== '' && bill.imageUploadBill !== 'null'
   }
 
   const sellerInfo = {
@@ -100,12 +100,12 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
   }
 
   const buyerInfo = {
-    name: bill.creator?.fullName || 'John Doe',
-    taxCode: '',
+    name: 'Ho Bao Quoc',
     address: '533/8 Nguyen Tri Phuong, Ward 8, District 10, Ho Chi Minh City',
     phoneNumber: '032-35471411',
-    accountNumber: '4568239472356',
-    paymentMethod: 'Bank Transfer',
+    // taxCode: '',
+    // accountNumber: '4568239472356',
+    // paymentMethod: 'Bank Transfer',
   }
 
   const items = [
@@ -219,21 +219,21 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
           <h3 className='mt-3 text-sm font-semibold text-gray-900 dark:text-gray-100'>
             Buyer: <span className='font-normal'>{buyerInfo.name}</span>
           </h3>
-          <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
+          {/* <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
             Tax Code: <span className='font-normal'>{buyerInfo.taxCode || '_________________'}</span>
-          </h3>
+          </h3> */}
           <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
             Address: <span className='font-normal'>{buyerInfo.address}</span>
           </h3>
           <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
             Phone: <span className='font-normal'>{buyerInfo.phoneNumber}</span>
           </h3>
-          <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
+          {/* <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
             Account No.: <span className='font-normal'>{buyerInfo.accountNumber}</span>
           </h3>
           <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
             Payment Method: <span className='font-normal'>{buyerInfo.paymentMethod}</span>
-          </h3>
+          </h3> */}
         </div>
       </div>
 
@@ -313,9 +313,50 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
           </table>
         </div>
       </div>
-      <div className='px-2 py-3 text-sm text-gray-700 italic dark:text-gray-300'>
-        <p className='font-semibold'>Note:</p>
-        <ul className='list-disc space-y-1 pl-5'>
+      {(hasFileAttachment() || hasImageUpload()) && (
+        <div className='mt-2 rounded-lg border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-gray-800'>
+          <div className='flex flex-col gap-y-[2px]'>
+            <h3 className='flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-gray-100'>
+              <Paperclip className='h-4 w-4' />
+              Attachments
+            </h3>
+
+            {hasFileAttachment() && (
+              <div className='flex items-center gap-3'>
+                <FileText className='h-4 w-4 text-gray-500' />
+                <a
+                  href={bill.fileAttachmentBill!}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-xs break-all text-blue-600 hover:text-blue-800 hover:underline dark:text-blue-400'
+                >
+                  File: {bill.fileAttachmentBill}
+                </a>
+              </div>
+            )}
+
+            {hasImageUpload() && (
+              <div className='flex items-center gap-3'>
+                <ImageIcon className='h-4 w-4 text-gray-500' />
+                <a
+                  href={bill.imageUploadBill!}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-xs break-all text-blue-600 hover:text-blue-800 hover:underline dark:text-blue-400'
+                >
+                  Image: {bill.imageUploadBill}
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      <div className='mb-2 px-2 text-sm text-gray-700 italic dark:text-gray-300'>
+        <p className='flex items-center gap-2 font-semibold'>
+          <InfoIcon className='h-4 w-4' />
+          Note:
+        </p>
+        <ul className='list-disc pl-5 text-[0.6rem]'>
           <li>This invoice is valid only when signed and stamped by the seller.</li>
           <li>Please retain this invoice for warranty and accounting purposes.</li>
           <li>All prices are inclusive of applicable taxes (if any).</li>
@@ -342,29 +383,6 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
           </div>
         </div>
       </div>
-
-      {(hasFileAttachment() || hasImageUpload()) && (
-        <div className='mt-6 rounded-lg border border-gray-200 bg-white p-6 print:border-gray-300'>
-          <h3 className='mb-4 flex items-center gap-2 text-lg font-semibold text-gray-900 print:text-base print:text-black'>
-            <Paperclip className='h-5 w-5 print:h-4 print:w-4' />
-            Attachments
-          </h3>
-          <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
-            {hasFileAttachment() && (
-              <div className='flex items-center gap-3'>
-                <Paperclip className='h-4 w-4 text-gray-500 print:text-gray-700' />
-                <span className='text-blue-600 print:text-black'>View Document</span>
-              </div>
-            )}
-            {hasImageUpload() && (
-              <div className='flex items-center gap-3'>
-                <ImageIcon className='h-4 w-4 text-gray-500 print:text-gray-700' />
-                <span className='text-blue-600 print:text-black'>View Image</span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   )
 }

@@ -28,8 +28,8 @@ export const TabUnderMaintenance = ({
     >
       <Card>
         <CardHeader className='pb-2'>
-          <CardTitle className='text-lg'>Assets Under Maintenance</CardTitle>
-          <CardDescription>Assets are being maintained</CardDescription>
+          <CardTitle className='text-primary text-lg'>Assets Under Maintenance</CardTitle>
+          <CardDescription className='text-primary'>Assets are being maintained</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (

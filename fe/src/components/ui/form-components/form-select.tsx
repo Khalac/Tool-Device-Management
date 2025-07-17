@@ -59,7 +59,7 @@ export const FormSelect = ({
             value={field.value}
           >
             <FormControl highlightOnValue={highlightOnValue}>
-              <SelectTrigger className='w-full group-[.create-asset-form]:w-full group-[.create-maintenance-schedule]:w-full group-[.new-department-form]:w-52 group-[.user-assign-role]:w-35'>
+              <SelectTrigger className='w-full group-[.create-asset-form]:w-full group-[.create-maintenance-schedule]:w-full group-[.new-department-form]:w-52 group-[.user-assign-role]:w-50'>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>

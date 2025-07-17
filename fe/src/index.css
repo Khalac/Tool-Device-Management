@@ -196,7 +196,10 @@
   background: hsl(var(--card));
 }
 .recharts-rectangle.recharts-tooltip-cursor {
-  fill: #1a56c2;
+  fill: #c7d0e2;
+}
+.dark .recharts-rectangle.recharts-tooltip-cursor {
+  fill: #575252;
 }
 @keyframes pulse-amber {
   0%,

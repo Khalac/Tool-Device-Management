@@ -13,8 +13,8 @@ export interface BillType {
   purchaseDate?: string
   warrantyExpiry?: string
   qrUrl?: string
-  fileAttachment?: string
-  imageUpload?: string
+  fileAttachmentBill?: string
+  imageUploadBill?: string
 
   creator?: {
     id: number
@@ -48,8 +48,8 @@ export type CreateBillRequest = {
   description: string
   // categoryId?: number
   statusBill?: 'Unpaid' | 'Paid'
-  fileAttachment?: File
-  imageUpload?: File
+  fileAttachmentBill?: File
+  imageUploadBill?: File
 }
 
 export interface BillFilterType {

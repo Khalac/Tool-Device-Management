@@ -27,8 +27,10 @@ export const TabAllSchedules = ({
     >
       <Card>
         <CardHeader className='pb-2'>
-          <CardTitle className='text-lg'>All Maintenance Schedules</CardTitle>
-          <CardDescription>All assets's information have been scheduled for maintenance</CardDescription>
+          <CardTitle className='text-primary text-lg'>All Maintenance Schedules</CardTitle>
+          <CardDescription className='text-primary'>
+            All assets's information have been scheduled for maintenance
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (

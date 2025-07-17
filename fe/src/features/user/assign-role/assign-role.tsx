@@ -118,7 +118,8 @@ export const AssignRole = () => {
                     <p className='font-medium'>
                       {selectedUser.firstName} {selectedUser.lastName}
                     </p>
-                    <p className='text-muted-foreground text-sm'>{selectedUser.email}</p>
+                    <p className='text-muted-foreground text-sm font-medium'>Email: {selectedUser.email}</p>
+                    <p className='text-muted-foreground text-sm font-medium'>Role: {selectedUser.role.slug}</p>
                   </div>
                 </div>
               )}

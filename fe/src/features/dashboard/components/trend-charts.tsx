@@ -251,7 +251,7 @@ export const TrendCharts = ({
           isPending={isPending}
           showAnimation={true}
           animationDelay={2000}
-          height='h-[250px] sm:h-[300px]'
+          height='h-[300px] sm:h-[350px] '
           className='dark:bg-card text-primary dark:border-gray-700'
         />
       </div>

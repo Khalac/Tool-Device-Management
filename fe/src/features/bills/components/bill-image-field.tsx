@@ -15,7 +15,7 @@ export const BillImageField = ({
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      form.setValue('imageUpload', file)
+      form.setValue('imageUploadBill', file)
       setImageName(file.name)
     }
   }
@@ -23,7 +23,7 @@ export const BillImageField = ({
   return (
     <FormField
       control={form.control}
-      name='imageUpload'
+      name='imageUploadBill'
       render={() => (
         <FormItem>
           <FormLabel>Image Upload</FormLabel>

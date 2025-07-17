@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table'
 import type { AssignmentData } from '../model/type'
 import { Badge, Button } from '@/components/ui'
-import { CircleIcon, UserIcon, WrenchIcon, ArchiveIcon, TrashIcon } from 'lucide-react'
+import { CircleIcon, UserIcon, WrenchIcon, ArchiveIcon, TrashIcon, Eye } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export const columnsAssignmentsTable: ColumnDef<AssignmentData>[] = [
@@ -102,7 +102,9 @@ export const columnsAssignmentsTable: ColumnDef<AssignmentData>[] = [
           className='border-primary text-primary hover:text-primary/80 w-fit'
         >
           <Link to={`/assignments/${assetId}`}>
-            <span className='text-sm font-medium'>View Details</span>
+            <span className='flex items-center gap-2 text-sm font-medium'>
+              <Eye className='h-4 w-4' /> View Details
+            </span>
           </Link>
         </Button>
       )

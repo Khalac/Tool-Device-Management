@@ -66,6 +66,7 @@ const CreateNewAsset = () => {
       toast.error(response.error?.message || 'Failed to create asset')
       return
     }
+    console.log('🚀 ~ onSubmit ~ data:', data)
     toast.success('Asset created successfully')
     navigate('/assets')
     setIsPending(false)

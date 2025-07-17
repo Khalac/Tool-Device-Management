@@ -15,7 +15,7 @@ export const BillFileField = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      form.setValue('fileAttachment', file)
+      form.setValue('fileAttachmentBill', file)
       setFileName(file.name)
     }
   }
@@ -23,7 +23,7 @@ export const BillFileField = ({
   return (
     <FormField
       control={form.control}
-      name='fileAttachment'
+      name='fileAttachmentBill'
       render={({}) => (
         <FormItem>
           <FormLabel>File Attachment</FormLabel>

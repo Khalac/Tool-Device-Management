@@ -178,7 +178,7 @@ export const ReusablePieChart = ({
 
   const rawData = data.filter((item) => item.value > 0)
   const pieChartData = applyLargestRemainder(rawData)
-
+  const isMobile = window.innerWidth <= 430
   return (
     <Card className={`transition-shadow duration-200 hover:shadow-lg ${className}`}>
       <CardHeader className='pb-3 sm:pb-6'>
@@ -205,7 +205,7 @@ export const ReusablePieChart = ({
                   data={pieChartData}
                   cx='50%'
                   cy='45%'
-                  outerRadius='65%'
+                  outerRadius={isMobile ? '50%' : '65%'}
                   dataKey='value'
                   startAngle={90}
                   endAngle={-270}

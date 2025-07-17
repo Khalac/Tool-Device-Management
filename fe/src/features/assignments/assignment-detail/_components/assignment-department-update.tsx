@@ -6,12 +6,10 @@ export const AssignmentDepartmentUpdate = ({
   departments,
   assignmentDetail,
   setDepartmentId,
-  isEmployee,
 }: {
   departments: DepartmentType[]
   assignmentDetail: AssignmentData
   setDepartmentId: (departmentId: string) => void
-  isEmployee?: boolean
 }) => {
   return (
     <div className='grid grid-cols-1 gap-6'>
@@ -24,17 +22,16 @@ export const AssignmentDepartmentUpdate = ({
           </span>
         </p>
       </div>
-      {!isEmployee && (
-        <div className='new-department-form group space-y-2'>
-          <FormSelect
-            name='departmentId'
-            label='Department'
-            placeholder='Select a new department'
-            data={departments}
-            onChange={setDepartmentId}
-          />
-        </div>
-      )}
+
+      <div className='new-department-form group space-y-2'>
+        <FormSelect
+          name='departmentId'
+          label='Department'
+          placeholder='Select a new department'
+          data={departments}
+          onChange={setDepartmentId}
+        />
+      </div>
     </div>
   )
 }

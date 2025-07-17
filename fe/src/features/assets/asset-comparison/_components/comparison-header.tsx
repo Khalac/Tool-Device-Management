@@ -30,8 +30,8 @@ export const ComparisonHeader = ({ assetCount, onClear, selectedAssets }: Compar
         </Button>
 
         <div>
-          <h1 className='flex items-center gap-2 text-2xl font-bold'>
-            <BarChart3 className='h-6 w-6' />
+          <h1 className='text-primary flex items-center gap-2 text-2xl font-bold'>
+            <BarChart3 className='text-primary h-6 w-6' />
             Asset Comparison
           </h1>
         </div>

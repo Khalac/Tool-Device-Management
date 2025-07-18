@@ -24,7 +24,7 @@ func (r *PostgreSQLAssetsRepository) Create(assets *entity.Assets, tx *gorm.DB) 
 
 func (r *PostgreSQLAssetsRepository) GetAssetById(id int64) (*entity.Assets, error) {
 	asset := &entity.Assets{}
-	result := r.db.Model(&entity.Assets{}).Where("id = ?", id).Preload("Category").Preload("Department").Preload("OnwerUser").Preload("Department.Location").First(asset)
+	result := r.db.Model(&entity.Assets{}).Where("id = ?", id).Preload("Category").Preload("Department").Preload("OnwerUser").Preload("Department.Location").Preload("OnwerUser.Role").First(asset)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, errors.New("can't find record this id")

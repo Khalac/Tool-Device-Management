@@ -170,17 +170,17 @@ export const CompareSimilarAssets = ({ currentAsset, className }: CompareSimilar
                 disabled={selectedAssets.length <= 1}
                 className='w-full border-red-200 text-red-600 hover:bg-red-50 sm:w-auto dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20'
               >
-                <X className='mr-2 h-4 w-4' />
+                <X className='h-4 w-4' />
                 Clear All Devices
               </Button>
 
               <Button
                 onClick={handleCompareNow}
                 disabled={selectedAssets.length < 2}
-                className='bg-primary hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground w-full sm:w-auto'
+                className='bg-primary hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground h-9 w-full sm:w-auto'
                 size='lg'
               >
-                <GitCompare className='mr-2 h-4 w-4' />
+                <GitCompare className='h-4 w-4' />
                 Compare Now ({selectedAssets.length})
               </Button>
             </div>

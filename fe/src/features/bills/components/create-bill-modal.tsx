@@ -160,7 +160,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
     const colors = {
       New: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
       'In Use': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-      UnderMaintenance: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
+      'Under Maintenance': 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
       Retired: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
       Disposed: 'bg-red-100 text-red-800',
     } as const

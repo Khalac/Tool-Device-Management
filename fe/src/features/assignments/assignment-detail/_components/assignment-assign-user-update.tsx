@@ -20,6 +20,7 @@ interface AssignmentUserAssignUpdateProps {
   assignmentDetail: AssignmentData
   isLoading?: boolean
   departmentId?: string
+  isEmployee?: boolean
 }
 
 export const AssignmentUserAssignUpdate = ({
@@ -27,6 +28,7 @@ export const AssignmentUserAssignUpdate = ({
   assignmentDetail,
   isLoading = false,
   departmentId,
+  isEmployee = false,
 }: AssignmentUserAssignUpdateProps) => {
   const { control } = useFormContext()
 
@@ -69,7 +71,7 @@ export const AssignmentUserAssignUpdate = ({
                   <Select
                     onValueChange={field.onChange}
                     value={field.value}
-                    disabled={isLoading || !departmentId}
+                    disabled={isLoading || (!departmentId && !isEmployee)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder='Select a user' />

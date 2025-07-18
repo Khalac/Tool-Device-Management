@@ -113,8 +113,8 @@ export const ComparisonTable = ({ assets }: ComparisonTableProps) => {
   return (
     <Card className='pt-6 pb-0'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-4'>
-        <CardTitle className='text-primary flex items-center gap-2'>
-          <Info className='text-primary h-5 w-5' />
+        <CardTitle className='flex items-center gap-2'>
+          <Info className='h-5 w-5' />
           Asset Information
         </CardTitle>
         <div className='flex items-center space-x-2'>
@@ -140,7 +140,7 @@ export const ComparisonTable = ({ assets }: ComparisonTableProps) => {
           <div className='comparison-table-container overflow-x-auto'>
             <table className='w-full'>
               <thead>
-                <tr className='comparison-table-header bg-muted/50 border-b'>
+                <tr className='comparison-table-header bg-muted/50 border-t border-b'>
                   <th className='bg-muted/50 sticky left-0 z-20 w-48 p-4 text-left font-medium shadow-sm'>Property</th>
                   {assets.map((asset) => (
                     <th

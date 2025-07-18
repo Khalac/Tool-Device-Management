@@ -16,13 +16,14 @@ import {
   AssignmentUserAssign,
   AssignmentUserAssignUpdate,
 } from './_components'
-import { getAllUsersOfDepartment, type UserType } from '@/features/user'
+import { getAllUsersOfDepartment, type UserProfile, type UserType } from '@/features/user'
 import { getAllDepartment } from '@/features/assets/api'
 import type { DepartmentType } from '@/features/assets'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { type UpdateAssignmentForm, updateAssignmentSchema } from './model'
 import { toast } from 'sonner'
+import { useAppSelector } from '@/hooks'
 
 const ViewAssignmentDetail = () => {
   const { id } = useParams()
@@ -35,7 +36,16 @@ const ViewAssignmentDetail = () => {
   const [departments, setDepartments] = useState<DepartmentType[]>([])
   const [departmentId, setDepartmentId] = useState<string>('')
   const [assignmentDetail, setAssignmentDetail] = useState<AssignmentData>()
-
+  const user = useAppSelector((state) => state.auth.user) as unknown as UserProfile
+  const userRole = user?.role?.slug
+  const isEmployee = userRole === 'employee'
+  useEffect(() => {
+    if (isUpdate && isEmployee && user?.department?.id) {
+      setDepartmentId(user.department.id.toString())
+      form.setValue('departmentId', user.department.id.toString())
+      getUserOfDepartment(user.department.id.toString())
+    }
+  }, [isUpdate, isEmployee, user])
   const form = useForm<UpdateAssignmentForm>({
     resolver: zodResolver(updateAssignmentSchema),
     defaultValues: {
@@ -164,6 +174,7 @@ const ViewAssignmentDetail = () => {
                               users={users}
                               assignmentDetail={assignmentDetail}
                               isLoading={isLoadingUsers}
+                              isEmployee={isEmployee}
                             />
                           ) : (
                             <AssignmentUserAssign assignmentDetail={assignmentDetail} />
@@ -178,11 +189,19 @@ const ViewAssignmentDetail = () => {
                         <Separator />
                         <div className='grid w-full grid-cols-1 gap-4'>
                           {isUpdate ? (
-                            <AssignmentDepartmentUpdate
-                              departments={departments}
-                              assignmentDetail={assignmentDetail}
-                              setDepartmentId={handleDepartmentChange}
-                            />
+                            !isEmployee ? (
+                              <AssignmentDepartmentUpdate
+                                departments={departments}
+                                assignmentDetail={assignmentDetail}
+                                setDepartmentId={handleDepartmentChange}
+                              />
+                            ) : (
+                              <AssignmentDepartment
+                                assignmentDetail={{
+                                  ...assignmentDetail,
+                                }}
+                              />
+                            )
                           ) : (
                             <AssignmentDepartment assignmentDetail={assignmentDetail} />
                           )}

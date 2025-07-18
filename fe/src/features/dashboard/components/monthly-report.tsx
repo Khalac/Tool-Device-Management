@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, Button } from '@/components/ui'
-import { FileText, X, GitCompare, Calendar } from 'lucide-react'
+import { FileText, X, GitCompare, Calendar, FilterX } from 'lucide-react'
 import type { AssetsType } from '@/features/assets/view-all-assets/model'
 import type { FilterType } from '../../assets/view-all-assets/model'
 import type { DateFilter } from '../model/statistics-types'
@@ -260,13 +260,14 @@ export const MonthlyReport = ({
                   variant='outline'
                   size='default'
                   onClick={handleClearAllFilters}
-                  className='h-9 gap-2 border-red-500 text-red-500 hover:bg-red-500/10 hover:text-red-500'
+                  className='flex h-9 items-center gap-2 px-4'
                   type='button'
                 >
-                  <X className='h-4 w-4 text-red-500' />
-                  Clear All
+                  <FilterX className='h-4 w-4' />
+                  Clear Filters
                 </Button>
               )}
+
               <div className='flex h-10 items-center'>
                 <ExportMonthlyReport
                   data={monthlyStats}

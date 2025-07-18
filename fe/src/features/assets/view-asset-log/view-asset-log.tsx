@@ -4,6 +4,7 @@ import { getAssetLog } from '../api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, LoadingSpinner, ScrollArea } from '@/components/ui'
 import type { AssetLog } from './model'
 import { LogIcon, LogInformation } from './_components'
+import { Clock } from 'lucide-react'
 
 const ViewAssetLog = ({ id }: { id: string }) => {
   const [assetLog, setAssetLog] = useState<AssetLog[]>([])
@@ -20,7 +21,10 @@ const ViewAssetLog = ({ id }: { id: string }) => {
   return (
     <Card className='w-full'>
       <CardHeader>
-        <CardTitle>Asset History</CardTitle>
+        <CardTitle className='flex items-center gap-2 text-lg sm:text-xl'>
+          <Clock className='h-5 w-5' />
+          Asset History
+        </CardTitle>
         <CardDescription>Tracking log of all activities related to this asset</CardDescription>
       </CardHeader>
       <CardContent>

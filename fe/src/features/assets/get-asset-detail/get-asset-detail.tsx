@@ -18,9 +18,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  TooltipTrigger,
+  TooltipContent,
+  Tooltip,
 } from '@/components/ui'
 
-import { ArrowLeft, Pencil, Loader2, Trash2, MoreVertical, FileText } from 'lucide-react'
+import { ArrowLeft, Pencil, Loader2, Trash2, MoreVertical, FileText, Calendar } from 'lucide-react'
 
 import { AssetBadge, AssetImage, AssetInformation, AssetMaintenanceSchedule, NoAsset } from './_components'
 
@@ -113,15 +116,23 @@ const GetAssetDetail = () => {
 
                 {asset.status !== 'Disposed' && canEditAsset() && (
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant='ghost'
-                        size='icon'
-                        className='absolute right-2'
-                      >
-                        <MoreVertical className='text-muted-foreground h-4 w-4' />
-                      </Button>
-                    </DropdownMenuTrigger>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant='ghost'
+                            size='icon'
+                            className='absolute right-2'
+                          >
+                            <MoreVertical className='text-muted-foreground h-4 w-4' />
+                          </Button>
+                        </DropdownMenuTrigger>
+                      </TooltipTrigger>
+                      <TooltipContent side='top'>
+                        <p>More actions</p>
+                      </TooltipContent>
+                    </Tooltip>
+
                     <DropdownMenuContent
                       align='end'
                       className='w-50'
@@ -189,7 +200,10 @@ const GetAssetDetail = () => {
             {role !== 'employee' && (
               <Card>
                 <CardHeader>
-                  <CardTitle className='text-lg sm:text-xl'>Maintenance Schedule</CardTitle>
+                  <CardTitle className='flex items-center gap-2 text-lg sm:text-xl'>
+                    <Calendar className='h-5 w-5' />
+                    Maintenance Schedule
+                  </CardTitle>
                   <CardDescription>Upcoming and past maintenance schedules</CardDescription>
                 </CardHeader>
                 <CardContent>

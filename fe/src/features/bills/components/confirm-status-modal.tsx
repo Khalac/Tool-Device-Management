@@ -22,7 +22,7 @@ export const ConfirmStatusModal = ({ open, onClose, onConfirm, billNumber }: Con
       open={open}
       onOpenChange={onClose}
     >
-      <DialogContent>
+      <DialogContent className='sm:max-w-md'>
         <DialogHeader>
           <DialogTitle>
             <div className='mb-2 flex items-center justify-center'>

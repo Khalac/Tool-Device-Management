@@ -11,16 +11,7 @@ interface BillDetailModalProps {
 }
 
 export const BillDetailModal = ({ bill, open, onClose }: BillDetailModalProps) => {
-  console.log('🚀 ~ BillDetailModal ~ bill:', bill)
   if (!bill) return null
-
-  // const toggleStatus = () => {
-  //   if (bill && onStatusChange) {
-  //     const newStatus = bill.statusBill === 'Paid' ? 'Unpaid' : 'Paid'
-  //     onStatusChange(bill.id, newStatus)
-  //     toast.success(`Bill marked as ${newStatus}`)
-  //   }
-  // }
 
   const getStatusColor = (status: string) => {
     const colors = {
@@ -29,21 +20,6 @@ export const BillDetailModal = ({ bill, open, onClose }: BillDetailModalProps) =
     } as const
     return colors[status as keyof typeof colors] || colors.Unpaid
   }
-
-  // const formatDate = (dateString: string) => {
-  //   try {
-  //     if (!dateString) return 'N/A'
-  //     return new Date(dateString).toLocaleDateString('en-US', {
-  //       year: 'numeric',
-  //       month: 'short',
-  //       day: 'numeric',
-  //       hour: '2-digit',
-  //       minute: '2-digit',
-  //     })
-  //   } catch {
-  //     return 'N/A'
-  //   }
-  // }
 
   const formatDateShort = (dateString: string) => {
     try {
@@ -79,28 +55,6 @@ export const BillDetailModal = ({ bill, open, onClose }: BillDetailModalProps) =
     }
   }
 
-  // const getCreatorInitials = () => {
-  //   const name = bill.creator?.fullName || 'Unknown User'
-  //   return name
-  //     .split(' ')
-  //     .map((n) => n[0])
-  //     .join('')
-  //     .toUpperCase()
-  //     .slice(0, 2)
-  // }
-
-  // const isWarrantyExpired = (warrantyDate?: string) => {
-  //   if (!warrantyDate) return false
-  //   return new Date(warrantyDate) < new Date()
-  // }
-
-  // const getLastUpdated = () => {
-  //   if (!bill.updateAt || bill.updateAt === bill.createAt) {
-  //     return bill.createAt
-  //   }
-  //   return bill.updateAt
-  // }
-
   const hasFileAttachment = () => {
     return bill.fileAttachmentBill && bill.fileAttachmentBill.trim() !== '' && bill.fileAttachmentBill !== 'null'
   }
@@ -119,36 +73,6 @@ export const BillDetailModal = ({ bill, open, onClose }: BillDetailModalProps) =
       }
     }
   }
-
-  // const InfoRow = ({
-  //   label,
-  //   value,
-  //   valueClassName = '',
-  //   badge = false,
-  //   badgeClassName = '',
-  // }: {
-  //   label: string
-  //   value: string | number
-  //   valueClassName?: string
-  //   badge?: boolean
-  //   badgeClassName?: string
-  // }) => (
-  //   <div className='flex items-start gap-3 border-gray-100 py-3 last:border-b-0 dark:border-gray-700'>
-  //     <div className='text-sm text-gray-700 dark:text-gray-300'>
-  //       <span className='font-medium'>{label}: </span>
-  //       {badge ? (
-  //         <Badge
-  //           className={`${badgeClassName} ml-1`}
-  //           variant='outline'
-  //         >
-  //           {value}
-  //         </Badge>
-  //       ) : (
-  //         <span className={`text-gray-900 dark:text-gray-100 ${valueClassName}`}>{value}</span>
-  //       )}
-  //     </div>
-  //   </div>
-  // )
 
   const sellerInfo = {
     companyName: 'SUNRISE SOFTWARE SOLUTIONS CORPORATION',
@@ -276,7 +200,7 @@ export const BillDetailModal = ({ bill, open, onClose }: BillDetailModalProps) =
                     Category
                   </th>
                   <th className='border-r px-3 py-2 text-center text-xs font-semibold text-gray-900 max-[430px]:px-1 max-[430px]:py-1 dark:border-gray-600 dark:text-gray-300'>
-                    Qty
+                    Quantity
                   </th>
                   <th className='border-r px-3 py-2 text-center text-xs font-semibold text-gray-900 max-[430px]:px-1 max-[430px]:py-1 dark:border-gray-600 dark:text-gray-300'>
                     Unit Price

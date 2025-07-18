@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Button } from '@/components/ui'
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui'
 import { Printer } from 'lucide-react'
 import { toast } from 'sonner'
 import { BillPrintLayout } from './bill-print-layout'
@@ -76,15 +76,24 @@ export const BillPrintButton = ({ bill, variant = 'outline', size = 'sm', classN
   }
 
   return (
-    <Button
-      variant={variant}
-      size={size}
-      onClick={handlePrint}
-      disabled={isPrinting}
-      className={`border-primary text-primary hover:text-primary/80 ${className}`}
-    >
-      <Printer className='text-primary mr-1 h-4 w-4' />
-      {isPrinting ? 'Printing...' : 'Print Bill'}
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div className='inline-block'>
+          <Button
+            variant={variant}
+            size={size}
+            onClick={handlePrint}
+            disabled={isPrinting}
+            className={`border-primary text-primary hover:text-primary/80 ${className}`}
+          >
+            <Printer className='text-primary mr-1 h-4 w-4' />
+            {isPrinting}
+          </Button>
+        </div>
+      </TooltipTrigger>
+      <TooltipContent side='top'>
+        <p>{isPrinting ? 'Printing in progress...' : 'Print Bill'}</p>
+      </TooltipContent>
+    </Tooltip>
   )
 }

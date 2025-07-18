@@ -14,7 +14,7 @@ import {
   CardTitle,
   CardContent,
 } from '@/components/ui'
-import { X, Pencil, User, Mail, Shield, Building2, Undo, Check } from 'lucide-react'
+import { X, Pencil, User, Mail, Building2, Undo, Check, ShieldCheck } from 'lucide-react'
 import { AvatarUpload } from './avatar-upload'
 import { profileFormSchema, type ProfileFormType } from '../../model/profile-form'
 import type { UserProfile } from '../../model/profile-form'
@@ -139,7 +139,7 @@ export const ProfileForm = ({ user, onSubmit, onClose, isLoading }: ProfileFormP
             <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
               <div>
                 <FormLabel className='flex items-center gap-2'>
-                  <Shield className='h-4 w-4' />
+                  <ShieldCheck className='h-4 w-4' />
                   Role
                 </FormLabel>
                 <Input

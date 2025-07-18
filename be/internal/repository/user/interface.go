@@ -21,6 +21,7 @@ type UserRepository interface {
 	GetUserAssetManageOfDepartment(departmentId int64) (*entity.Users, error)
 	GetAllUserRoleEmployeeOfDepartment(departmentTd int64) ([]*entity.Users, error)
 	GetAllUserRoleManagerOfDepartment(departmentTd int64) ([]*entity.Users, error)
+	GetAllUserRoleEmployeeOfDepartmentExluding(departmentId, userId int64) ([]*entity.Users, error)
 	UpdateDepartment(userId int64, departmentId int64) error
 	CheckHeadDep(depId int64) error
 	CheckManagerDep(depId int64) error

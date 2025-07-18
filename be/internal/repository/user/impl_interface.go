@@ -142,6 +142,15 @@ func (r *PostgreSQLUserRepository) GetAllUserRoleEmployeeOfDepartment(department
 	return users, nil
 }
 
+func (r *PostgreSQLUserRepository) GetAllUserRoleEmployeeOfDepartmentExluding(departmentTd, userId int64) ([]*entity.Users, error) {
+	users := []*entity.Users{}
+	result := r.db.Debug().Model(entity.Users{}).Joins("join roles on roles.id = users.role_id").Where("department_id = ?", departmentTd).Where("roles.slug = ?", "employee").Where("users.id != ?", userId).Preload("Role").Preload("Department").Find(&users)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return users, nil
+}
+
 func (r *PostgreSQLUserRepository) GetAllUserRoleManagerOfDepartment(departmentTd int64) ([]*entity.Users, error) {
 	users := []*entity.Users{}
 	result := r.db.Debug().Model(entity.Users{}).Joins("join roles on roles.id = users.role_id").Where("department_id = ?", departmentTd).Where("roles.slug = ?", "assetManager").Preload("Role").Preload("Department").Find(&users)

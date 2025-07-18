@@ -11,7 +11,7 @@ import {
   FormButtonSubmit,
   Button,
 } from '@/components/ui'
-import { Shield, Loader2, Undo } from 'lucide-react'
+import { Loader2, Undo, Check, ShieldAlert } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getData, tryCatch } from '@/utils'
@@ -84,7 +84,7 @@ export const AssignRole = () => {
       <Card className='mx-auto w-full max-w-2xl'>
         <CardHeader>
           <CardTitle className='text-primary flex items-center gap-2 text-2xl'>
-            <Shield className='text-primary h-6 w-6' />
+            <ShieldAlert className='text-primary h-6 w-6' />
             Assign User Role
           </CardTitle>
           <CardDescription className='text-primary'>
@@ -159,7 +159,7 @@ export const AssignRole = () => {
               <FormButtonSubmit
                 isPending={isSubmitting}
                 className='flex items-center gap-2'
-                Icon={isSubmitting ? Loader2 : Shield}
+                Icon={isSubmitting ? Loader2 : Check}
                 type='Submit'
                 onSubmit={onSubmit}
               />

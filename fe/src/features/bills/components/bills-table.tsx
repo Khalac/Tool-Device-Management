@@ -1,5 +1,5 @@
 import { Eye, Calendar, Edit } from 'lucide-react'
-import { Button, Badge } from '@/components/ui'
+import { Button, Badge, TooltipTrigger, TooltipContent, Tooltip } from '@/components/ui'
 import { DataTable } from '@/components/ui/data-table-component'
 import type { BillType } from '../model/bill-types'
 import { toast } from 'sonner'
@@ -232,36 +232,50 @@ export const BillsTable = ({ bills, isLoading, onStatusChange }: BillsTableProps
 
         return (
           <div className='flex items-center gap-2'>
-            <Button
-              className='border-primary text-primary hover:text-primary/80'
-              variant='outline'
-              size='sm'
-              onClick={(e) => {
-                e.stopPropagation()
-                handleViewBill(bill)
-              }}
-              title='View Details'
-            >
-              <Eye className='text-primary h-4 w-4' />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className='border-primary text-primary hover:text-primary/80'
+                  variant='outline'
+                  size='sm'
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleViewBill(bill)
+                  }}
+                >
+                  <Eye className='text-primary h-4 w-4' />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side='top'>
+                <p>View details</p>
+              </TooltipContent>
+            </Tooltip>
 
             <div
               className='group relative'
               title={isPaid ? 'Bills that have been paid cannot be updated' : ''}
             >
-              <Button
-                variant='outline'
-                size='sm'
-                onClick={() => {
-                  setSelectedBill(bill)
-                  setShowConfirmModal(true)
-                }}
-                title='Update Status'
-                disabled={isPaid}
-                className={`border-primary text-primary hover:text-primary/80 ${isPaid ? 'cursor-not-allowed opacity-50' : ''} group-hover:relative`}
-              >
-                <Edit className='text-primary h-4 w-4' />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className='inline-block'>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      onClick={() => {
+                        setSelectedBill(bill)
+                        setShowConfirmModal(true)
+                      }}
+                      disabled={isPaid}
+                      className={`border-primary text-primary hover:text-primary/80 ${isPaid ? 'cursor-not-allowed opacity-50' : ''}`}
+                    >
+                      <Edit className='text-primary h-4 w-4' />
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side='top'>
+                  <p>Update status</p>
+                </TooltipContent>
+              </Tooltip>
             </div>
 
             <BillPrintButton bill={bill} />

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Calendar, Loader2, Undo } from 'lucide-react'
+import { Calendar, Check, Loader2, Undo } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
@@ -147,7 +147,10 @@ const CreateMaintenanceSchedule = () => {
                         Creating...
                       </>
                     ) : (
-                      'Create Schedule'
+                      <>
+                        <Check className='h-4 w-4' />
+                        Create Schedule
+                      </>
                     )}
                   </Button>
                 </div>

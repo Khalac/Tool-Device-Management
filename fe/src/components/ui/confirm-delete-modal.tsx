@@ -59,7 +59,7 @@ export const ConfirmDeleteModal = ({
             {title}
           </DialogTitle>
 
-          <DialogDescription className='text-center text-gray-600 dark:text-gray-300'>
+          <DialogDescription className='text-center text-black dark:text-gray-300'>
             {finalDescription}
           </DialogDescription>
         </DialogHeader>

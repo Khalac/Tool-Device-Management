@@ -13,7 +13,7 @@ import {
   FormInput,
   FormButtonSubmit,
 } from '@/components/ui'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, RefreshCcw } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { type ForgetPasswordFormType, forgetPasswordFormSchema } from './model'
 import { sendResetPasswordEmail } from '../api'
@@ -52,7 +52,10 @@ const ForgetPasswordForm = () => {
   return (
     <Card className='mx-auto w-full max-w-md'>
       <CardHeader>
-        <CardTitle>Reset password</CardTitle>
+        <CardTitle className='flex items-center gap-2'>
+          <RefreshCcw className='h-5 w-5' />
+          Reset password
+        </CardTitle>
         <CardDescription>Enter your email address and we will send you a link to reset your password.</CardDescription>
       </CardHeader>
       <CardContent>

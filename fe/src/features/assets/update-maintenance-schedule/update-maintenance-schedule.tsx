@@ -9,7 +9,7 @@ import {
   Form,
   FormDatePicker,
 } from '@/components/ui'
-import { Check, Loader2, Undo } from 'lucide-react'
+import { Calendar, Check, Loader2, Undo } from 'lucide-react'
 import { FormProvider, useForm, useFormState } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useEffect, useState } from 'react'
@@ -95,7 +95,10 @@ const UpdateMaintenanceSchedule = ({
     >
       <DialogContent className='sm:max-w-[500px]'>
         <DialogHeader>
-          <DialogTitle>Update Maintenance Schedule</DialogTitle>
+          <DialogTitle className='flex items-center gap-2'>
+            <Calendar className='h-5 w-5' />
+            Update Maintenance Schedule
+          </DialogTitle>
           <DialogDescription>Set the start and end dates for maintenance schedule.</DialogDescription>
         </DialogHeader>
 

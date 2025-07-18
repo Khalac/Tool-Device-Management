@@ -1,9 +1,9 @@
 import type { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
-import { Badge, Button } from '@/components/ui'
+import { Badge, Button, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui'
 import { Link } from 'react-router-dom'
 import type { MaintenanceSchedule } from '../model'
-import { Calendar } from 'lucide-react'
+import { Calendar, Eye } from 'lucide-react'
 import { UpdateMaintenanceSchedule } from '../../update-maintenance-schedule'
 import { useState } from 'react'
 import { useAppSelector } from '@/hooks'
@@ -22,6 +22,7 @@ export const columnTableMaintenance = ({
       </div>
     ),
   },
+
   {
     accessorKey: 'startDate',
     header: 'Start Date',
@@ -74,31 +75,50 @@ export const columnTableMaintenance = ({
             setIsDialogOpen={setIsDialogOpen}
             onSuccessUpdate={onSuccessUpdate}
           />
-          <Button
-            className='border-primary text-primary hover:text-primary/80'
-            variant='outline'
-            size='sm'
-            asChild
-          >
-            <Link to={`/assets/${row.original.asset.id}`}>View Asset</Link>
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                className='border-primary text-primary hover:text-primary/80'
+                variant='outline'
+                size='sm'
+                asChild
+              >
+                <Link to={`/assets/${row.original.asset.id}`}>
+                  <span className='flex items-center gap-2 text-sm font-medium'>
+                    <Eye className='h-4 w-4' />
+                  </span>
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side='top'>
+              <p>View Asset</p>
+            </TooltipContent>
+          </Tooltip>
           {!isEmployee && (
-            <Button
-              className={`border-primary text-primary hover:text-primary/80 ${
-                isUnderMaintenance ? 'cursor-not-allowed opacity-50' : ''
-              }`}
-              variant='outline'
-              size='sm'
-              disabled={isUnderMaintenance}
-              onClick={() => {
-                if (!isUnderMaintenance) {
-                  setIsDialogOpen(true)
-                }
-              }}
-            >
-              <Calendar className='text-primary mr-1 h-4 w-4' />
-              Update Schedule
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className='inline-block'>
+                  <Button
+                    className={`border-primary text-primary hover:text-primary/80 ${
+                      isUnderMaintenance ? 'cursor-not-allowed opacity-50' : ''
+                    }`}
+                    variant='outline'
+                    size='sm'
+                    disabled={isUnderMaintenance}
+                    onClick={() => {
+                      if (!isUnderMaintenance) {
+                        setIsDialogOpen(true)
+                      }
+                    }}
+                  >
+                    <Calendar className='text-primary mr-1 h-4 w-4' />
+                  </Button>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side='top'>
+                <p>{isUnderMaintenance ? 'Cannot update while under maintenance' : 'Update schedule'}</p>
+              </TooltipContent>
+            </Tooltip>
           )}
         </div>
       )

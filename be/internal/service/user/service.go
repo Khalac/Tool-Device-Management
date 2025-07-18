@@ -291,6 +291,8 @@ func (service *UserService) GetAllUserOfDepartment(userId int64, departmentId in
 		if *user.DepartmentId == departmentId {
 			users, err = service.repo.GetAllUserRoleEmployeeOfDepartmentExluding(departmentId, userId)
 		}
+	default:
+		return nil, errors.New("User don't have permission.")
 	}
 	if err != nil {
 		return nil, err

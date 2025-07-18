@@ -13,4 +13,7 @@ type AssignmentRepository interface {
 	GetAssignmentById(id int64) (*entity.Assignments, error)
 	GetAssignmentByAssetId(assetId int64) (*entity.Assignments, error)
 	GetAssignmentForEmployee(userId int64) (*entity.Assignments, error)
+	GetAssignmentWithFilterForAdmin(dbFilter *gorm.DB) ([]entity.Assignments, error)
+	GetAssignmentWithFilterForManager(departmentId int64, dbFilter *gorm.DB) ([]entity.Assignments, error)
+	GetAssignmentWithFilterForEmployee(userId int64, dbFilter *gorm.DB) ([]entity.Assignments, error)
 }

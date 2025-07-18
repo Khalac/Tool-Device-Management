@@ -251,26 +251,22 @@ func (service *AssignmentService) Filter(userId int64, emailAssigned *string, em
 	if err != nil {
 		return nil, err
 	}
-	if users.Role.Slug == "employee" {
-		var assignments []entity.Assignments
-		assigment, err := service.Repo.GetAssignmentForEmployee(users.Id)
-		if err != nil {
-			return nil, err
-		}
-		assignments = append(assignments, *assigment)
-		assignmentsRes := utils.ConvertAssignmentsToResponses(assignments)
-		return assignmentsRes, nil
-	}
 	filter.CompanyId = users.CompanyId
 	db := service.Repo.GetDB()
 	dbFilter := filter.ApplyFilter(db.Model(&entity.Assignments{}), userId)
-
-	var total int64
-	dbFilter.Count(&total)
 	var assignments []entity.Assignments
-	result := dbFilter.Find(&assignments)
-	if result.Error != nil {
-		return nil, result.Error
+	switch users.Role.Slug {
+	case "admin":
+		assignments, err = service.Repo.GetAssignmentWithFilterForAdmin(dbFilter)
+	case "assetManager":
+		assignments, err = service.Repo.GetAssignmentWithFilterForManager(*users.DepartmentId, dbFilter)
+	case "employee":
+		assignments, err = service.Repo.GetAssignmentWithFilterForEmployee(userId, dbFilter)
+	default:
+		return nil, fmt.Errorf("Unauthorized role to perform assignment filtering.")
+	}
+	if err != nil {
+		return nil, err
 	}
 	assignmentsRes := utils.ConvertAssignmentsToResponses(assignments)
 	return assignmentsRes, nil

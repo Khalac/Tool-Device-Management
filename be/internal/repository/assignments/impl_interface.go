@@ -78,3 +78,19 @@ func (r *PostgreSQLAssignmentRepository) GetAssignmentForEmployee(userId int64) 
 	result := r.db.Model(entity.Assignments{}).Where("user_id = ?", userId).Preload("UserAssigned").Preload("UserAssign").Preload("Asset").Preload("Department").Preload("Department.Location").First(&assignment)
 	return &assignment, result.Error
 }
+
+func (r *PostgreSQLAssignmentRepository) GetAssignmentWithFilterForAdmin(dbFilter *gorm.DB) ([]entity.Assignments, error) {
+	var assignments []entity.Assignments
+	result := dbFilter.Preload("UserAssigned").Preload("UserAssign").Preload("Asset").Preload("Department").Preload("Department.Location").Find(&assignments)
+	return assignments, result.Error
+}
+func (r *PostgreSQLAssignmentRepository) GetAssignmentWithFilterForManager(departmentId int64, dbFilter *gorm.DB) ([]entity.Assignments, error) {
+	var assignments []entity.Assignments
+	result := dbFilter.Where("assignments.department_id = ?", departmentId).Preload("UserAssigned").Preload("UserAssign").Preload("Asset").Preload("Department").Preload("Department.Location").Find(&assignments)
+	return assignments, result.Error
+}
+func (r *PostgreSQLAssignmentRepository) GetAssignmentWithFilterForEmployee(userId int64, dbFilter *gorm.DB) ([]entity.Assignments, error) {
+	var assignments []entity.Assignments
+	result := dbFilter.Where("assignments.user_id = ?", userId).Preload("UserAssigned").Preload("UserAssign").Preload("Asset").Preload("Department").Preload("Department.Location").Find(&assignments)
+	return assignments, result.Error
+}

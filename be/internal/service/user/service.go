@@ -278,10 +278,19 @@ func (service *UserService) GetAllUserOfDepartment(userId int64, departmentId in
 		return nil, err
 	}
 	var users []*entity.Users
-	if user.Role.Slug == "admin" {
+	switch user.Role.Slug {
+	case "admin":
 		users, err = service.repo.GetAllUserRoleManagerOfDepartment(departmentId)
-	} else {
-		users, err = service.repo.GetAllUserRoleEmployeeOfDepartment(departmentId)
+	case "assetManager":
+		if *user.DepartmentId == departmentId {
+			users, err = service.repo.GetAllUserRoleEmployeeOfDepartment(departmentId)
+		} else {
+			users, err = service.repo.GetAllUserRoleManagerOfDepartment(departmentId)
+		}
+	case "employee":
+		if *user.DepartmentId == departmentId {
+			users, err = service.repo.GetAllUserRoleEmployeeOfDepartmentExluding(departmentId, userId)
+		}
 	}
 	if err != nil {
 		return nil, err

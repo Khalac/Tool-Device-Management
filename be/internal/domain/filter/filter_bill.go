@@ -20,7 +20,8 @@ func (f *BillFilter) ApplyFilter(db *gorm.DB) *gorm.DB {
 		db = db.Where("status_bill = ?", *f.Status)
 	}
 	if f.CategoryId != nil {
-		db = db.Joins("join assets on assets.id = bills.asset_id")
+		db = db.Joins("join bill_assets on bill_assets.bill_id = bills.id")
+		db = db.Joins("join assets on assets.id = bill_assets.asset_id")
 		db = db.Joins("join categories on categories.id = assets.category_id")
 		parsedID, _ := strconv.ParseInt(*f.CategoryId, 10, 64)
 		db = db.Where("categories.id = ?", parsedID)
@@ -30,5 +31,5 @@ func (f *BillFilter) ApplyFilter(db *gorm.DB) *gorm.DB {
 		str += "%"
 		db = db.Where("LOWER(bills.bill_number) LIKE LOWER(?)", str)
 	}
-	return db.Preload("CreateBy").Preload("Asset").Preload("CreateBy.Role").Preload("Asset.Category").Preload("Asset.Department").Preload("Asset.Department.Location").Preload("Asset.OnwerUser").Order("bill_number ASC")
+	return db.Select("DISTINCT ON (bills.id) bills.*").Preload("CreateBy").Preload("BillAssets.Asset").Preload("CreateBy.Role").Preload("BillAssets.Asset.Category").Preload("BillAssets.Asset.Department").Preload("BillAssets.Asset.Department.Location").Preload("BillAssets.Asset.OnwerUser").Order("bills.id, bill_number ASC")
 }

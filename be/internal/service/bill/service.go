@@ -24,7 +24,7 @@ func NewBillService(repo bill.BillsRepository, assetRepo assets.AssetsRepository
 	return &BillsService{repo: repo, assetRepo: assetRepo, userRepo: userRepo}
 }
 
-func (service *BillsService) Create(userId int64, assetId int64, description string, image *multipart.FileHeader, fileAttachment *multipart.FileHeader, status string) (*entity.Bill, error) {
+func (service *BillsService) Create(userId int64, assetIds []int64, description string, image *multipart.FileHeader, fileAttachment *multipart.FileHeader, status string, buyerName, buyerPhone, buyerEmail, buyerAddress string) (*entity.Bill, error) {
 	uploader := utils.NewSupabaseUploader()
 	var imageUrl string
 	var fileUrl string
@@ -56,27 +56,42 @@ func (service *BillsService) Create(userId int64, assetId int64, description str
 		}
 		fileUrl = f
 	}
-	asset, err := service.assetRepo.GetAssetById(assetId)
+	user, err := service.userRepo.FindByUserId(userId)
 	if err != nil {
 		return nil, err
 	}
 	bill := entity.Bill{
-		AssetId:            assetId,
 		Description:        description,
-		Amount:             asset.Cost,
 		CreateAt:           time.Now(),
 		CreateById:         userId,
-		CompanyId:          asset.CompanyId,
+		CompanyId:          user.CompanyId,
 		FileAttachmentBill: &fileUrl,
 		ImageUploadBill:    &imageUrl,
 		StatusBill:         status,
+		BuyerName:          buyerName,
+		BuyerPhone:         buyerPhone,
+		BuyerEmail:         buyerEmail,
+		BuyerAddress:       buyerAddress,
 	}
 	billCreate, err := service.repo.Create(&bill)
 	if err != nil {
 		return nil, err
 	}
+	for _, assetId := range assetIds {
+		billAsset := entity.BillAsset{
+			BillId:  bill.Id,
+			AssetId: assetId,
+		}
+		err := service.repo.AddAssetsToBill(&billAsset)
+		if err != nil {
+			return nil, err
+		}
+	}
 	BillGet, err := service.repo.GetByBillNumber(billCreate.BillNumber)
-	return BillGet, err
+	if err != nil {
+		return nil, err
+	}
+	return BillGet, nil
 }
 
 func (service *BillsService) GetByBillNumber(billNumber string) (*entity.Bill, error) {

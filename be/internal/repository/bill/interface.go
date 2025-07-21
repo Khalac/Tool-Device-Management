@@ -14,4 +14,5 @@ type BillsRepository interface {
 	GetAllBillOfMonth(time time.Time, companyId int64) ([]*entity.Bill, error)
 	GetAllBillUnpaid(companyId int64) ([]*entity.Bill, error)
 	UpdatePaid(billNumberStr string) error
+	AddAssetsToBill(*entity.BillAsset) error
 }

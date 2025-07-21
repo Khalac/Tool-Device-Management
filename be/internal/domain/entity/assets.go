@@ -29,4 +29,5 @@ type Assets struct {
 	Category   Categories  `gorm:"foreignKey:CategoryId;references:Id"`
 	Department Departments `gorm:"foreignKey:DepartmentId;references:Id"`
 	OnwerUser  *Users      `gorm:"foreignKey:Owner;references:Id"`
+	BillAssets []BillAsset `gorm:"foreignKey:AssetId;references:Id"`
 }

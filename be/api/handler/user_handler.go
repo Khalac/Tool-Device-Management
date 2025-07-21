@@ -472,8 +472,8 @@ func (h *UserHandler) UpdateRoleUser(c *gin.Context) {
 }
 
 // Role godoc
-// @Summary      Get all user role employee by department_id
-// @Description  Get all user role employee by department_id
+// @Summary      Get users by department_id for each role
+// @Description  Get users by department_id for each role
 // @Tags         Users
 // @Accept       json
 // @Produce      json

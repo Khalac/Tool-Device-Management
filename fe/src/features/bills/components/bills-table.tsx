@@ -122,21 +122,27 @@ export const BillsTable = ({ bills, isLoading, onStatusChange }: BillsTableProps
     }
   }
 
-  const getAssetName = (bill: BillType) => {
-    if (bill.assets?.assetName) {
-      return bill.assets.assetName
+  const getBuyerName = (bill: BillType) => {
+    if (bill.buyer?.buyerName) {
+      return bill.buyer.buyerName
     }
     return 'Unknown Asset'
   }
 
-  const getCategoryName = (bill: BillType) => {
-    if (bill.assets?.category?.categoryName) {
-      return bill.assets.category.categoryName
+  const getAssetCount = (bill: BillType) => {
+    if (Array.isArray(bill.assets)) {
+      return bill.assets.length
     }
-    return 'No Category'
+    if (bill.assets) {
+      return 1
+    }
+    return 0
   }
 
   const getAssetCost = (bill: BillType) => {
+    if (Array.isArray(bill.assets)) {
+      return bill.assets.reduce((total, asset) => total + (asset.cost || 0), 0)
+    }
     if (bill.assets?.cost !== undefined && bill.assets.cost !== null) {
       return bill.assets.cost
     }
@@ -173,21 +179,31 @@ export const BillsTable = ({ bills, isLoading, onStatusChange }: BillsTableProps
       cell: ({ row }: any) => <div className='font-medium'>{row.original.billNumber || `BILL-${row.original.id}`}</div>,
     },
     {
-      accessorKey: 'assets.assetName',
-      header: 'Asset Name',
+      accessorKey: 'assets.buyerName',
+      header: 'Buyer Name',
       cell: ({ row }: any) => (
         <div
           className='max-w-[150px] truncate font-medium'
-          title={getAssetName(row.original)}
+          title={getBuyerName(row.original)}
         >
-          {getAssetName(row.original)}
+          {getBuyerName(row.original)}
         </div>
       ),
     },
     {
-      accessorKey: 'assets.category.categoryName',
-      header: 'Category',
-      cell: ({ row }: any) => <Badge variant='outline'>{getCategoryName(row.original)}</Badge>,
+      accessorKey: 'assets.totalCount',
+      header: 'Total Count',
+      cell: ({ row }: any) => {
+        const count = getAssetCount(row.original)
+        return (
+          <Badge
+            variant='outline'
+            className='border-none text-sm'
+          >
+            {count} {count === 1 ? 'Asset' : 'Assets'}
+          </Badge>
+        )
+      },
     },
     {
       accessorKey: 'description',

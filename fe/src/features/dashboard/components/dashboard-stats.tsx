@@ -13,6 +13,7 @@ import {
   X,
   StopCircle,
   Laptop,
+  FileText,
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -68,7 +69,10 @@ export const DashboardStats = ({
         <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
           <Card>
             <CardContent className='p-3 sm:p-4'>
-              <div className='text-muted-foreground text-xs font-medium sm:text-sm'>No Assets Available</div>
+              <div className='text-muted-foreground flex items-center gap-2 text-xs font-medium sm:text-sm'>
+                <FileText className='h-4 w-4 text-gray-400' />
+                No Assets Available
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -76,18 +80,21 @@ export const DashboardStats = ({
         <div className='grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2'>
           <Card>
             <CardHeader className='pb-3 sm:pb-6'>
-              <CardTitle className='text-base text-sky-700 sm:text-lg'>
-                <div className='flex items-center gap-2 text-sky-700'>
-                  <PieChart className='h-5 w-5 text-sky-700' />
+              <CardTitle className='text-base sm:text-lg'>
+                <div className='flex items-center gap-2'>
+                  <PieChart className='h-5 w-5' />
                   Asset Status Distribution
                 </div>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className='text-muted-foreground flex h-[250px] items-center justify-center sm:h-[300px]'>
-                <div className='text-center'>
-                  <p className='text-sm font-medium sm:text-lg'>No results.</p>
-                  <p className='text-xs sm:text-sm'>Try adjusting your filters or create a new asset.</p>
+                <div className='flex flex-col items-center justify-center py-12'>
+                  <FileText className='h-12 w-12 text-gray-400' />
+                  <h3 className='mt-4 text-lg font-semibold text-gray-900 dark:text-gray-100'>No data available</h3>
+                  <p className='mt-2 text-gray-600 dark:text-gray-400'>
+                    Try adjusting your filters to see more results.
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -104,9 +111,12 @@ export const DashboardStats = ({
             </CardHeader>
             <CardContent>
               <div className='text-muted-foreground flex h-[250px] items-center justify-center sm:h-[300px]'>
-                <div className='text-center'>
-                  <p className='text-sm font-medium sm:text-lg'>No assets found.</p>
-                  <p className='text-xs sm:text-sm'>Assets will appear here once available.</p>
+                <div className='flex flex-col items-center justify-center py-12'>
+                  <FileText className='h-12 w-12 text-gray-400' />
+                  <h3 className='mt-4 text-lg font-semibold text-gray-900 dark:text-gray-100'>No data available</h3>
+                  <p className='mt-2 text-gray-600 dark:text-gray-400'>
+                    Try adjusting your filters to see more results.
+                  </p>
                 </div>
               </div>
             </CardContent>

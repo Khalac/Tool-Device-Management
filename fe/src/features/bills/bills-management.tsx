@@ -62,15 +62,21 @@ export const BillsManagement = () => {
 
       const billsWithCompleteData = await Promise.all(
         billsData.map(async (bill: any) => {
-          let assetData = bill.asset
+          let assetsData = bill.assets || []
 
-          if (!assetData && bill.assetId) {
+          if (!Array.isArray(assetsData) && bill.asset) {
+            assetsData = [bill.asset]
+          }
+
+          if (bill.assetId && (!assetsData || assetsData.length === 0)) {
             try {
-              const assetResponse = await tryCatch(getAssetInformation(bill.assetId.toString()))
-              if (!assetResponse.error && assetResponse.data?.data) {
-                assetData = assetResponse.data.data
-                console.log('Fetched asset data for bill:', bill.id, assetData)
-              }
+              const assetIds = Array.isArray(bill.assetId) ? bill.assetId : [bill.assetId]
+              const assetPromises = assetIds.map(async (id: string) => {
+                const assetResponse = await tryCatch(getAssetInformation(id.toString()))
+                return assetResponse.error ? null : assetResponse.data?.data
+              })
+              const fetchedAssets = await Promise.all(assetPromises)
+              assetsData = fetchedAssets.filter(Boolean)
             } catch (error) {
               console.error('Failed to fetch asset details:', error)
             }
@@ -80,16 +86,23 @@ export const BillsManagement = () => {
 
           return {
             ...bill,
-            statusBill: bill.statusBill || 'Unpaid' || 'Paid',
+            statusBill: bill.statusBill || 'Unpaid',
             createdAt: bill.createdAt || new Date().toISOString(),
             updatedAt: bill.updatedAt || new Date().toISOString(),
-            asset: assetData,
+            assets: assetsData,
+
+            asset: Array.isArray(assetsData) && assetsData.length > 0 ? assetsData[0] : null,
             creator: {
               id: userInfo.id,
               fullName: userInfo.fullName,
               email: userInfo.email,
               avatar: userInfo.avatar,
             },
+
+            buyerName: bill.buyerName || 'N/A',
+            buyerEmail: bill.buyerEmail || 'N/A',
+            buyerPhone: bill.buyerPhone || 'N/A',
+            buyerAddress: bill.buyerAddress || 'N/A',
           }
         })
       )
@@ -104,6 +117,7 @@ export const BillsManagement = () => {
   useEffect(() => {
     fetchBills()
   }, [debouncedFilters])
+
   useEffect(() => {
     const params: any = {}
     if (filters.billNumber) params.billNumber = filters.billNumber
@@ -111,6 +125,7 @@ export const BillsManagement = () => {
     if (filters.statusBill) params.statusBill = filters.statusBill
     setSearchParams(params)
   }, [filters])
+
   const handleResetFilters = () => {
     setFilters({
       billNumber: '',
@@ -162,24 +177,40 @@ export const BillsManagement = () => {
       return
     }
 
-    const exportData = bills.map((bill) => ({
-      billNumber: bill.billNumber,
-      assetName: bill.assets?.assetName || 'N/A',
-      description: bill.description,
-      cost: bill.assets?.cost || bill.amount || 0,
-      statusBill: bill.statusBill,
-      categoryName: bill.assets?.category?.categoryName || 'N/A',
-      createdBy: bill.creator?.fullName || 'Unknown',
-      createdAt: new Date(bill.createAt).toLocaleDateString(),
-    }))
+    const exportData = bills.map((bill) => {
+      const assets = Array.isArray(bill.assets) ? bill.assets : bill.assets ? [bill.assets] : []
+      const assetNames = assets.map((asset) => asset?.assetName || 'N/A').join('; ')
+      const totalCost = assets.reduce((total, asset) => total + (asset?.cost || 0), 0)
+      const categories = assets.map((asset) => asset?.category?.categoryName || 'N/A').join('; ')
+
+      return {
+        billNumber: bill.billNumber,
+        buyerName: bill.buyer?.buyerName || 'N/A',
+        buyerEmail: bill.buyer?.buyerEmail || 'N/A',
+        buyerPhone: bill.buyer?.buyerPhone || 'N/A',
+        buyerAddress: bill.buyer?.buyerAddress || 'N/A',
+        assetNames: assetNames,
+        assetCount: assets.length,
+        description: bill.description,
+        totalCost: totalCost || bill.amount || 0,
+        statusBill: bill.statusBill,
+        categories: categories,
+        createdBy: bill.creator?.fullName || 'Unknown',
+        createdAt: new Date(bill.createAt || bill.createAt).toLocaleDateString(),
+      }
+    })
 
     const headers = [
       'Bill Number',
-      'Asset Name',
+      'Buyer Name',
+      'Buyer Email',
+      'Buyer Phone',
+      'Asset Names',
+      'Asset Count',
       'Description',
-      'Cost',
+      'Total Cost',
       'Status',
-      'Category',
+      'Categories',
       'Created By',
       'Created Date',
     ]
@@ -189,11 +220,15 @@ export const BillsManagement = () => {
       ...exportData.map((bill) =>
         [
           `"${bill.billNumber}"`,
-          `"${bill.assetName}"`,
+          `"${bill.buyerName}"`,
+          `"${bill.buyerEmail}"`,
+          `"${bill.buyerPhone}"`,
+          `"${bill.assetNames}"`,
+          bill.assetCount,
           `"${bill.description}"`,
-          bill.cost,
+          bill.totalCost,
           `"${bill.statusBill}"`,
-          `"${bill.categoryName}"`,
+          `"${bill.categories}"`,
           `"${bill.createdBy}"`,
           bill.createdAt,
         ].join(',')
@@ -214,27 +249,63 @@ export const BillsManagement = () => {
     toast.success('Monthly report exported successfully')
   }
 
-  const totalCost = bills.reduce((sum, bill) => sum + (bill.assets?.cost || bill.amount || 0), 0)
+  const totalCost = bills.reduce((sum, bill) => {
+    const assets = Array.isArray(bill.assets) ? bill.assets : bill.assets ? [bill.assets] : []
+    const billCost = assets.reduce((total, asset) => total + (asset?.cost || 0), 0) || bill.amount || 0
+    return sum + billCost
+  }, 0)
+
   const unpaidCount = bills.filter((bill) => bill.statusBill === 'Unpaid').length
   const paidCount = bills.filter((bill) => bill.statusBill === 'Paid').length
-  const highestBill = bills.length
-    ? bills.reduce((max, bill) =>
-        (bill.assets?.cost || bill.amount || 0) > (max.assets?.cost || max.amount || 0) ? bill : max
-      )
-    : null
 
-  const uniqueCategories = Array.from(new Set(bills.map((bill) => bill.assets?.category?.categoryName).filter(Boolean)))
+  const highestBill = bills.length
+    ? bills.reduce((max, bill) => {
+        const maxAssets = Array.isArray(max.assets) ? max.assets : max.assets ? [max.assets] : []
+        const maxCost = maxAssets.reduce((total, asset) => total + (asset?.cost || 0), 0) || max.amount || 0
+
+        const billAssets = Array.isArray(bill.assets) ? bill.assets : bill.assets ? [bill.assets] : []
+        const billCost = billAssets.reduce((total, asset) => total + (asset?.cost || 0), 0) || bill.amount || 0
+
+        return billCost > maxCost ? bill : max
+      })
+    : null
 
   const lowestBill = bills.length
-    ? bills.reduce((min, bill) =>
-        (bill.assets?.cost || bill.amount || 0) < (min.assets?.cost || min.amount || 0) ? bill : min
-      )
+    ? bills.reduce((min, bill) => {
+        const minAssets = Array.isArray(min.assets) ? min.assets : min.assets ? [min.assets] : []
+        const minCost = minAssets.reduce((total, asset) => total + (asset?.cost || 0), 0) || min.amount || 0
+
+        const billAssets = Array.isArray(bill.assets) ? bill.assets : bill.assets ? [bill.assets] : []
+        const billCost = billAssets.reduce((total, asset) => total + (asset?.cost || 0), 0) || bill.amount || 0
+
+        return billCost < minCost ? bill : min
+      })
     : null
+
+  const uniqueCategories = Array.from(
+    new Set(
+      bills.flatMap((bill) => {
+        const assets = Array.isArray(bill.assets) ? bill.assets : bill.assets ? [bill.assets] : []
+        return assets.map((asset) => asset?.category?.categoryName).filter(Boolean)
+      })
+    )
+  )
+
   const handleBillUpdated = (updatedBillNumber: string, billId: number, newStatus: 'Unpaid' | 'Paid') => {
     console.log('🚀 ~ handleBillUpdated ~ billId:', billId)
     setBills((currentBills) =>
       currentBills.map((bill) => (bill.billNumber === updatedBillNumber ? { ...bill, statusBill: newStatus } : bill))
     )
+  }
+
+  const getBillTotalCost = (bill: BillType) => {
+    const assets = Array.isArray(bill.assets) ? bill.assets : bill.assets ? [bill.assets] : []
+    return assets.reduce((total, asset) => total + (asset?.cost || 0), 0) || bill.amount || 0
+  }
+
+  const getBillAssetNames = (bill: BillType) => {
+    const assets = Array.isArray(bill.assets) ? bill.assets : bill.assets ? [bill.assets] : []
+    return assets.map((asset) => asset?.assetName || 'N/A').join(', ') || 'N/A'
   }
 
   return (
@@ -281,11 +352,12 @@ export const BillsManagement = () => {
           <CardContent>
             <div className='text-2xl font-bold text-cyan-600 dark:text-cyan-400'>{bills.length}</div>
             <p className='text-muted-foreground truncate text-xs'>
-              {bills.length > 0 ? `${((bills.length / bills.length) * 100).toFixed(1)}% of total bills` : 'No bills'}
+              {bills.length > 0 ? `Total active bills in system` : 'No bills'}
             </p>
           </CardContent>
           <div className='absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-cyan-500 to-cyan-600' />
         </Card>
+
         <Card className='relative gap-0 overflow-hidden'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-muted-foreground text-sm font-medium'>Total Value</CardTitle>
@@ -295,9 +367,7 @@ export const BillsManagement = () => {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold text-cyan-600 dark:text-cyan-400'>{formatCurrency(totalCost)}</div>
-            <p className='text-muted-foreground truncate text-xs'>
-              Increased ${formatCurrency(totalCost)} compared to last month
-            </p>
+            <p className='text-muted-foreground truncate text-xs'>Combined value of all bills</p>
           </CardContent>
           <div className='absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-cyan-500 to-cyan-600' />
         </Card>
@@ -343,10 +413,14 @@ export const BillsManagement = () => {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold text-purple-600'>{uniqueCategories.length}</div>
-            <p className='text-muted-foreground truncate text-xs'>{uniqueCategories.join(', ') || 'N/A'}</p>
+            <p className='text-muted-foreground truncate text-xs'>
+              {uniqueCategories.slice(0, 2).join(', ') || 'N/A'}
+              {uniqueCategories.length > 2 && '...'}
+            </p>
           </CardContent>
           <div className='absolute bottom-0 left-0 h-1 w-full bg-purple-500' />
         </Card>
+
         <Card className='relative gap-0 overflow-hidden'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-muted-foreground text-sm font-medium'>Highest Bill</CardTitle>
@@ -356,10 +430,10 @@ export const BillsManagement = () => {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold text-orange-600'>
-              {highestBill ? `$${(highestBill.assets?.cost || highestBill.amount || 0).toLocaleString()}` : '--'}
+              {highestBill ? formatCurrency(getBillTotalCost(highestBill)) : '--'}
             </div>
             <p className='text-muted-foreground truncate text-xs'>
-              {highestBill?.assets?.assetName || highestBill?.assets?.assetName || 'N/A'}
+              {highestBill ? getBillAssetNames(highestBill) : 'N/A'}
             </p>
           </CardContent>
           <div className='absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-orange-500 to-orange-600' />
@@ -374,10 +448,10 @@ export const BillsManagement = () => {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold text-yellow-600'>
-              {lowestBill ? `$${(lowestBill.assets?.cost || lowestBill.amount || 0).toLocaleString()}` : '--'}
+              {lowestBill ? formatCurrency(getBillTotalCost(lowestBill)) : '--'}
             </div>
             <p className='text-muted-foreground truncate text-xs'>
-              {lowestBill?.assets?.assetName || lowestBill?.assets?.assetName || 'N/A'}
+              {lowestBill ? getBillAssetNames(lowestBill) : 'N/A'}
             </p>
           </CardContent>
           <div className='absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-yellow-500 to-yellow-600' />

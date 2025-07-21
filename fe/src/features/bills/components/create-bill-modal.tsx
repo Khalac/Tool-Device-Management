@@ -1,56 +1,63 @@
-import { useState, useEffect, useRef } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useState, useRef, useEffect } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
   Button,
+  Input,
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Input,
-  Label,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  Badge,
 } from '@/components/ui'
-import { Plus, Receipt, File, Image, X, Undo } from 'lucide-react'
-import { createBill } from '../api/create-bill'
-import { getAllAssets } from '@/features/assets/api/get-all-assets'
+import { getAllAssets } from '@/features/assets/api'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { createBillSchema, type CreateBillFormType } from '../model/create-bill-schema'
-import type { BillType, CreateBillRequest } from '../model/bill-types'
+import type { BillType } from '../model/bill-types'
+import { createBill } from '../api'
 import { tryCatch } from '@/utils'
 import { toast } from 'sonner'
+import {
+  Plus,
+  Receipt,
+  User,
+  Phone,
+  Mail,
+  MapPin,
+  File,
+  Image,
+  X,
+  ChevronDown,
+  Package,
+  ImageIcon,
+  FileText,
+  CreditCard,
+  Paperclip,
+  Check,
+  Undo,
+} from 'lucide-react'
 import Cookies from 'js-cookie'
-import { useAppSelector } from '@/hooks'
 
 interface CreateBillModalProps {
   onBillCreated: (bill: BillType) => void
 }
 
-interface AssetWithCategory {
-  id: string
-  assetName: string
-  cost: number
-  status: 'New' | 'In Use' | 'Under Maintenance' | 'Retired' | 'Disposed'
-  category: {
-    id: number
-    categoryName: string
-  }
-  department: {
-    id: number
-    departmentName: string
-  }
-}
-
 export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
   const [open, setOpen] = useState(false)
-  const [assets, setAssets] = useState<AssetWithCategory[]>([])
-  const [isLoading, setIsLoading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [assets, setAssets] = useState<any[]>([])
+  const [selectedAssets, setSelectedAssets] = useState<string[]>([])
   const [selectedFiles, setSelectedFiles] = useState<{
     fileAttachmentBill?: File
     imageUploadBill?: File
@@ -64,143 +71,185 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
     handleSubmit,
     formState: { errors },
     setValue,
-    watch,
     reset,
+    clearErrors,
+    trigger,
   } = useForm<CreateBillFormType>({
     resolver: zodResolver(createBillSchema),
     defaultValues: {
-      assetId: '',
-      description: '',
       statusBill: 'Unpaid',
-      fileAttachmentBill: '',
-      imageUploadBill: '',
     },
   })
-
-  const currentUser = useAppSelector((state) => state.auth.user)
-
-  const getCurrentUserId = () => {
-    const id = Cookies.get('id') || currentUser.id
-    return parseInt(id) || parseInt(currentUser.id) || 1
-  }
-
-  useEffect(() => {
-    if (open) {
-      const fetchData = async () => {
-        setIsLoading(true)
-        try {
-          const response = await tryCatch(getAllAssets())
-          console.log('Assets response:', response)
-
-          if (!response.error && response.data?.data) {
-            const mappedAssets = response.data.data.map((asset: any) => ({
-              id: asset.id.toString(),
-              assetName: asset.assetName,
-              cost: asset.cost || 0,
-              status: asset.status || 'New',
-              category: asset.category || { id: 0, categoryName: 'No Category' },
-              department: asset.department || { id: 0, departmentName: 'No Department' },
-            }))
-            setAssets(mappedAssets)
-          } else {
-            console.error('Failed to fetch assets:', response.error)
-            toast.error('Failed to fetch assets')
-          }
-        } catch (error) {
-          console.error('Assets fetch error:', error)
-          toast.error('Failed to fetch assets')
-        }
-        setIsLoading(false)
-      }
-      fetchData()
-    }
-  }, [open])
 
   const statusOptions = [
     { value: 'Unpaid', label: 'Unpaid' },
     { value: 'Paid', label: 'Paid' },
   ]
 
-  const selectedAsset = watch('assetId')
-  useEffect(() => {
-    if (selectedAsset) {
-      const asset = assets.find((a) => a.id === selectedAsset)
-      console.log('🚀 ~ useEffect ~ asset:', asset)
-    }
-  }, [selectedAsset, assets, setValue])
+  const getCurrentUserId = () => {
+    return parseInt(Cookies.get('id') || '1')
+  }
 
-  const selectedAssetData = selectedAsset ? assets.find((a) => a.id === selectedAsset) : null
-  console.log('🚀 ~ CreateBillModal ~ selectedAssetData:', selectedAssetData?.status)
-
-  const handleFileUpload = (type: 'fileAttachmentBill' | 'imageUploadBill', file: File | null) => {
-    if (file) {
-      setSelectedFiles((prev) => ({ ...prev, [type]: file }))
-      setValue(type, file)
+  const fetchAssets = async () => {
+    setIsLoading(true)
+    const response = await tryCatch(getAllAssets())
+    if (response.error) {
+      toast.error('Failed to fetch assets')
     } else {
-      setSelectedFiles((prev) => {
-        const newFiles = { ...prev }
-        delete newFiles[type]
-        return newFiles
-      })
-      setValue(type, '')
+      setAssets(response.data?.data || [])
+    }
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    if (open) {
+      fetchAssets()
+    }
+  }, [open])
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen)
+    if (!isOpen) {
+      reset()
+      setSelectedFiles({})
+      setSelectedAssets([])
+      clearErrors()
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+      if (imageInputRef.current) {
+        imageInputRef.current.value = ''
+      }
     }
   }
 
-  const removeFile = (type: 'fileAttachmentBill' | 'imageUploadBill') => {
-    handleFileUpload(type, null)
-    if (type === 'fileAttachmentBill' && fileInputRef.current) {
+  const handleAssetSelect = async (assetId: string) => {
+    if (!selectedAssets.includes(assetId)) {
+      const newSelectedAssets = [...selectedAssets, assetId]
+      setSelectedAssets(newSelectedAssets)
+
+      setValue('assetId', newSelectedAssets)
+      clearErrors('assetId')
+
+      await trigger('assetId')
+    }
+  }
+
+  const handleRemoveAsset = async (assetId: string) => {
+    const newSelectedAssets = selectedAssets.filter((id) => id !== assetId)
+    setSelectedAssets(newSelectedAssets)
+
+    setValue('assetId', newSelectedAssets)
+
+    if (newSelectedAssets.length > 0) {
+      clearErrors('assetId')
+    }
+
+    await trigger('assetId')
+  }
+
+  const getSelectedAssetDetails = () => {
+    return assets.filter((asset) => selectedAssets.includes(asset.id.toString()))
+  }
+
+  const getAvailableAssets = () => {
+    return assets.filter((asset) => !selectedAssets.includes(asset.id.toString()))
+  }
+
+  const getTotalAmount = () => {
+    return getSelectedAssetDetails().reduce((total, asset) => {
+      return total + (asset?.cost || 0)
+    }, 0)
+  }
+
+  const getAssetStatusColor = (status: string) => {
+    const colors = {
+      New: 'bg-green-100 text-green-800',
+      'In Use': 'bg-blue-100 text-blue-800',
+      'Under Maintenance': 'bg-amber-100 text-amber-800',
+      Disposed: 'bg-red-100 text-red-800',
+    } as const
+    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800'
+  }
+
+  const AssetImage = ({ asset, size = 'sm' }: { asset: any; size?: 'sm' | 'md' }) => {
+    const sizeClasses = {
+      sm: 'w-6 h-6 object-cover',
+      md: 'w-8 h-8 object-cover',
+    }
+
+    const imageUrl = asset.imageUpload || asset.fileAttachment
+
+    return (
+      <div className={`${sizeClasses[size]} flex-shrink-0 overflow-hidden rounded border bg-gray-100`}>
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={asset.assetName || 'Asset'}
+            className='h-full w-full object-cover'
+          />
+        ) : null}
+        <div
+          className={`flex h-full w-full items-center justify-center bg-gray-200 ${imageUrl ? 'hidden' : 'flex'}`}
+          style={imageUrl ? { display: 'none' } : {}}
+        >
+          <ImageIcon className='h-4 w-4 text-gray-400' />
+        </div>
+      </div>
+    )
+  }
+
+  const handleFileUpload = (field: 'fileAttachmentBill' | 'imageUploadBill', file: File | null) => {
+    setSelectedFiles((prev) => ({
+      ...prev,
+      [field]: file || undefined,
+    }))
+  }
+
+  const removeFile = (field: 'fileAttachmentBill' | 'imageUploadBill') => {
+    setSelectedFiles((prev) => {
+      const newFiles = { ...prev }
+      delete newFiles[field]
+      return newFiles
+    })
+
+    if (field === 'fileAttachmentBill' && fileInputRef.current) {
       fileInputRef.current.value = ''
     }
-    if (type === 'imageUploadBill' && imageInputRef.current) {
+    if (field === 'imageUploadBill' && imageInputRef.current) {
       imageInputRef.current.value = ''
     }
   }
 
-  const getAssetStatusColor = (status: 'New' | 'In Use' | 'Under Maintenance' | 'Retired' | 'Disposed') => {
-    const colors = {
-      New: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      'In Use': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-      'Under Maintenance': 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
-      Retired: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-      Disposed: 'bg-red-100 text-red-800',
-    } as const
-    return colors[status as keyof typeof colors] || colors.New
-  }
-  console.log('🚀 ~ getAssetStatusColor ~ getAssetStatusColor:', getAssetStatusColor)
-
   const onSubmit = async (data: CreateBillFormType) => {
     console.log('🚀 ~ onSubmit ~ data:', data)
+    console.log('🚀 ~ selectedAssets:', selectedAssets)
+
+    if (selectedAssets.length === 0) {
+      toast.error('Please select at least one asset')
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
-      const selectedAssetData = assets.find((a) => a.id === data.assetId)
-
-      if (!selectedAssetData) {
-        toast.error('Please select a valid asset')
-        setIsSubmitting(false)
-        return
-      }
-
       const currentUserId = getCurrentUserId()
       console.log('🚀 ~ onSubmit ~ currentUserId:', currentUserId)
 
-      const formValues: CreateBillRequest = {
-        assetId: parseInt(data.assetId, 10),
-        description: data.description,
-        statusBill: data.statusBill,
-        fileAttachmentBill: selectedFiles.fileAttachmentBill || undefined,
-        imageUploadBill: selectedFiles.imageUploadBill || undefined,
-      }
-      console.log('🚀 ~ onSubmit ~ formValues:', formValues)
-
       const formData = new FormData()
 
-      formData.append('assetId', parseInt(data.assetId).toString())
+      selectedAssets.forEach((assetId) => {
+        formData.append('assetId', assetId)
+      })
+
+      formData.append('buyerName', data.buyerName.trim())
+      formData.append('buyerPhone', data.buyerPhone.trim())
+      formData.append('buyerEmail', data.buyerEmail.trim())
+      formData.append('buyerAddress', data.buyerAddress.trim())
+
       formData.append('description', data.description.trim())
       formData.append('statusBill', data.statusBill)
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}:`, value)
-      }
 
       if (selectedFiles.fileAttachmentBill) {
         formData.append('file', selectedFiles.fileAttachmentBill)
@@ -217,8 +266,8 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
         const newBill: BillType = {
           id: response.data?.data?.id || Date.now(),
           billNumber: response.data?.data?.billNumber || `BILL-${Date.now()}`,
-          assetId: parseInt(data.assetId),
-          amount: selectedAssetData.cost,
+          assetId: selectedAssets.map((id) => parseInt(id)),
+          amount: getTotalAmount(),
           description: data.description,
           statusBill: data.statusBill,
           companyId: response.data?.data?.companyId || 1,
@@ -227,35 +276,28 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
           updateAt: response.data?.data?.updatedAt || new Date().toISOString(),
           fileAttachmentBill: response.data?.data?.fileAttachmentBill,
           imageUploadBill: response.data?.data?.imageUploadBill,
+          buyer: {
+            buyerName: data.buyerName,
+            buyerPhone: data.buyerPhone,
+            buyerEmail: data.buyerEmail,
+            buyerAddress: data.buyerAddress,
+          },
         }
 
         onBillCreated(newBill)
         setOpen(false)
-        reset()
-        setSelectedFiles({})
         toast.success('Bill created successfully')
       }
     } catch (error) {
       console.error('Unexpected error:', error)
       toast.error('An unexpected error occurred')
+    } finally {
+      setIsSubmitting(false)
     }
-    console.log('🚀 ~ onSubmit ~ data:', data)
-
-    setIsSubmitting(false)
   }
 
   const handleCancel = () => {
-    reset()
-    setSelectedFiles({})
     setOpen(false)
-  }
-
-  const handleOpenChange = (newOpen: boolean) => {
-    if (!newOpen && !isSubmitting) {
-      reset()
-      setSelectedFiles({})
-      setOpen(false)
-    }
   }
 
   return (
@@ -264,19 +306,15 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
       onOpenChange={handleOpenChange}
     >
       <DialogTrigger asChild>
-        <Button
-          className='flex items-center gap-2'
-          onClick={() => setOpen(true)}
-        >
+        <Button className='bg-primary text-primary-foreground hover:bg-primary/90'>
           <Plus className='h-4 w-4' />
           Create Bill
         </Button>
       </DialogTrigger>
-
-      <DialogContent className='max-h-[90vh] !max-w-2xl overflow-y-auto max-[430px]:w-[90%]'>
+      <DialogContent className='max-h-[90vh] max-w-4xl overflow-y-auto'>
         <DialogHeader>
-          <DialogTitle className='text-primary flex items-center text-xl'>
-            <Receipt className='text-primary mr-2 h-5 w-5' />
+          <DialogTitle className='text-primary flex items-center gap-2'>
+            <Receipt className='text-primary h-5 w-5' />
             Create New Bill
           </DialogTitle>
         </DialogHeader>
@@ -285,212 +323,337 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
           onSubmit={handleSubmit(onSubmit)}
           className='space-y-6'
         >
-          <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
-            <div className='space-y-6'>
-              <div className='space-y-2'>
-                <Label htmlFor='assetId'>Select Asset *</Label>
-                <Select
-                  value={watch('assetId')}
-                  onValueChange={(value) => setValue('assetId', value)}
-                  disabled={isLoading}
+          <div className='space-y-4'>
+            <Label className='flex items-center gap-2 text-base font-medium'>
+              <Package className='h-5 w-5' />
+              Select Assets *
+            </Label>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  type='button'
+                  variant='outline'
+                  className='w-full justify-between'
+                  disabled={isLoading || getAvailableAssets().length === 0}
                 >
-                  <SelectTrigger className='h-11 w-full'>
-                    <SelectValue placeholder='Choose an asset to create bill' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {assets.map((asset) => (
-                      <SelectItem
-                        key={asset.id}
-                        value={asset.id}
-                      >
-                        {asset.assetName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {errors.assetId && <p className='text-sm text-red-500'>{errors.assetId.message}</p>}
-              </div>
-              {selectedAssetData && (
-                <div className='bg-background space-y-3'>
-                  <Label className='mb-3'>Asset Information</Label>
-                  <div className='dark:bg-background space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-2.5 dark:border-gray-500'>
-                    <div className='flex items-center justify-between border-b border-gray-200 py-1.5 last:border-b-0 dark:border-gray-500'>
-                      <span className='text-sm font-medium text-gray-700 dark:text-white'>Asset Name:</span>
-                      <span
-                        className='max-w-[160px] truncate text-sm font-medium text-gray-900 dark:text-white'
-                        title={selectedAssetData.assetName}
-                      >
-                        {selectedAssetData.assetName}
-                      </span>
-                    </div>
+                  <span className='flex items-center gap-2'>
+                    <Package className='h-4 w-4' />
+                    {isLoading ? 'Loading assets...' : 'Add Asset'}
+                  </span>
+                  <ChevronDown className='h-4 w-4' />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className='max-h-60 w-[var(--radix-dropdown-menu-trigger-width)] overflow-y-auto'
+                align='start'
+                sideOffset={4}
+              >
+                {getAvailableAssets().length === 0 ? (
+                  <DropdownMenuItem disabled>No available assets</DropdownMenuItem>
+                ) : (
+                  getAvailableAssets().map((asset) => (
+                    <DropdownMenuItem
+                      key={asset.id}
+                      onClick={() => handleAssetSelect(asset.id.toString())}
+                      className='flex cursor-pointer items-start gap-3 p-3 hover:bg-gray-50'
+                    >
+                      <AssetImage
+                        asset={asset}
+                        size='sm'
+                      />
 
-                    <div className='flex items-center justify-between border-b border-gray-200 py-1.5 last:border-b-0 dark:border-gray-500'>
-                      <span className='text-sm font-medium text-gray-700 dark:text-white'>Category:</span>
-                      <span className='text-sm font-medium text-gray-900 dark:text-white'>
-                        {selectedAssetData.category.categoryName}
-                      </span>
-                    </div>
+                      <div className='min-w-0 flex-1'>
+                        <div className='truncate font-medium'>{asset.assetName}</div>
+                        <div className='mt-1 flex items-center gap-2 text-sm text-gray-600'>
+                          <div className='truncate text-sm font-medium text-gray-500'>
+                            {asset.category?.categoryName}
+                          </div>
+                          <Badge
+                            variant='outline'
+                            className={getAssetStatusColor(asset.status)}
+                          >
+                            {asset.status}
+                          </Badge>
+                          <span className='text-sm font-medium'>${asset.cost?.toLocaleString()}</span>
+                        </div>
+                      </div>
+                    </DropdownMenuItem>
+                  ))
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-                    <div className='flex items-center justify-between border-b border-gray-200 py-1.5 last:border-b-0 dark:border-gray-500'>
-                      <span className='text-sm font-medium text-gray-700 dark:text-white'>Department:</span>
-                      <span className='text-sm font-medium text-gray-900 dark:text-white'>
-                        {selectedAssetData.department.departmentName}
-                      </span>
-                    </div>
-                    <div className='flex items-center justify-between border-b border-gray-200 py-1.5 last:border-b-0 dark:border-gray-500'>
-                      <span className='text-sm font-medium text-gray-700 dark:text-white'>Cost:</span>
-                      <span className='text-sm font-semibold text-green-600 dark:text-green-400'>
-                        ${selectedAssetData.cost.toLocaleString()}
-                      </span>
-                    </div>
-                    <div className='flex items-center justify-between py-1.5 dark:border-gray-500'>
-                      <span className='text-sm font-medium text-gray-700 dark:text-white'>Status:</span>
-                      <span
-                        className={`flex items-center justify-center rounded-full px-3 py-0.5 text-xs font-semibold dark:text-white ${getAssetStatusColor(
-                          selectedAssetData.status
-                        )}`}
+            {selectedAssets.length > 0 && (
+              <div className='space-y-3'>
+                <div className='grid gap-2'>
+                  {getSelectedAssetDetails().map((asset) => (
+                    <div
+                      key={asset.id}
+                      className='flex items-center gap-3 rounded-lg border bg-gray-50 p-3'
+                    >
+                      <AssetImage
+                        asset={asset}
+                        size='md'
+                      />
+
+                      <div className='min-w-0 flex-1'>
+                        <div className='truncate font-medium'>{asset.assetName}</div>
+                        <div className='flex items-center gap-2 text-sm text-gray-600'>
+                          <Badge
+                            variant='outline'
+                            className={getAssetStatusColor(asset.status)}
+                          >
+                            {asset.status}
+                          </Badge>
+                          <span className='text-sm font-medium'>${asset.cost?.toLocaleString()}</span>
+                          <span className='text-sm font-medium'>• {asset.category?.categoryName}</span>
+                        </div>
+                      </div>
+
+                      <Button
+                        type='button'
+                        variant='ghost'
+                        size='sm'
+                        onClick={() => handleRemoveAsset(asset.id.toString())}
+                        className='flex-shrink-0 text-red-600 hover:bg-red-50 hover:text-red-800'
                       >
-                        {selectedAssetData.status}
-                      </span>
+                        <X className='h-4 w-4' />
+                      </Button>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              )}
-            </div>
 
-            <div className='space-y-6'>
-              <div className='space-y-2'>
-                <Label htmlFor='description'>Description *</Label>
-                <Input
-                  highlightOnValue={false}
-                  id='description'
-                  placeholder='Enter bill description...'
-                  className='h-9'
-                  {...register('description')}
-                />
-                {errors.description && <p className='text-sm text-red-500'>{errors.description.message}</p>}
+                <div className='rounded-lg bg-blue-50 p-3'>
+                  <p className='text-sm font-medium'>Selected: {selectedAssets.length} asset(s)</p>
+                  <p className='text-sm text-gray-600'>Total Amount: ${getTotalAmount().toLocaleString()}</p>
+                </div>
               </div>
+            )}
+
+            {errors.assetId && <p className='text-sm text-red-600'>{errors.assetId.message}</p>}
+          </div>
+
+          <div className='border-t pt-6'>
+            <h3 className='mb-4 flex items-center gap-2 text-base font-medium'>
+              <User className='h-5 w-5' />
+              Buyer Information
+            </h3>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
               <div className='space-y-2'>
                 <Label
-                  htmlFor='status'
-                  className='mb-3'
+                  htmlFor='buyerName'
+                  className='flex items-center gap-2'
                 >
-                  Bill Status
+                  <User className='h-4 w-4' />
+                  Buyer Name *
+                </Label>
+                <Input
+                  id='buyerName'
+                  {...register('buyerName')}
+                  placeholder='Enter buyer name'
+                  className={errors.buyerName ? 'border-red-500' : ''}
+                />
+                {errors.buyerName && <p className='text-sm text-red-600'>{errors.buyerName.message}</p>}
+              </div>
+
+              <div className='space-y-2'>
+                <Label
+                  htmlFor='buyerPhone'
+                  className='flex items-center gap-2'
+                >
+                  <Phone className='h-4 w-4' />
+                  Phone Number *
+                </Label>
+                <Input
+                  id='buyerPhone'
+                  {...register('buyerPhone')}
+                  placeholder='Enter phone number'
+                  className={errors.buyerPhone ? 'border-red-500' : ''}
+                />
+                {errors.buyerPhone && <p className='text-sm text-red-600'>{errors.buyerPhone.message}</p>}
+              </div>
+
+              <div className='space-y-2'>
+                <Label
+                  htmlFor='buyerEmail'
+                  className='flex items-center gap-2'
+                >
+                  <Mail className='h-4 w-4' />
+                  Email Address *
+                </Label>
+                <Input
+                  id='buyerEmail'
+                  type='email'
+                  {...register('buyerEmail')}
+                  placeholder='Enter email address'
+                  className={errors.buyerEmail ? 'border-red-500' : ''}
+                />
+                {errors.buyerEmail && <p className='text-sm text-red-600'>{errors.buyerEmail.message}</p>}
+              </div>
+
+              <div className='space-y-2'>
+                <Label
+                  htmlFor='buyerAddress'
+                  className='flex items-center gap-2'
+                >
+                  <MapPin className='h-4 w-4' />
+                  Address *
+                </Label>
+                <Input
+                  id='buyerAddress'
+                  {...register('buyerAddress')}
+                  placeholder='Enter full address'
+                  className={`${errors.buyerAddress ? 'border-red-500' : ''} overflow-x-auto`}
+                  style={{ textOverflow: 'ellipsis' }}
+                />
+                {errors.buyerAddress && <p className='text-sm text-red-600'>{errors.buyerAddress.message}</p>}
+              </div>
+            </div>
+          </div>
+
+          <div className='border-t pt-6'>
+            <h3 className='mb-4 flex items-center gap-2 text-base font-medium'>
+              <FileText className='h-5 w-5' />
+              Bill Details
+            </h3>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              <div className='space-y-2'>
+                <Label
+                  htmlFor='description'
+                  className='flex items-center gap-2'
+                >
+                  <FileText className='h-4 w-4' />
+                  Description *
+                </Label>
+                <Input
+                  id='description'
+                  {...register('description')}
+                  placeholder='Enter bill description'
+                  className={`${errors.description ? 'border-red-500' : ''} overflow-x-auto`}
+                  style={{ textOverflow: 'ellipsis' }}
+                />
+                {errors.description && <p className='text-sm text-red-600'>{errors.description.message}</p>}
+              </div>
+
+              <div className='space-y-2'>
+                <Label
+                  htmlFor='statusBill'
+                  className='flex items-center gap-2'
+                >
+                  <CreditCard className='h-4 w-4' />
+                  Payment Status
                 </Label>
                 <Select
-                  value={watch('statusBill')}
-                  onValueChange={(value) => setValue('statusBill', value as any)}
+                  onValueChange={(value) => setValue('statusBill', value as 'Unpaid' | 'Paid')}
+                  defaultValue='Unpaid'
                 >
-                  <SelectTrigger className='h-11 w-full'>
+                  <SelectTrigger className='w-full'>
                     <SelectValue placeholder='Select status' />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className='w-full'>
                     {statusOptions.map((option) => (
                       <SelectItem
                         key={option.value}
                         value={option.value}
+                        className='w-full'
                       >
                         {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                {errors.statusBill && <p className='text-sm text-red-500'>{errors.statusBill.message}</p>}
-              </div>
-              <div className='space-y-4'>
-                <Label>File Attachments (Optional)</Label>
-
-                <div className='space-y-2'>
-                  <div className='flex items-center gap-2'>
-                    <File className='h-4 w-4 text-gray-500 dark:text-white' />
-                    <span className='text-sm font-medium text-gray-700 dark:text-white'>Document</span>
-                  </div>
-
-                  <div className='flex items-center gap-2'>
-                    <Input
-                      ref={fileInputRef}
-                      type='file'
-                      accept='.pdf,.doc,.docx,.txt'
-                      onChange={(e) => {
-                        const file = e.target.files?.[0]
-                        handleFileUpload('fileAttachmentBill', file || null)
-                      }}
-                      className='flex-1'
-                    />
-                    {selectedFiles.fileAttachmentBill && (
-                      <Button
-                        type='button'
-                        variant='outline'
-                        size='sm'
-                        onClick={() => removeFile('fileAttachmentBill')}
-                      >
-                        <X className='h-4 w-4' />
-                      </Button>
-                    )}
-                  </div>
-
-                  {selectedFiles.fileAttachmentBill && (
-                    <p className='text-xs text-gray-600'>Selected: {selectedFiles.fileAttachmentBill.name}</p>
-                  )}
-                </div>
-
-                <div className='space-y-2'>
-                  <div className='flex items-center gap-2'>
-                    <Image className='h-4 w-4 text-gray-500 dark:text-white' />
-                    <span className='text-sm font-medium text-gray-700 dark:text-white'>Image</span>
-                  </div>
-
-                  <div className='flex items-center gap-2'>
-                    <Input
-                      ref={imageInputRef}
-                      type='file'
-                      accept='image/*'
-                      onChange={(e) => {
-                        const file = e.target.files?.[0]
-                        handleFileUpload('imageUploadBill', file || null)
-                      }}
-                      className='flex-1'
-                    />
-                    {selectedFiles.imageUploadBill && (
-                      <Button
-                        type='button'
-                        variant='outline'
-                        size='sm'
-                        onClick={() => removeFile('imageUploadBill')}
-                      >
-                        <X className='h-4 w-4' />
-                      </Button>
-                    )}
-                  </div>
-
-                  {selectedFiles.imageUploadBill && (
-                    <p className='text-xs text-gray-600'>Selected: {selectedFiles.imageUploadBill.name}</p>
-                  )}
-                </div>
               </div>
             </div>
           </div>
 
-          <DialogFooter className='flex gap-2'>
+          <div className='border-t pt-6'>
+            <h3 className='mb-4 flex items-center gap-2 text-base font-semibold'>
+              <Paperclip className='h-5 w-5' />
+              Attachments
+            </h3>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              <div className='space-y-2'>
+                <Label className='flex items-center gap-2'>
+                  <File className='h-4 w-4' />
+                  File Attachment
+                </Label>
+                <div className='flex items-center gap-2'>
+                  <Input
+                    type='file'
+                    ref={fileInputRef}
+                    onChange={(e) => handleFileUpload('fileAttachmentBill', e.target.files?.[0] || null)}
+                    className='flex-1'
+                    accept='.pdf,.doc,.docx,.txt'
+                  />
+                  {selectedFiles.fileAttachmentBill && (
+                    <Button
+                      type='button'
+                      variant='outline'
+                      size='sm'
+                      onClick={() => removeFile('fileAttachmentBill')}
+                    >
+                      <X className='h-4 w-4' />
+                    </Button>
+                  )}
+                </div>
+                {selectedFiles.fileAttachmentBill && (
+                  <p className='text-sm text-green-600'>Selected: {selectedFiles.fileAttachmentBill.name}</p>
+                )}
+              </div>
+
+              <div className='space-y-2'>
+                <Label className='flex items-center gap-2'>
+                  <Image className='h-4 w-4' />
+                  Image Upload
+                </Label>
+                <div className='flex items-center gap-2'>
+                  <Input
+                    type='file'
+                    ref={imageInputRef}
+                    onChange={(e) => handleFileUpload('imageUploadBill', e.target.files?.[0] || null)}
+                    className='flex-1'
+                    accept='image/*'
+                  />
+                  {selectedFiles.imageUploadBill && (
+                    <Button
+                      type='button'
+                      variant='outline'
+                      size='sm'
+                      onClick={() => removeFile('imageUploadBill')}
+                    >
+                      <X className='h-4 w-4' />
+                    </Button>
+                  )}
+                </div>
+                {selectedFiles.imageUploadBill && (
+                  <p className='text-sm text-green-600'>Selected: {selectedFiles.imageUploadBill.name}</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Form Actions */}
+          <div className='flex justify-end gap-3 border-t pt-6'>
             <Button
               type='button'
               variant='outline'
               onClick={handleCancel}
               disabled={isSubmitting}
-              className='border-primary text-primary hover:text-primary/80'
+              className='border-primary text-primary hover:text-primary/80 flex h-9 items-center justify-center gap-2 text-sm font-medium'
             >
               <Undo className='h-4 w-4' />
               Cancel
             </Button>
             <Button
               type='submit'
-              disabled={isSubmitting || isLoading || !selectedAssetData}
-              className='flex items-center gap-2'
+              disabled={isSubmitting}
+              className='bg-primary text-primary-foreground hover:bg-primary/90'
             >
-              <Receipt className='h-4 w-4' />
+              <Check className='h-4 w-4' />
               {isSubmitting ? 'Creating...' : 'Create Bill'}
             </Button>
-          </DialogFooter>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

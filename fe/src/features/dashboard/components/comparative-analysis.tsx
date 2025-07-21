@@ -78,8 +78,8 @@ export const ComparativeAnalysis = ({ comparisonData, className = '' }: Comparat
     <div className={`space-y-4 sm:space-y-6 ${className}`}>
       <Card className='transition-all duration-200 dark:border-gray-700 dark:bg-gray-800/50'>
         <CardHeader>
-          <CardTitle className='flex items-center gap-2 text-lg sm:text-xl dark:text-gray-200'>
-            <GitCompare className='h-5 w-5' />
+          <CardTitle className='text-primary flex items-center gap-2 text-lg sm:text-xl dark:text-gray-200'>
+            <GitCompare className='text-primary h-5 w-5' />
             Period Comparison
           </CardTitle>
         </CardHeader>
@@ -134,9 +134,17 @@ export const ComparativeAnalysis = ({ comparisonData, className = '' }: Comparat
       </Card>
 
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-        <Card className='transition-all duration-200 dark:border-gray-700 dark:bg-gray-800/50'>
+        <Card className='gap-0 transition-all duration-200 dark:border-gray-700 dark:bg-gray-800/50'>
           <CardHeader>
-            <CardTitle className='flex items-center gap-2 text-base sm:text-lg dark:text-gray-200'>
+            <CardTitle
+              className={`flex items-center gap-2 text-base sm:text-lg ${
+                growthRate.assets > 0
+                  ? 'text-green-600 dark:text-green-400'
+                  : growthRate.assets < 0
+                    ? 'text-red-600 dark:text-red-400'
+                    : 'text-gray-800 dark:text-white'
+              }`}
+            >
               {getTrendIcon(growthRate.assets)}
               Asset Growth
             </CardTitle>
@@ -154,9 +162,17 @@ export const ComparativeAnalysis = ({ comparisonData, className = '' }: Comparat
           </CardContent>
         </Card>
 
-        <Card className='transition-all duration-200 dark:border-gray-700 dark:bg-gray-800/50'>
+        <Card className='gap-0 transition-all duration-200 dark:border-gray-700 dark:bg-gray-800/50'>
           <CardHeader>
-            <CardTitle className='flex items-center gap-2 text-base sm:text-lg dark:text-gray-200'>
+            <CardTitle
+              className={`flex items-center gap-2 text-base sm:text-lg ${
+                growthRate.value > 0
+                  ? 'text-green-600 dark:text-green-400'
+                  : growthRate.value < 0
+                    ? 'text-red-600 dark:text-red-400'
+                    : 'text-gray-800 dark:text-white'
+              }`}
+            >
               {getTrendIcon(growthRate.value)}
               Value Growth
             </CardTitle>

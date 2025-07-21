@@ -159,6 +159,9 @@ const ViewAssignmentDetail = () => {
                         <AssignmentAssetImage assignmentDetail={assignmentDetail} />
                         <AssignmentAssetFile assignmentDetail={assignmentDetail} />
                       </div>
+                      <p className='mt-2 text-sm text-gray-600 italic dark:text-gray-400'>
+                        Note: If the asset is under maintenance, it cannot be assigned.
+                      </p>
                     </div>
                     <div className='space-y-8'>
                       <div className='space-y-4'>

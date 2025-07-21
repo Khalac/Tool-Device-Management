@@ -1,4 +1,4 @@
-import { Bell } from 'lucide-react'
+import { BellRing, CheckCheck, Edit, PlusCircle, Shuffle, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
   Button,
@@ -22,7 +22,26 @@ const NumberNotification = () => {
   const [unreadCount, setUnreadCount] = useState(0)
   const [notifications, setNotifications] = useState<NotificationType[]>([])
   const [isPending, setIsPending] = useState(false)
+  const [isMarkingAllRead, setIsMarkingAllRead] = useState(false)
 
+  const getNotificationIcon = (content: string) => {
+    const lowerContent = content.toLowerCase()
+
+    if (lowerContent.includes('created')) {
+      return <PlusCircle className='h-4 w-4 text-green-500' />
+    }
+    if (lowerContent.includes('updated')) {
+      return <Edit className='h-4 w-4 text-blue-500' />
+    }
+    if (lowerContent.includes('deleted') || lowerContent.includes('delete')) {
+      return <Trash2 className='h-4 w-4 text-red-500' />
+    }
+    if (lowerContent.includes('moved to')) {
+      return <Shuffle className='h-4 w-4 text-purple-500' />
+    }
+
+    return <BellRing className='h-4 w-4 text-gray-500' />
+  }
   const getNotifications = async () => {
     setIsPending(true)
     const response = await tryCatch(getAllNotifications())
@@ -30,11 +49,47 @@ const NumberNotification = () => {
       toast.error(response.error.message || 'Failed to fetch notifications')
       return
     }
-    setNotifications(response.data.data)
+    const sortedNotifications = response.data.data.sort((a: NotificationType, b: NotificationType) => {
+      return new Date(b.notifyDate).getTime() - new Date(a.notifyDate).getTime()
+    })
+
+    setNotifications(sortedNotifications)
     setUnreadCount(
-      response.data.data.filter((notification: NotificationType) => notification.status === 'pending').length
+      sortedNotifications.filter((notification: NotificationType) => notification.status === 'pending').length
     )
     setIsPending(false)
+  }
+  const markAllAsRead = async () => {
+    const unreadNotifications = notifications.filter((notification) => notification.status === 'pending')
+
+    if (unreadNotifications.length === 0) {
+      toast.info('All notifications are already read')
+      return
+    }
+
+    setIsMarkingAllRead(true)
+
+    try {
+      const updatePromises = unreadNotifications.map((notification) =>
+        updateReadNotification(notification.id.toString())
+      )
+
+      const results = await Promise.allSettled(updatePromises)
+
+      const failedCount = results.filter((result) => result.status === 'rejected').length
+
+      if (failedCount === 0) {
+        toast.success('All notifications marked as read')
+        await getNotifications()
+      } else {
+        toast.warning(`${unreadNotifications.length - failedCount} notifications marked as read, ${failedCount} failed`)
+        await getNotifications()
+      }
+    } catch (error) {
+      toast.error('Failed to mark notifications as read')
+    } finally {
+      setIsMarkingAllRead(false)
+    }
   }
 
   const clickNotification = async (assetId: string, id: string) => {
@@ -75,7 +130,7 @@ const NumberNotification = () => {
             variant='ghost'
             className='relative'
           >
-            <Bell
+            <BellRing
               strokeWidth={2.5}
               className='text-primary h-12 w-12'
             />
@@ -92,11 +147,32 @@ const NumberNotification = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align='end'
-          className='w-80 p-0'
+          className='w-90 p-0'
         >
           <div className='bg-muted/50 flex items-center justify-between border-b px-4 py-2'>
-            <span className='font-medium'>Notifications</span>
-            {notifications.length > 0 && <span className='text-foreground/100 text-sm'>{unreadCount} unread</span>}
+            <span className='text-primary font-medium'>
+              <div className='flex items-center gap-2'>
+                <BellRing className='h-4 w-4' />
+                Notifications
+              </div>
+            </span>
+
+            {notifications.length > 0 && unreadCount > 0 && (
+              <Button
+                variant='ghost'
+                size='sm'
+                className='hover:bg-accent h-7 px-2 text-xs'
+                onClick={markAllAsRead}
+                disabled={isMarkingAllRead}
+              >
+                {isMarkingAllRead ? (
+                  <LoadingSpinner className='h-3 w-3 animate-spin' />
+                ) : (
+                  <CheckCheck className='h-3 w-3' />
+                )}
+                Mark all read
+              </Button>
+            )}
           </div>
 
           {notifications.length > 0 ? (
@@ -114,6 +190,7 @@ const NumberNotification = () => {
                   )}
                 >
                   <div className='flex items-start gap-2'>
+                    <div className='mt-0.5 flex-shrink-0'>{getNotificationIcon(notification.content)}</div>
                     <div className='flex-1'>
                       <p className={cn('text-sm', notification.status === 'pending' && 'font-medium')}>
                         {notification.content}

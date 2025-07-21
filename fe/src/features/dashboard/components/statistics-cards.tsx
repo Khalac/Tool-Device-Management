@@ -1,19 +1,7 @@
 import { Card, CardContent, CardTitle } from '@/components/ui'
-import {
-  TrendingUp,
-  TrendingDown,
-  DollarSign,
-  Package,
-  AlertTriangle,
-  CheckCircle,
-  Minus,
-  Users,
-  Briefcase,
-  Box,
-  StopCircle,
-} from 'lucide-react'
+import { DollarSign, Package, AlertTriangle, CheckCircle, Users, Briefcase, Box, StopCircle } from 'lucide-react'
 import type { MonthlyStats } from '../model'
-import { formatCurrency, formatNumber, formatPercentage } from '../utils'
+import { formatCurrency, formatNumber } from '../utils'
 
 interface StatisticsCardsProps {
   stats: MonthlyStats
@@ -45,20 +33,12 @@ interface StatisticsCardsProps {
 export const StatisticsCards = ({
   stats,
   assets,
-  showComparison = false,
-  comparisonData,
   previousMonthStats,
   onStatClick,
   onCategoryClick,
   onDepartmentClick,
   currentFilter,
 }: StatisticsCardsProps) => {
-  const getTrendIcon = (rate: number) => {
-    if (rate > 0) return <TrendingUp className='h-3.5 w-3.5 text-green-500 sm:h-4 sm:w-4 dark:text-green-400' />
-    if (rate < 0) return <TrendingDown className='h-3.5 w-3.5 text-red-500 sm:h-4 sm:w-4 dark:text-red-400' />
-    return <Minus className='h-3.5 w-3.5 text-gray-500 sm:h-4 sm:w-4 dark:text-gray-400' />
-  }
-
   const inUseCount = stats.statusDistribution.find((status) => status.status === 'In Use')?.count || 0
   const categoryCount = [...new Set(assets.map((asset) => asset.category.categoryName))]
   const departmentCount = [...new Set(assets.map((asset) => asset.department.departmentName))]
@@ -142,14 +122,6 @@ export const StatisticsCards = ({
               {stats.totalAssets.toString()}
             </div>
             <p className='text-muted-foreground truncate text-xs'>{getTotalAssetsMessage()}</p>
-            {showComparison && comparisonData && (
-              <div className='flex items-center text-xs text-gray-600 dark:text-gray-400'>
-                {getTrendIcon(comparisonData.growthRate)}
-                <span className='ml-1 truncate'>
-                  {formatPercentage(Math.abs(comparisonData.growthRate))} from last period
-                </span>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
@@ -169,15 +141,6 @@ export const StatisticsCards = ({
               {formatCurrency(stats.totalValue)}
             </div>
             <p className='text-muted-foreground truncate text-xs'>{getTotalValueMessage()}</p>
-
-            {showComparison && comparisonData && (
-              <div className='flex items-center text-xs text-gray-600 dark:text-gray-400'>
-                {getTrendIcon(comparisonData.growthRate)}
-                <span className='ml-1 truncate'>
-                  {formatPercentage(Math.abs(comparisonData.growthRate))} from last period
-                </span>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
@@ -204,15 +167,6 @@ export const StatisticsCards = ({
             <p className='text-muted-foreground truncate text-xs'>
               {`${stats.totalAssets > 0 ? ((stats.newAssetsCount / stats.totalAssets) * 100).toFixed(1) : '0.0'}% of total assets`}
             </p>
-
-            {showComparison && comparisonData && (
-              <div className='flex items-center text-xs text-gray-600 dark:text-gray-400'>
-                {getTrendIcon(comparisonData.growthRate)}
-                <span className='ml-1 truncate'>
-                  {formatPercentage(Math.abs(comparisonData.growthRate))} from last period
-                </span>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
@@ -239,15 +193,6 @@ export const StatisticsCards = ({
             <p className='text-muted-foreground truncate text-xs'>
               {`${stats.totalAssets > 0 ? ((inUseCount / stats.totalAssets) * 100).toFixed(1) : '0.0'}% of total assets`}
             </p>
-
-            {showComparison && comparisonData && (
-              <div className='flex items-center text-xs text-gray-600 dark:text-gray-400'>
-                {getTrendIcon(comparisonData.growthRate)}
-                <span className='ml-1 truncate'>
-                  {formatPercentage(Math.abs(comparisonData.growthRate))} from last period
-                </span>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
@@ -274,15 +219,6 @@ export const StatisticsCards = ({
             <p className='text-muted-foreground truncate text-xs'>
               {`${stats.totalAssets > 0 ? ((stats.maintenanceCount / stats.totalAssets) * 100).toFixed(1) : '0.0'}% of total assets`}
             </p>
-
-            {showComparison && comparisonData && (
-              <div className='flex items-center text-xs text-gray-600 dark:text-gray-400'>
-                {getTrendIcon(comparisonData.growthRate)}
-                <span className='ml-1 truncate'>
-                  {formatPercentage(Math.abs(comparisonData.growthRate))} from last period
-                </span>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
@@ -309,15 +245,6 @@ export const StatisticsCards = ({
             <p className='text-muted-foreground truncate text-xs'>
               {`${stats.totalAssets > 0 ? ((stats.retiredAssetsCount / stats.totalAssets) * 100).toFixed(1) : '0.0'}% of total assets`}
             </p>
-
-            {showComparison && comparisonData && (
-              <div className='flex items-center text-xs text-gray-600 dark:text-gray-400'>
-                {getTrendIcon(comparisonData.growthRate)}
-                <span className='ml-1 truncate'>
-                  {formatPercentage(Math.abs(comparisonData.growthRate))} from last period
-                </span>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
@@ -355,15 +282,6 @@ export const StatisticsCards = ({
                 </span>
               ))}
             </div>
-
-            {showComparison && comparisonData && (
-              <div className='flex items-center text-xs text-gray-600 dark:text-gray-400'>
-                {getTrendIcon(comparisonData.growthRate)}
-                <span className='ml-1 truncate'>
-                  {formatPercentage(Math.abs(comparisonData.growthRate))} from last period
-                </span>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>
@@ -401,15 +319,6 @@ export const StatisticsCards = ({
                 </span>
               ))}
             </div>
-
-            {showComparison && comparisonData && (
-              <div className='flex items-center text-xs text-gray-600 dark:text-gray-400'>
-                {getTrendIcon(comparisonData.growthRate)}
-                <span className='ml-1 truncate'>
-                  {formatPercentage(Math.abs(comparisonData.growthRate))} from last period
-                </span>
-              </div>
-            )}
           </div>
         </CardContent>
       </Card>

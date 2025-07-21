@@ -27,7 +27,12 @@ export const TabAllSchedules = ({
     >
       <Card>
         <CardHeader className='pb-2'>
-          <CardTitle className='text-primary text-lg'>All Maintenance Schedules</CardTitle>
+          <CardTitle className='text-primary text-lg'>
+            <div className='flex items-center gap-2'>
+              <Calendar className='h-5 w-5' />
+              All Maintenance Schedules
+            </div>
+          </CardTitle>
           <CardDescription className='text-primary'>
             All assets's information have been scheduled for maintenance
           </CardDescription>

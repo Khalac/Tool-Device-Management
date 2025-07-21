@@ -147,6 +147,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
+                        "format": "int64",
                         "description": "Category ID",
                         "name": "categoryId",
                         "in": "formData",
@@ -154,6 +155,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
+                        "format": "int64",
                         "description": "Department ID",
                         "name": "departmentId",
                         "in": "formData",
@@ -224,11 +226,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
+                        "format": "int64",
                         "name": "companyId",
                         "in": "query"
                     },
                     {
                         "type": "integer",
+                        "format": "int64",
                         "name": "depId",
                         "in": "query"
                     },
@@ -323,6 +327,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
+                        "format": "int64",
                         "name": "companyId",
                         "in": "query"
                     },
@@ -576,6 +581,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
+                        "format": "int64",
                         "description": "Category ID",
                         "name": "categoryId",
                         "in": "formData",
@@ -667,6 +673,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
+                        "format": "int64",
                         "name": "companyId",
                         "in": "query"
                     },
@@ -967,7 +974,11 @@ const docTemplate = `{
                 "summary": "Create bill",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
                         "description": "Asset ID",
                         "name": "assetId",
                         "in": "formData",
@@ -981,7 +992,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Description",
+                        "description": "Paid or Unpaid",
                         "name": "statusBill",
                         "in": "formData",
                         "required": true
@@ -997,6 +1008,34 @@ const docTemplate = `{
                         "description": "Image to upload",
                         "name": "image",
                         "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Buyer Name",
+                        "name": "buyerName",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Buyer Phone",
+                        "name": "buyerPhone",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Buyer Email",
+                        "name": "buyerEmail",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "BuyerAddress",
+                        "name": "buyerAddress",
+                        "in": "formData",
+                        "required": true
                     },
                     {
                         "type": "string",
@@ -1070,6 +1109,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
+                        "format": "int64",
                         "name": "companyId",
                         "in": "query"
                     },
@@ -1987,11 +2027,13 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
+                        "format": "int64",
                         "name": "companyId",
                         "in": "query"
                     },
                     {
                         "type": "integer",
+                        "format": "int64",
                         "name": "depId",
                         "in": "query"
                     },
@@ -2204,7 +2246,7 @@ const docTemplate = `{
                         "JWT": []
                     }
                 ],
-                "description": "Get all user role employee by department_id",
+                "description": "Get users by department_id for each role",
                 "consumes": [
                     "application/json"
                 ],
@@ -2214,7 +2256,7 @@ const docTemplate = `{
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get all user role employee by department_id",
+                "summary": "Get users by department_id for each role",
                 "parameters": [
                     {
                         "type": "string",

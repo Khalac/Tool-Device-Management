@@ -9,9 +9,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"time"
-
-	"github.com/sirupsen/logrus"
 )
 
 func ConvertTCAToStr(TCA map[string]float64) string {
@@ -57,52 +54,51 @@ func ConvertMonthlySummaryToMonthlySummaryRes(MonthlySummary entity.MonthlySumma
 }
 
 func CreateSummary(MonthlySummaryRepo monthlySummary.MonthlySummaryRepository, billRepo bill.BillsRepository, companyRepo company.CompanyRepository) {
-	company, err := companyRepo.GetAllCompany()
-	if err != nil {
-		logrus.Infof("Happen error when create summary at: %v", time.Now())
-		return
-	}
-	time := time.Now()
-	month := time.Month()
-	year := time.Year()
-	for _, c := range company {
-		var totalAmount float64
-		var BillCount int64
-		var AssetCount int64
-		TotalCategoryAmount := make(map[string]float64)
-		bills, err := billRepo.GetAllBillOfMonth(time, c.Id)
-		if err != nil {
-			logrus.Infof("Happen error get bill of company: %v", c.CompanyName)
-			continue
-		}
-		for _, b := range bills {
-			BillCount += 1
-			AssetCount += 1
-			val, ok := TotalCategoryAmount[b.Asset.Category.CategoryName]
-			if ok {
-				TotalCategoryAmount[b.Asset.Category.CategoryName] = (val + b.Asset.Cost)
-			} else {
-				TotalCategoryAmount[b.Asset.Category.CategoryName] = b.Asset.Cost
-			}
-			totalAmount += b.Asset.Cost
-		}
-		TotalCategoryAmountStr := ConvertTCAToStr(TotalCategoryAmount)
+	// company, err := companyRepo.GetAllCompany()
+	// if err != nil {
+	// 	logrus.Infof("Happen error when create summary at: %v", time.Now())
+	// 	return
+	// }
+	// time := time.Now()
+	// month := time.Month()
+	// year := time.Year()
+	// for _, c := range company {
+	// 	var totalAmount float64
+	// 	var BillCount int64
+	// 	var AssetCount int64
+	// 	TotalCategoryAmount := make(map[string]float64)
+	// 	// bills, err := billRepo.GetAllBillOfMonth(time, c.Id)
+	// 	// if err != nil {
+	// 	// 	logrus.Infof("Happen error get bill of company: %v", c.CompanyName)
+	// 	// 	continue
+	// 	// }
+	// 	// for _, b := range bills {
+	// 	// 	BillCount += 1
+	// 	// 	AssetCount += 1
+	// 	// 	// val, ok := TotalCategoryAmount[b.Asset.Category.CategoryName]
+	// 	// 	// if ok {
+	// 	// 	// 	TotalCategoryAmount[b.Asset.Category.CategoryName] = (val + b.Asset.Cost)
+	// 	// 	// } else {
+	// 	// 	// 	TotalCategoryAmount[b.Asset.Category.CategoryName] = b.Asset.Cost
+	// 	// 	// }
+	// 	// 	totalAmount += b.Asset.Cost
+	// 	// }
+	// 	TotalCategoryAmountStr := ConvertTCAToStr(TotalCategoryAmount)
 
-		monthlySummary := entity.MonthlySummary{
-			Month:               int64(month),
-			Year:                int64(year),
-			GeneratedAt:         time,
-			TotalCategoryAmount: TotalCategoryAmountStr,
-			AssetCount:          AssetCount,
-			BillCount:           BillCount,
-			TotalAmount:         totalAmount,
-			CompanyId:           c.Id,
-		}
-		_, err = MonthlySummaryRepo.Create(&monthlySummary)
-		if err != nil {
-			logrus.Infof("Happen error when create summary for company: %v", c.CompanyName)
-			continue
-		}
-	}
-
+	// 	monthlySummary := entity.MonthlySummary{
+	// 		Month:               int64(month),
+	// 		Year:                int64(year),
+	// 		GeneratedAt:         time,
+	// 		TotalCategoryAmount: TotalCategoryAmountStr,
+	// 		AssetCount:          AssetCount,
+	// 		BillCount:           BillCount,
+	// 		TotalAmount:         totalAmount,
+	// 		CompanyId:           c.Id,
+	// 	}
+	// 	_, err = MonthlySummaryRepo.Create(&monthlySummary)
+	// 	if err != nil {
+	// 		logrus.Infof("Happen error when create summary for company: %v", c.CompanyName)
+	// 		continue
+	// 	}
+	// }
 }

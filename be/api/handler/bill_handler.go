@@ -6,7 +6,9 @@ import (
 	service "BE_Manage_device/internal/service/bill"
 	"BE_Manage_device/pkg"
 	"BE_Manage_device/pkg/utils"
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -26,11 +28,15 @@ func NewBillHandler(service *service.BillsService) *BillsHandler {
 // @Tags         Bills
 // @Accept       json
 // @Produce      json
-// @Param assetId formData string true "Asset ID"
+// @Param assetId formData []string true "Asset ID"
 // @Param description formData string false "Description"
-// @Param statusBill formData string true "Description"
+// @Param statusBill formData string true "Paid or Unpaid"
 // @Param file formData file false "File to upload"
 // @Param image formData file false "Image to upload"
+// @Param buyerName formData string true "Buyer Name"
+// @Param buyerPhone formData string true "Buyer Phone"
+// @Param buyerEmail formData string true "Buyer Email"
+// @Param buyerAddress formData string true "BuyerAddress"
 // @param Authorization header string true "Authorization"
 // @Router       /api/bills [POST]
 // @securityDefinitions.apiKey token
@@ -40,19 +46,32 @@ func NewBillHandler(service *service.BillsService) *BillsHandler {
 func (h *BillsHandler) Create(c *gin.Context) {
 	defer pkg.PanicHandler(c)
 	var status string
-	assetIdStr := c.PostForm("assetId")
+	assetIdStrs := c.PostFormArray("assetId")
 	description := c.PostForm("description")
 	statusStr := c.PostForm("statusBill")
-	assetId, err := utils.ParseStrToInt64(assetIdStr)
-	if err != nil {
-		log.Info("Error: ", err.Error())
-		pkg.PanicExeption(constant.InvalidRequest, "Invalid assetId format")
+	buyerName := c.PostForm("buyerName")
+	buyerPhone := c.PostForm("buyerPhone")
+	buyerEmail := c.PostForm("buyerEmail")
+	buyerAddress := c.PostForm("buyerAddress")
+	var assetIds []int64
+	if len(assetIdStrs) == 1 && strings.Contains(assetIdStrs[0], ",") {
+		assetIdStrs = strings.Split(assetIdStrs[0], ",")
 	}
+	for _, idStr := range assetIdStrs {
+		id, err := utils.ParseStrToInt64(idStr)
+		log.Info("Output: ", idStr, "---", assetIdStrs, "---", assetIdStrs[0])
+		if err != nil {
+			log.Info("Error: ", err.Error(), "---", idStr, "---", assetIdStrs, "---", assetIdStrs[0])
+			pkg.PanicExeption(constant.InvalidRequest, "Invalid assetId format")
+		}
+		assetIds = append(assetIds, id)
+	}
+
 	// handler status string
 	if statusStr == "Unpaid" || statusStr == "Paid" {
 		status = statusStr
 	} else {
-		log.Info("Error: ", err.Error())
+		log.Info(fmt.Errorf("Error: %v", statusStr))
 		pkg.PanicExeption(constant.InvalidRequest, "Invalid status format")
 	}
 	file, err := c.FormFile("file")
@@ -65,7 +84,7 @@ func (h *BillsHandler) Create(c *gin.Context) {
 		image = nil
 	}
 	userId := utils.GetUserIdFromContext(c)
-	bill, err := h.service.Create(userId, assetId, description, image, file, status)
+	bill, err := h.service.Create(userId, assetIds, description, image, file, status, buyerName, buyerPhone, buyerEmail, buyerAddress)
 	if err != nil {
 		log.Error("Happened error when create bill. Error", err.Error())
 		pkg.PanicExeption(constant.UnknownError, "Happened error when create bill. Error: "+err.Error())

@@ -274,11 +274,13 @@ paths:
         required: true
         type: string
       - description: Category ID
+        format: int64
         in: formData
         name: categoryId
         required: true
         type: integer
       - description: Department ID
+        format: int64
         in: formData
         name: departmentId
         required: true
@@ -325,10 +327,12 @@ paths:
       - in: query
         name: action
         type: string
-      - in: query
+      - format: int64
+        in: query
         name: companyId
         type: integer
-      - in: query
+      - format: int64
+        in: query
         name: depId
         type: integer
       - in: query
@@ -458,6 +462,7 @@ paths:
         required: true
         type: string
       - description: Category ID
+        format: int64
         in: formData
         name: categoryId
         required: true
@@ -497,7 +502,8 @@ paths:
       - in: query
         name: categoryId
         type: string
-      - in: query
+      - format: int64
+        in: query
         name: companyId
         type: integer
       - in: query
@@ -663,7 +669,8 @@ paths:
       - in: query
         name: assetName
         type: string
-      - in: query
+      - format: int64
+        in: query
         name: companyId
         type: integer
       - in: query
@@ -804,16 +811,19 @@ paths:
       - application/json
       description: Create bill
       parameters:
-      - description: Asset ID
+      - collectionFormat: csv
+        description: Asset ID
         in: formData
+        items:
+          type: string
         name: assetId
         required: true
-        type: string
+        type: array
       - description: Description
         in: formData
         name: description
         type: string
-      - description: Description
+      - description: Paid or Unpaid
         in: formData
         name: statusBill
         required: true
@@ -826,6 +836,26 @@ paths:
         in: formData
         name: image
         type: file
+      - description: Buyer Name
+        in: formData
+        name: buyerName
+        required: true
+        type: string
+      - description: Buyer Phone
+        in: formData
+        name: buyerPhone
+        required: true
+        type: string
+      - description: Buyer Email
+        in: formData
+        name: buyerEmail
+        required: true
+        type: string
+      - description: BuyerAddress
+        in: formData
+        name: buyerAddress
+        required: true
+        type: string
       - description: Authorization
         in: header
         name: Authorization
@@ -917,7 +947,8 @@ paths:
       - in: query
         name: categoryId
         type: string
-      - in: query
+      - format: int64
+        in: query
         name: companyId
         type: integer
       - in: query
@@ -1485,10 +1516,12 @@ paths:
       - application/json
       description: Get all request transfer have permission
       parameters:
-      - in: query
+      - format: int64
+        in: query
         name: companyId
         type: integer
-      - in: query
+      - format: int64
+        in: query
         name: depId
         type: integer
       - in: query
@@ -1638,7 +1671,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get all user role employee by department_id
+      description: Get users by department_id for each role
       parameters:
       - description: department_id
         in: path
@@ -1655,7 +1688,7 @@ paths:
       responses: {}
       security:
       - JWT: []
-      summary: Get all user role employee by department_id
+      summary: Get users by department_id for each role
       tags:
       - Users
   /api/user/forget-password:

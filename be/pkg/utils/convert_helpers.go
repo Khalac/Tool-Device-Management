@@ -231,15 +231,34 @@ func ConvertBillToResponse(bill *entity.Bill) dto.BillResponse {
 	}
 	return dto.BillResponse{
 		BillNumber:         bill.BillNumber,
-		Amount:             bill.Amount,
 		Description:        bill.Description,
 		CreateAt:           bill.CreateAt,
-		Asset:              ConvertAssetToResponse(bill.Asset),
+		Asset:              ConvertBillToAssetsResponse(bill),
 		CreateBy:           ConvertUserToUserResponse(&bill.CreateBy),
 		StatusBill:         bill.StatusBill,
 		FileAttachmentBill: fileAttachmentBill,
 		ImageUploadBill:    imageUploadBill,
+		Buyer:              ConvertBillToBuyerResponse(bill),
 	}
+}
+
+func ConvertBillToBuyerResponse(bill *entity.Bill) dto.BuyerResponse {
+	return dto.BuyerResponse{
+		BuyerName:    bill.BuyerName,
+		BuyerPhone:   bill.BuyerPhone,
+		BuyerEmail:   bill.BuyerEmail,
+		BuyerAddress: bill.BuyerAddress,
+	}
+}
+
+func ConvertBillToAssetsResponse(bill *entity.Bill) []dto.AssetResponse {
+	var assetArrayResponse []dto.AssetResponse
+	for _, billAsset := range bill.BillAssets {
+		asset := billAsset.Asset
+		assetResponse := ConvertAssetToResponse(asset)
+		assetArrayResponse = append(assetArrayResponse, assetResponse)
+	}
+	return assetArrayResponse
 }
 
 func ConvertBillsToResponsesArray(bills []*entity.Bill) []dto.BillResponse {

@@ -29,7 +29,7 @@ func (r *PostgreSQLBillsRepository) Create(bill *entity.Bill) (*entity.Bill, err
 
 func (r *PostgreSQLBillsRepository) GetByBillNumber(billNumber string) (*entity.Bill, error) {
 	var bill entity.Bill
-	result := r.db.Model(entity.Bill{}).Where("bill_number =?", billNumber).Preload("CreateBy").Preload("Asset").Preload("CreateBy.Role").Preload("Asset.Category").Preload("Asset.Department").Preload("Asset.Department.Location").Preload("Asset.OnwerUser").First(&bill)
+	result := r.db.Model(entity.Bill{}).Where("bill_number =?", billNumber).Preload("CreateBy").Preload("BillAssets").Preload("BillAssets.Asset").Preload("CreateBy.Role").Preload("BillAssets.Asset.Category").Preload("BillAssets.Asset.Department").Preload("BillAssets.Asset.Department.Location").Preload("BillAssets.Asset.OnwerUser").First(&bill)
 	return &bill, result.Error
 }
 
@@ -48,17 +48,22 @@ func (r *PostgreSQLBillsRepository) GetAllBillOfMonth(time time.Time, companyId 
 	m := time.Month()
 	first, last := monthInterval(y, m)
 	var bills []*entity.Bill
-	result := r.db.Model(entity.Bill{}).Where("company_id = ?", companyId).Where("create_at >= ? and create_at <= ?", first, last).Preload("Asset").Preload("Asset.Category").Find(&bills)
+	result := r.db.Model(entity.Bill{}).Where("company_id = ?", companyId).Where("create_at >= ? and create_at <= ?", first, last).Preload("BillAssets.Asset").Preload("BillAssets.Asset.Category").Find(&bills)
 	return bills, result.Error
 }
 
 func (r *PostgreSQLBillsRepository) GetAllBillUnpaid(companyId int64) ([]*entity.Bill, error) {
 	var bills []*entity.Bill
-	result := r.db.Model(entity.Bill{}).Where("company_id = ?", companyId).Where("status_bill = ?", "UnPaid").Preload("CreateBy").Preload("Asset").Preload("CreateBy.Role").Preload("Asset.Category").Preload("Asset.Department").Preload("Asset.Department.Location").Preload("Asset.OnwerUser").Find(&bills)
+	result := r.db.Model(entity.Bill{}).Where("company_id = ?", companyId).Where("status_bill = ?", "Unpaid").Preload("CreateBy").Preload("BillAssets.Asset").Preload("CreateBy.Role").Preload("BillAssets.Asset.Category").Preload("BillAssets.Asset.Department").Preload("BillAssets.Asset.Department.Location").Preload("BillAssets.Asset.OnwerUser").Find(&bills)
 	return bills, result.Error
 }
 
 func (r *PostgreSQLBillsRepository) UpdatePaid(billNumberStr string) error {
 	result := r.db.Model(entity.Bill{}).Where("bill_number = ?", billNumberStr).Update("status_bill", "Paid")
+	return result.Error
+}
+
+func (r *PostgreSQLBillsRepository) AddAssetsToBill(billAsset *entity.BillAsset) error {
+	result := r.db.Create(billAsset)
 	return result.Error
 }

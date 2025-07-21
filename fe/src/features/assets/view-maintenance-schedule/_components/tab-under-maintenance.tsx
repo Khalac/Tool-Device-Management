@@ -28,7 +28,12 @@ export const TabUnderMaintenance = ({
     >
       <Card>
         <CardHeader className='pb-2'>
-          <CardTitle className='text-primary text-lg'>Assets Under Maintenance</CardTitle>
+          <CardTitle className='text-primary text-lg'>
+            <div className='flex items-center gap-2'>
+              <Wrench className='h-5 w-5' />
+              Assets Under Maintenance
+            </div>
+          </CardTitle>
           <CardDescription className='text-primary'>Assets are being maintained</CardDescription>
         </CardHeader>
         <CardContent>

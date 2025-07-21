@@ -4,15 +4,21 @@ A modern web application for managing assets, users, departments, and maintenanc
 
 ## 🌟 Features
 
+- **Authentication & Authorization**: Register, forgot password, secure login and role-based access control.
 - **Dashboard**: Overview of asset statistics, recent purchased devices, and quick insights.
 - **Asset Management**: View, create, update, and filter assets with categories, departments, and statuses.
 - **Assignment Management**: Assign assets to users and track assignment history.
 - **Transfer Requests**: Create and manage asset transfer requests between departments.
-- **User Management**: Assign roles and departments to users.
+- **User Management**: Assign roles to users.
 - **Department Management**: Organize users and assets by department.
 - **Maintenance Scheduling**: Plan and track maintenance schedules for assets.
 - **Notifications**: Receive realtime update notifications on assignments, transfers, and maintenance.
-- **Authentication & Authorization**: Secure login and role-based access control.
+- **Export Functionality**: Users can export asset reports and data in multiple formats such as PDF, CSV, and HTML files.
+- **Dark Mode Support**: Users can switch between light and dark themes for better usability.
+- **User Profile Management**: Users can update personal information including uploading avatar and modifying details.
+- **Asset Comparison**: Compare multiple assets within the same category.
+- **Statistical Reports**: Admins can view detailed reports filtered by month and year, and compare data between months.
+- **Billing System**: Admins can create bills after assets are created, view bill details, and print bills.
 
 ## 🚀 Tech Stack
 
@@ -68,17 +74,7 @@ fe/
 
 ## 📜 Future Improvements
 
-`Dark mode and theme customization support.` (Done)
-`User can update their personal information like upload avatar, change information. ` (Done)
-`Enable side-by-side comparison of multiple assets, including specs, costs, and performance ` (Done)
-`Admins can view statistical reports filtered by month and year. ` (Done)
-`Admins can create bills after creating assets, and generate a monthly summary bill for printing at the end of the month. ` (Done)
-`Admin (save records when buy, update,... ) ` (Done)
-`Manager (assign asset to employee) ` (Done)
-`Employee (see assets ,` `assign asset ,` (Done)
-`Admin doesn't have to approve ` (Done)
-`Admin assign asset -> Manager -> Employee` (Done)
-`Employee assign to another employee in the same department` (Done)
-`Improve UI/UX: Form create , Update asset , Assignment Details , button, font, size,....`(Done)
-**Selling multiple products in a single bill** (In-progress)
-**Add the new information such as: proformance, chip, ram,...** (In-progress)
+- **Selling multiple assets in a single bill**
+- **Add new information such as performance, chip, RAM,.. to enable more detailed comparison between assets.**
+- **Manage the remaining quantity of assets in stock.**
+- **Payment Processing: Enable payment functionalities for bills, integrating with payment gateways to automate invoice payments and financial tracking.**

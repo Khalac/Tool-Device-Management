@@ -73,7 +73,7 @@ export const ComparisonTable = ({ assets }: ComparisonTableProps) => {
               <img
                 src={value}
                 alt={asset.assetName}
-                className='h-full w-full object-cover'
+                className='object-cover'
               />
             ) : (
               <span className='text-muted-foreground text-lg font-medium'>{asset.assetName[0]}</span>

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardTitle } from '@/components/ui'
-import { Package, CheckCircle, Users, AlertTriangle, X, Box, Briefcase, StopCircle } from 'lucide-react'
+import { Package, CheckCircle, Users, AlertTriangle, X, Box, Briefcase, StopCircle, FileText } from 'lucide-react'
 import type { AssetsType } from '../model'
 
 interface CardStatusStatisticProps {
@@ -29,7 +29,10 @@ export const CardStatusStatistic = ({
       <div className='mb-6 grid grid-cols-2 gap-4 md:grid-cols-5'>
         <Card>
           <CardContent className='p-4'>
-            <div className='text-muted-foreground text-sm font-medium'>No Assets Available</div>
+            <div className='text-muted-foreground flex items-center gap-2 text-xs font-medium sm:text-sm'>
+              <FileText className='h-4 w-4 text-gray-400' />
+              No Assets Available
+            </div>
           </CardContent>
         </Card>
       </div>

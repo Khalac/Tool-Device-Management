@@ -18,21 +18,6 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
     return colors[status as keyof typeof colors] || colors.Unpaid
   }
 
-  // const formatDate = (dateString: string) => {
-  //   try {
-  //     if (!dateString) return 'N/A'
-  //     return new Date(dateString).toLocaleDateString('en-US', {
-  //       year: 'numeric',
-  //       month: 'short',
-  //       day: 'numeric',
-  //       hour: '2-digit',
-  //       minute: '2-digit',
-  //     })
-  //   } catch {
-  //     return 'N/A'
-  //   }
-  // }
-
   const formatDateShort = (dateString: string) => {
     try {
       if (!dateString) return 'N/A'
@@ -47,41 +32,29 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
   }
 
   const getAssetName = () => {
+    if (Array.isArray(bill.assets)) {
+      return bill.assets.map((asset) => asset.assetName).join(', ')
+    }
     return bill.assets?.assetName || 'Unknown Asset'
   }
 
   const getCategoryName = () => {
+    if (Array.isArray(bill.assets)) {
+      const categories = bill.assets.map((asset) => asset.category?.categoryName).filter(Boolean)
+      return [...new Set(categories)].join(', ') || 'No Category'
+    }
     return bill.assets?.category?.categoryName || 'No Category'
   }
 
   const getAssetCost = () => {
+    if (Array.isArray(bill.assets)) {
+      return bill.assets.reduce((total, asset) => total + (asset.cost || 0), 0)
+    }
     if (bill.assets?.cost !== undefined && bill.assets.cost !== null) {
       return bill.assets.cost
     }
     return bill.amount || 0
   }
-
-  // const getCreatorInitials = () => {
-  //   const name = bill.creator?.fullName || 'Unknown User'
-  //   return name
-  //     .split(' ')
-  //     .map((n) => n[0])
-  //     .join('')
-  //     .toUpperCase()
-  //     .slice(0, 2)
-  // }
-
-  // const isWarrantyExpired = (warrantyDate?: string) => {
-  //   if (!warrantyDate) return false
-  //   return new Date(warrantyDate) < new Date()
-  // }
-
-  // const getLastUpdated = () => {
-  //   if (!bill.updateAt || bill.updateAt === bill.createAt) {
-  //     return bill.createAt
-  //   }
-  //   return bill.updateAt
-  // }
 
   const hasFileAttachment = () => {
     return bill.fileAttachmentBill && bill.fileAttachmentBill.trim() !== '' && bill.fileAttachmentBill !== 'null'
@@ -100,25 +73,51 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
   }
 
   const buyerInfo = {
-    name: 'Ho Bao Quoc',
-    address: '533/8 Nguyen Tri Phuong, Ward 8, District 10, Ho Chi Minh City',
-    phoneNumber: '032-35471411',
+    name: bill.buyer?.buyerName || 'N/A',
+    address: bill.buyer?.buyerAddress || 'N/A',
+    phoneNumber: bill.buyer?.buyerPhone || 'N/A',
+    email: bill.buyer?.buyerEmail || 'N/A',
     // taxCode: '',
     // accountNumber: '4568239472356',
     // paymentMethod: 'Bank Transfer',
   }
 
-  const items = [
-    {
-      stt: 1,
-      assetName: getAssetName(),
-      category: getCategoryName(),
-      quantity: 1,
-      unitPrice: getAssetCost(),
-      amount: getAssetCost(),
-    },
-  ]
+  const getItems = () => {
+    if (Array.isArray(bill.assets)) {
+      return bill.assets.map((asset, index) => ({
+        stt: index + 1,
+        assetName: asset.assetName,
+        category: asset.category?.categoryName || 'No Category',
+        quantity: 1,
+        unitPrice: asset.cost || 0,
+        amount: asset.cost || 0,
+      }))
+    } else if (bill.assets) {
+      return [
+        {
+          stt: 1,
+          assetName: bill.assets.assetName,
+          category: bill.assets.category?.categoryName || getCategoryName(),
+          quantity: 1,
+          unitPrice: bill.assets.cost || getAssetCost(),
+          amount: bill.assets.cost || getAssetCost(),
+        },
+      ]
+    } else {
+      return [
+        {
+          stt: 1,
+          assetName: getAssetName(),
+          category: getCategoryName(),
+          quantity: 1,
+          unitPrice: getAssetCost(),
+          amount: getAssetCost(),
+        },
+      ]
+    }
+  }
 
+  const items = getItems()
   const totalAmount = items.reduce((sum, item) => sum + item.amount, 0)
 
   return (
@@ -212,11 +211,11 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
           <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
             Phone: <span className='font-normal'>{sellerInfo.phoneNumber}</span>
           </h3>
-          <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
+          <h3 className='border-b border-gray-200 pb-2 font-semibold text-gray-900 dark:text-gray-100'>
             Account No.: <span className='font-normal'>{sellerInfo.accountNumber}</span>
           </h3>
 
-          <h3 className='mt-3 text-sm font-semibold text-gray-900 dark:text-gray-100'>
+          <h3 className='mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100'>
             Buyer: <span className='font-normal'>{buyerInfo.name}</span>
           </h3>
           {/* <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
@@ -227,6 +226,9 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
           </h3>
           <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
             Phone: <span className='font-normal'>{buyerInfo.phoneNumber}</span>
+          </h3>
+          <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
+            Email: <span className='font-normal'>{buyerInfo.email}</span>
           </h3>
           {/* <h3 className='font-semibold text-gray-900 dark:text-gray-100'>
             Account No.: <span className='font-normal'>{buyerInfo.accountNumber}</span>
@@ -371,7 +373,7 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
             <p className='mb-1 font-semibold text-gray-900 dark:text-gray-100'>Buyer</p>
             <p className='mb-8 text-xs'>(Signature and full name)</p>
             <div className='border-gray-400 pb-1'>
-              <p className='font-semibold'>_________________</p>
+              <p className='font-semibold'>{buyerInfo.name}</p>
             </div>
           </div>
           <div className='text-center'>

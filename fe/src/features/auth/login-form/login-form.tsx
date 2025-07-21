@@ -29,21 +29,27 @@ const LoginForm = () => {
 
   const onSubmit = async (data: DataLoginType) => {
     setIsPending(true)
-    const result = await dispatch(logIn(data)).unwrap()
+    try {
+      const result = await dispatch(logIn(data)).unwrap()
 
-    if (!result.success) {
-      toast.error(result.error?.message || 'Login failed, please try again')
-      return
+      if (!result.success) {
+        toast.error(result.error?.message || 'Login failed, please try again')
+        return
+      }
+      if (result.data.is_active === false) {
+        toast.error('User is inactive, please go to email and verify your account')
+        return
+      }
+
+      Cookies.set('accessToken', result.data.access_token)
+      Cookies.set('refreshToken', result.data.refresh_token)
+      toast.success('Login successfully')
+      navigate(redirectPath || '/', { replace: true })
+    } catch (error) {
+      toast.error('An unexpected error occurred. Please try again.')
+    } finally {
+      setIsPending(false)
     }
-    if (result.data.is_active === false) {
-      toast.error('User is inactive, please go to email and verify your account')
-      return
-    }
-    Cookies.set('accessToken', result.data.access_token)
-    Cookies.set('refreshToken', result.data.refresh_token)
-    toast.success('Login successfully')
-    navigate(redirectPath || '/', { replace: true })
-    setIsPending(false)
   }
   return (
     <div>

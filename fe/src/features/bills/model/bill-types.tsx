@@ -1,7 +1,7 @@
 export interface BillType {
   id: number
   billNumber: string
-  assetId: number
+  assetId: number | number[]
   description: string
   statusBill: 'Unpaid' | 'Paid'
   // categoryId?: number
@@ -16,6 +16,12 @@ export interface BillType {
   fileAttachmentBill?: string
   imageUploadBill?: string
 
+  buyer?: {
+    buyerName: string
+    buyerPhone: string
+    buyerEmail: string
+    buyerAddress: string
+  }
   creator?: {
     id: number
     fullName: string
@@ -23,30 +29,54 @@ export interface BillType {
     avatar?: string
   }
 
-  assets?: {
-    id: number
-    assetName: string
-    serialNumber?: string
-    cost: number
-    status?: string
-    category: {
-      id: number
-      categoryName: string
-    }
-    department?: {
-      id: number
-      departmentName: string
-    }
-    purchaseDate?: string
-    warrantyExpiry?: string
-  }
+  assets?:
+    | {
+        id: number
+        assetName: string
+        serialNumber?: string
+        cost: number
+        status?: string
+        image?: string
+        category: {
+          id: number
+          categoryName: string
+        }
+        department?: {
+          id: number
+          departmentName: string
+        }
+        purchaseDate?: string
+        warrantyExpiry?: string
+      }
+    | {
+        id: number
+        assetName: string
+        serialNumber?: string
+        cost: number
+        status?: string
+        totalCount?: number
+        category: {
+          id: number
+          categoryName: string
+        }
+        department?: {
+          id: number
+          departmentName: string
+        }
+        purchaseDate?: string
+        warrantyExpiry?: string
+      }[]
 }
 
 export type CreateBillRequest = {
-  assetId: number
-  // cost: number
+  buyer?: {
+    buyerName: string
+    buyerEmail: string
+    buyerPhone: string
+    buyerAddress: string
+  }
+  assetId: number | number[]
   description: string
-  // categoryId?: number
   statusBill?: 'Unpaid' | 'Paid'
   fileAttachmentBill?: File
   imageUploadBill?: File

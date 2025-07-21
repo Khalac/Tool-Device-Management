@@ -15,7 +15,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui'
 import type { AssetsType } from '../model'
-import { Info } from 'lucide-react'
+import { Eye, FileText } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { cn } from '@/lib'
@@ -30,6 +30,15 @@ export const ViewCardsDataAssets = ({ assets }: { assets: AssetsType[] }) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page)
     }
+  }
+  if (!assets || assets.length === 0) {
+    return (
+      <div className='flex flex-col items-center justify-center py-12'>
+        <FileText className='h-12 w-12 text-gray-400' />
+        <h3 className='mt-4 text-lg font-semibold text-gray-900 dark:text-gray-100'>No data available</h3>
+        <p className='mt-2 text-gray-600 dark:text-gray-400'>Try adjusting your filters to see more results.</p>
+      </div>
+    )
   }
   return (
     <div className='flex flex-col gap-4'>
@@ -47,11 +56,11 @@ export const ViewCardsDataAssets = ({ assets }: { assets: AssetsType[] }) => {
               />
             </div>
 
-            <div className='flex flex-col items-center justify-between py-6'>
+            <div className='flex flex-col items-start justify-between py-6'>
               <div>
                 <CardHeader className='px-4 pt-4 pb-0'>
                   <CardTitle
-                    className='line-clamp-1 text-lg'
+                    className='truncate text-lg'
                     title={asset.assetName}
                   >
                     {asset.assetName}
@@ -76,26 +85,26 @@ export const ViewCardsDataAssets = ({ assets }: { assets: AssetsType[] }) => {
 
                 <CardContent className='flex flex-grow flex-col gap-2 px-4 py-2'>
                   <div className='space-y-2 text-sm'>
-                    <div className='flex items-center justify-between gap-3'>
+                    <div className='flex items-center gap-3'>
                       <span className='text-muted-foreground'>Department:</span>
                       <span className='max-w-[120px] truncate font-medium'>{asset.department?.departmentName}</span>
                     </div>
                   </div>
                   <div className='space-y-2 text-sm'>
-                    <div className='flex items-center justify-between gap-3'>
+                    <div className='flex items-center gap-3'>
                       <span className='text-muted-foreground'>Category:</span>
                       <span className='max-w-[120px] truncate font-medium'>{asset.category?.categoryName}</span>
                     </div>
                   </div>
                   <div className='space-y-2 text-sm'>
-                    <div className='flex items-center justify-between gap-3'>
+                    <div className='flex items-center gap-3'>
                       <span className='text-muted-foreground'>Cost:</span>
                       <span className='max-w-[120px] truncate font-medium'>${asset.cost}</span>
                     </div>
                   </div>
                 </CardContent>
               </div>
-              <CardFooter className=''>
+              <CardFooter className='w-full pl-4'>
                 <Button
                   variant='outline'
                   size='sm'
@@ -103,7 +112,7 @@ export const ViewCardsDataAssets = ({ assets }: { assets: AssetsType[] }) => {
                   asChild
                 >
                   <Link to={`/assets/${asset.id}`}>
-                    <Info className='text-primary mr-2 h-4 w-4' />
+                    <Eye className='text-primary mr-2 h-4 w-4' />
                     View Details
                   </Link>
                 </Button>

@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui'
 import { DataTablePagination } from '../table-pagination'
+import { FileText } from 'lucide-react'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -57,7 +58,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                 colSpan={columns.length}
                 className='h-24 text-center'
               >
-                No results.
+                <div className='flex flex-col items-center justify-center py-12'>
+                  <FileText className='h-12 w-12 text-gray-400' />
+                  <h3 className='mt-4 text-lg font-semibold text-gray-900 dark:text-gray-100'>No data available</h3>
+                  <p className='mt-2 text-gray-600 dark:text-gray-400'>
+                    Try adjusting your filters to see more results.
+                  </p>
+                </div>
               </TableCell>
             </TableRow>
           )}

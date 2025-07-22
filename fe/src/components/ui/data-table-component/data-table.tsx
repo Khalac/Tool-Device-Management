@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui'
 import { DataTablePagination } from '../table-pagination'
-import { FileText } from 'lucide-react'
+import { FileText, Loader2 } from 'lucide-react'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -16,14 +16,19 @@ interface DataTableProps<TData, TValue> {
   emptyMessage?: string
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  isLoading = false,
+  emptyMessage = 'No data available',
+}: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
-
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   })
+
   return (
     <div className='border-border bg-card flex flex-col gap-4 rounded-md p-2'>
       <Table>
@@ -41,7 +46,18 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {isLoading ? (
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                className='h-24 text-center'
+              >
+                <div className='flex flex-col items-center justify-center py-12'>
+                  <Loader2 className='text-primary h-6 w-6 animate-spin sm:h-8 sm:w-8' />
+                </div>
+              </TableCell>
+            </TableRow>
+          ) : table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -62,7 +78,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                   <FileText className='h-12 w-12 text-gray-400' />
                   <h3 className='mt-4 text-lg font-semibold text-gray-900 dark:text-gray-100'>No data available</h3>
                   <p className='mt-2 text-gray-600 dark:text-gray-400'>
-                    Try adjusting your filters to see more results.
+                    {emptyMessage || 'Try adjusting your filters to see more results'}
                   </p>
                 </div>
               </TableCell>

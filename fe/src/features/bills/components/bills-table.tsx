@@ -307,7 +307,7 @@ export const BillsTable = ({ bills, isLoading, onStatusChange }: BillsTableProps
         columns={columns}
         data={bills || []}
         isLoading={isLoading}
-        emptyMessage='No bills found. Create your first bill to get started.'
+        emptyMessage='Try adjusting your filters to see more results.'
       />
       <ConfirmStatusModal
         open={showConfirmModal}

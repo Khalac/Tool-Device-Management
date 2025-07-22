@@ -390,14 +390,14 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                   {getSelectedAssetDetails().map((asset) => (
                     <div
                       key={asset.id}
-                      className='flex items-center gap-3 rounded-lg border bg-gray-50 p-3'
+                      className='dark:bg-background flex items-center gap-3 rounded-lg border bg-gray-50 p-3'
                     >
                       <AssetImage
                         asset={asset}
                         size='md'
                       />
 
-                      <div className='min-w-0 flex-1'>
+                      <div className='min-w-0 flex-1 dark:text-white'>
                         <div className='truncate font-medium'>{asset.assetName}</div>
                         <div className='flex items-center gap-2 text-sm text-gray-600'>
                           <Badge
@@ -406,8 +406,8 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                           >
                             {asset.status}
                           </Badge>
-                          <span className='text-sm font-medium'>${asset.cost?.toLocaleString()}</span>
-                          <span className='text-sm font-medium'>• {asset.category?.categoryName}</span>
+                          <span className='text-sm font-medium dark:text-white'>${asset.cost?.toLocaleString()}</span>
+                          <span className='text-sm font-medium dark:text-white'>• {asset.category?.categoryName}</span>
                         </div>
                       </div>
 
@@ -424,9 +424,13 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                   ))}
                 </div>
 
-                <div className='rounded-lg bg-blue-50 p-3'>
-                  <p className='text-sm font-medium'>Selected: {selectedAssets.length} asset(s)</p>
-                  <p className='text-sm text-gray-600'>Total Amount: ${getTotalAmount().toLocaleString()}</p>
+                <div className='rounded-lg bg-blue-50 p-3 dark:bg-blue-950'>
+                  <p className='text-sm font-medium'>
+                    Selected: {selectedAssets.length} asset{selectedAssets.length > 1 ? 's' : ''}
+                  </p>
+                  <p className='text-sm font-medium text-gray-600 dark:text-white'>
+                    Total Amount: ${getTotalAmount().toLocaleString()}
+                  </p>
                 </div>
               </div>
             )}
@@ -452,7 +456,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                   id='buyerName'
                   {...register('buyerName')}
                   placeholder='Enter buyer name'
-                  className={errors.buyerName ? 'border-red-500' : ''}
+                  className={`${errors.buyerName ? 'border-red-500' : ''} text-sm`}
                 />
                 {errors.buyerName && <p className='text-sm text-red-600'>{errors.buyerName.message}</p>}
               </div>
@@ -469,7 +473,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                   id='buyerPhone'
                   {...register('buyerPhone')}
                   placeholder='Enter phone number'
-                  className={errors.buyerPhone ? 'border-red-500' : ''}
+                  className={`${errors.buyerPhone ? 'border-red-500' : ''} text-sm`}
                 />
                 {errors.buyerPhone && <p className='text-sm text-red-600'>{errors.buyerPhone.message}</p>}
               </div>
@@ -487,7 +491,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                   type='email'
                   {...register('buyerEmail')}
                   placeholder='Enter email address'
-                  className={errors.buyerEmail ? 'border-red-500' : ''}
+                  className={`${errors.buyerEmail ? 'border-red-500' : ''} text-sm`}
                 />
                 {errors.buyerEmail && <p className='text-sm text-red-600'>{errors.buyerEmail.message}</p>}
               </div>
@@ -504,7 +508,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                   id='buyerAddress'
                   {...register('buyerAddress')}
                   placeholder='Enter full address'
-                  className={`${errors.buyerAddress ? 'border-red-500' : ''} overflow-x-auto`}
+                  className={`${errors.buyerAddress ? 'border-red-500' : ''} overflow-x-auto text-sm`}
                   style={{ textOverflow: 'ellipsis' }}
                 />
                 {errors.buyerAddress && <p className='text-sm text-red-600'>{errors.buyerAddress.message}</p>}
@@ -530,7 +534,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                   id='description'
                   {...register('description')}
                   placeholder='Enter bill description'
-                  className={`${errors.description ? 'border-red-500' : ''} overflow-x-auto`}
+                  className={`${errors.description ? 'border-red-500' : ''} overflow-x-auto text-sm`}
                   style={{ textOverflow: 'ellipsis' }}
                 />
                 {errors.description && <p className='text-sm text-red-600'>{errors.description.message}</p>}
@@ -583,7 +587,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                     type='file'
                     ref={fileInputRef}
                     onChange={(e) => handleFileUpload('fileAttachmentBill', e.target.files?.[0] || null)}
-                    className='flex-1'
+                    className='flex-1 cursor-pointer text-sm'
                     accept='.pdf,.doc,.docx,.txt'
                   />
                   {selectedFiles.fileAttachmentBill && (
@@ -598,7 +602,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                   )}
                 </div>
                 {selectedFiles.fileAttachmentBill && (
-                  <p className='text-sm text-green-600'>Selected: {selectedFiles.fileAttachmentBill.name}</p>
+                  <p className='truncate text-sm text-green-600'>Selected: {selectedFiles.fileAttachmentBill.name}</p>
                 )}
               </div>
 
@@ -612,7 +616,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                     type='file'
                     ref={imageInputRef}
                     onChange={(e) => handleFileUpload('imageUploadBill', e.target.files?.[0] || null)}
-                    className='flex-1'
+                    className='flex-1 cursor-pointer text-sm'
                     accept='image/*'
                   />
                   {selectedFiles.imageUploadBill && (
@@ -627,7 +631,7 @@ export const CreateBillModal = ({ onBillCreated }: CreateBillModalProps) => {
                   )}
                 </div>
                 {selectedFiles.imageUploadBill && (
-                  <p className='text-sm text-green-600'>Selected: {selectedFiles.imageUploadBill.name}</p>
+                  <p className='truncate text-sm text-green-600'>Selected: {selectedFiles.imageUploadBill.name}</p>
                 )}
               </div>
             </div>

@@ -23,8 +23,8 @@ import { cn } from '@/lib'
 export const ViewCardsDataAssets = ({ assets }: { assets: AssetsType[] }) => {
   const [currentPage, setCurrentPage] = useState<number>(1)
 
-  const totalPages = Math.ceil(assets.length / 3)
-  const currentAssets = assets.slice((currentPage - 1) * 3, currentPage * 3)
+  const totalPages = Math.ceil(assets.length / 4)
+  const currentAssets = assets.slice((currentPage - 1) * 4, currentPage * 4)
 
   const handleChangePage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -42,13 +42,13 @@ export const ViewCardsDataAssets = ({ assets }: { assets: AssetsType[] }) => {
   }
   return (
     <div className='flex flex-col gap-4'>
-      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
         {currentAssets.map((asset) => (
           <Card
             key={asset.id}
             className='flex h-full flex-row overflow-hidden p-0 transition-all hover:shadow-md'
           >
-            <div className='bg-muted relative aspect-auto h-62 w-1/2 overflow-hidden'>
+            <div className='bg-muted relative aspect-auto h-62 w-2/5 overflow-hidden'>
               <img
                 src={asset.imageUpload}
                 alt={asset.assetName}
@@ -65,12 +65,12 @@ export const ViewCardsDataAssets = ({ assets }: { assets: AssetsType[] }) => {
                   >
                     {asset.assetName}
                   </CardTitle>
-                  <CardDescription className='flex items-center gap-2'>
+                  <CardDescription className='flex items-center'>
                     <span className='font-mono text-xs'>{asset.serialNumber}</span>
                     <Badge
                       variant='outline'
                       className={cn(
-                        'ml-4 flex items-center gap-1',
+                        'ml-2 flex items-center gap-1',
                         asset.status === 'New' && 'border-green-200 bg-green-100 text-green-800',
                         asset.status === 'In Use' && 'border-blue-200 bg-blue-100 text-blue-800',
                         asset.status === 'Under Maintenance' && 'border-amber-200 bg-amber-100 text-amber-800',

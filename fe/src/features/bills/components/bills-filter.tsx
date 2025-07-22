@@ -77,7 +77,7 @@ export const BillsFilter = ({ filters, setFilters, onReset }: BillsFilterProps) 
               value={filters.billNumber || ''}
               onChange={(e) => setFilters({ ...filters, billNumber: e.target.value || '' })}
               placeholder='Search by bill number...'
-              className='mt-2 h-9'
+              className='mt-2 h-9 text-sm'
             />
           </div>
 

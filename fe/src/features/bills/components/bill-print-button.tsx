@@ -86,7 +86,7 @@ export const BillPrintButton = ({ bill, variant = 'outline', size = 'sm', classN
             disabled={isPrinting}
             className={`border-primary text-primary hover:text-primary/80 ${className}`}
           >
-            <Printer className='text-primary mr-1 h-4 w-4' />
+            <Printer className='text-primary h-4 w-4' />
             {isPrinting}
           </Button>
         </div>

@@ -278,7 +278,7 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
                   <td className='px-3 py-2 text-center'>${item.amount.toLocaleString()}</td>
                 </tr>
               ))}
-              {[...Array(3)].map((_, index) => (
+              {[...Array(2)].map((_, index) => (
                 <tr
                   key={`empty-${index}`}
                   className='border-b dark:border-gray-600'
@@ -360,9 +360,6 @@ export const BillPrintLayout = ({ bill }: BillPrintLayoutProps) => {
         </p>
         <ul className='list-disc pl-5 text-[0.6rem]'>
           <li>This invoice is valid only when signed and stamped by the seller.</li>
-          <li>Please retain this invoice for warranty and accounting purposes.</li>
-          <li>All prices are inclusive of applicable taxes (if any).</li>
-          <li>Goods/services sold are non-refundable unless otherwise stated.</li>
           <li>Contact our support team if any discrepancies are found.</li>
         </ul>
       </div>

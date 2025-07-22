@@ -275,7 +275,7 @@ export const BillDetailModal = ({ bill, open, onClose }: BillDetailModalProps) =
                     </td>
                   </tr>
                 ))}
-                {[...Array(3)].map((_, index) => (
+                {[...Array(2)].map((_, index) => (
                   <tr
                     key={`empty-${index}`}
                     className='border-b dark:border-gray-600'
@@ -369,9 +369,6 @@ export const BillDetailModal = ({ bill, open, onClose }: BillDetailModalProps) =
           </p>
           <ul className='mt-2 list-disc space-y-1 pl-5 max-[430px]:mt-1 max-[430px]:space-y-0.5 max-[430px]:pl-4'>
             <li>This invoice is valid only when signed and stamped by the seller.</li>
-            <li>Please retain this invoice for warranty and accounting purposes.</li>
-            <li>All prices are inclusive of applicable taxes (if any).</li>
-            <li>Goods/services sold are non-refundable unless otherwise stated.</li>
             <li>Contact our support team if any discrepancies are found.</li>
           </ul>
         </div>

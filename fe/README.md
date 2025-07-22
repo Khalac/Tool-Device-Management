@@ -74,7 +74,6 @@ fe/
 
 ## 📜 Future Improvements
 
-- **Selling multiple assets in a single bill**
 - **Add new information such as performance, chip, RAM,.. to enable more detailed comparison between assets.**
 - **Manage the remaining quantity of assets in stock.**
 - **Payment Processing: Enable payment functionalities for bills, integrating with payment gateways to automate invoice payments and financial tracking.**

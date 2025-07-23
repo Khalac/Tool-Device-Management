@@ -1,9 +1,9 @@
 import { Card, CardContent, CardTitle } from '@/components/ui'
 import { DollarSign, Package, AlertTriangle, CheckCircle, Users, Briefcase, Box, StopCircle } from 'lucide-react'
-import type { MonthlyStats } from '../model'
-import { formatCurrency, formatNumber } from '../utils'
+import type { MonthlyStats } from '../../model'
+import { formatCurrency, formatNumber } from '../../utils'
 
-interface StatisticsCardsProps {
+interface MonthlyStatsCardsProps {
   stats: MonthlyStats
   assets: Array<{
     id: number
@@ -13,12 +13,6 @@ interface StatisticsCardsProps {
     category: { categoryName: string; id?: number }
     department: { departmentName: string; id?: number }
   }>
-  className?: string
-  showComparison?: boolean
-  comparisonData?: {
-    previousValue: number
-    growthRate: number
-  }
   previousMonthStats?: MonthlyStats
   onStatClick?: (filterType: 'total' | 'new' | 'in-use' | 'maintenance' | 'retired') => void
   onCategoryClick?: (categoryName: string) => void
@@ -30,7 +24,7 @@ interface StatisticsCardsProps {
   }
 }
 
-export const StatisticsCards = ({
+export const MonthlyStatsCards = ({
   stats,
   assets,
   previousMonthStats,
@@ -38,7 +32,7 @@ export const StatisticsCards = ({
   onCategoryClick,
   onDepartmentClick,
   currentFilter,
-}: StatisticsCardsProps) => {
+}: MonthlyStatsCardsProps) => {
   const inUseCount = stats.statusDistribution.find((status) => status.status === 'In Use')?.count || 0
   const categoryCount = [...new Set(assets.map((asset) => asset.category.categoryName))]
   const departmentCount = [...new Set(assets.map((asset) => asset.department.departmentName))]

@@ -4,7 +4,6 @@ export interface BillType {
   assetId: number | number[]
   description: string
   statusBill: 'Unpaid' | 'Paid'
-  // categoryId?: number
   companyId: number
   amount: number
   createdBy: number

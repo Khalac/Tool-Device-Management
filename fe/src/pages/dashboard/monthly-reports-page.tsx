@@ -1,4 +1,4 @@
-import { MonthlyReport } from '@/features/dashboard/components/monthly-report'
+import { MonthlyReport } from '@/features/dashboard/components/reports/monthly-report'
 import { getAllAssets } from '@/features/assets/api'
 import { useState, useEffect } from 'react'
 import { tryCatch } from '@/utils'
@@ -29,8 +29,8 @@ const MonthlyReportsPage = () => {
     return (
       <div className='flex min-h-screen items-center justify-center'>
         <div className='text-center'>
-          <Loader2 className='mx-auto h-8 w-8 animate-spin dark:text-gray-300' />
-          <p className='mt-2 text-gray-600 dark:text-gray-400'>Loading assets...</p>
+          <Loader2 className='text-primary mx-auto h-8 w-8 animate-spin dark:text-gray-300' />
+          <p className='text-primary mt-2 dark:text-gray-400'>Loading assets...</p>
         </div>
       </div>
     )

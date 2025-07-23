@@ -55,7 +55,6 @@ export const FormSelect = ({
                 onChange(value)
               }
             }}
-            // disabled={data.length === 0}
             value={field.value}
           >
             <FormControl highlightOnValue={highlightOnValue}>

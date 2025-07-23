@@ -59,9 +59,7 @@ func (h *BillsHandler) Create(c *gin.Context) {
 	}
 	for _, idStr := range assetIdStrs {
 		id, err := utils.ParseStrToInt64(idStr)
-		log.Info("Output: ", idStr, "---", assetIdStrs, "---", assetIdStrs[0])
 		if err != nil {
-			log.Info("Error: ", err.Error(), "---", idStr, "---", assetIdStrs, "---", assetIdStrs[0])
 			pkg.PanicExeption(constant.InvalidRequest, "Invalid assetId format")
 		}
 		assetIds = append(assetIds, id)

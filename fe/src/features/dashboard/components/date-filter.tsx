@@ -29,8 +29,6 @@ interface DateFilterProps {
 export const DateFilter = ({
   dateFilter,
   onDateFilterChange,
-  // originalAssets,
-  // assets,
   className = '',
   showClearButton = false,
 }: DateFilterProps) => {

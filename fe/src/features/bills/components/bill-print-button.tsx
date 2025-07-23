@@ -54,7 +54,6 @@ export const BillPrintButton = ({ bill, variant = 'outline', size = 'sm', classN
 
       printWindow.document.close()
 
-      // Wait for scripts to load
       setTimeout(() => {
         const container = printWindow.document.getElementById('print-root')
         if (container) {

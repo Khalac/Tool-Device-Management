@@ -21,7 +21,7 @@ export const AssetMaintenanceSchedule = ({ id }: { id: string }) => {
   if (isLoading) {
     return (
       <div className='flex justify-center py-8'>
-        <LoadingSpinner className='text-muted-foreground h-8 w-8 animate-spin' />
+        <LoadingSpinner className='text-primary h-8 w-8 animate-spin' />
       </div>
     )
   }

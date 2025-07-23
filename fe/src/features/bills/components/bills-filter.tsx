@@ -52,7 +52,6 @@ export const BillsFilter = ({ filters, setFilters, onReset }: BillsFilterProps) 
     fetchData()
   }, [])
 
-  console.log('🚀 ~ mappedCategories ~ category:', categories)
   const statusOptions = [
     { id: 'Unpaid', statusName: 'Unpaid' },
     { id: 'Paid', statusName: 'Paid' },
@@ -60,7 +59,6 @@ export const BillsFilter = ({ filters, setFilters, onReset }: BillsFilterProps) 
 
   const hasActiveFilters = Object.values(filters).some((value) => value !== null && value !== '')
 
-  console.log('🚀 ~ BillsFilter ~ statusOptions:', statusOptions)
   return (
     <Card>
       <CardHeader className='gap-0 pb-0'>

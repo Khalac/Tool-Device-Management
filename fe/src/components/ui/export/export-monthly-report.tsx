@@ -146,8 +146,6 @@ export const ExportMonthlyReport = ({ data, assets, dateFilter, onExport }: Expo
       link.click()
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
-
-      console.log('✅ CSV Export Success')
     } catch (error) {
       console.error('❌ CSV Export Error:', error)
       alert('Error generating CSV. Please try again.')
@@ -449,8 +447,6 @@ export const ExportMonthlyReport = ({ data, assets, dateFilter, onExport }: Expo
       link.click()
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
-
-      console.log('✅ HTML Export Success')
     } catch (error) {
       console.error('❌ HTML Export Error:', error)
       alert('Error generating HTML. Please try again.')
@@ -459,8 +455,6 @@ export const ExportMonthlyReport = ({ data, assets, dateFilter, onExport }: Expo
 
   const generatePDFReport = async () => {
     try {
-      console.log('🔄 Starting PDF generation...')
-
       let jsPDF, autoTable
 
       try {
@@ -620,7 +614,6 @@ export const ExportMonthlyReport = ({ data, assets, dateFilter, onExport }: Expo
       })
 
       doc.save(`monthly-report-${timestamp}.pdf`)
-      console.log('✅ PDF Export Success')
     } catch (error) {
       console.error('❌ PDF Export Error:', error)
       alert('Error generating PDF. Please try again.')
@@ -630,8 +623,6 @@ export const ExportMonthlyReport = ({ data, assets, dateFilter, onExport }: Expo
   const handleExport = async (format: 'pdf' | 'csv' | 'html') => {
     setIsExporting(true)
     try {
-      console.log(`🔄 Starting ${format.toUpperCase()} export...`)
-
       switch (format) {
         case 'csv':
           generateCSVReport()

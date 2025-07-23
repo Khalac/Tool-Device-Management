@@ -36,7 +36,6 @@ export const useBillsData = (debouncedFilters: BillFilterType) => {
       toast.error('Failed to fetch bills')
       console.error('Bills fetch error:', response.error)
     } else {
-      console.log('Bills response:', response.data)
       const billsData = response.data.data || []
 
       const billsWithCompleteData = await Promise.all(
@@ -84,7 +83,6 @@ export const useBillsData = (debouncedFilters: BillFilterType) => {
         })
       )
 
-      console.log('Bills with complete data:', billsWithCompleteData)
       setBills(billsWithCompleteData)
     }
 
@@ -106,8 +104,6 @@ export const useBillsData = (debouncedFilters: BillFilterType) => {
   }
 
   const handleBillCreated = (newBill: BillType) => {
-    console.log('Received new bill in bills-management:', newBill)
-
     const userInfo = getCurrentUserInfo()
     const billWithCreator = {
       ...newBill,
@@ -120,8 +116,6 @@ export const useBillsData = (debouncedFilters: BillFilterType) => {
         avatar: userInfo.avatar,
       },
     }
-
-    console.log('Bill with creator info:', billWithCreator)
 
     setBills((prev) => [billWithCreator as BillType, ...prev])
     toast.success('Bill created successfully')

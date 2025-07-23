@@ -110,9 +110,6 @@ export const CreateBillForm = ({ onBillCreated, onCancel }: CreateBillFormProps)
   }
 
   const onSubmit = async (data: CreateBillFormType) => {
-    console.log('🚀 ~ onSubmit ~ data:', data)
-    console.log('🚀 ~ selectedAssets:', selectedAssets)
-
     if (selectedAssets.length === 0) {
       toast.error('Please select at least one asset')
       return

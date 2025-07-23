@@ -17,7 +17,7 @@ type AssetLogFilter struct {
 }
 
 func (f *AssetLogFilter) ApplyFilter(db *gorm.DB, assetId int64) *gorm.DB {
-	db = db.Where("asset_id = ? and company_id = ?", assetId, f.CompanyId)
+	db = db.Where("asset_id = ? and asset_logs.company_id = ?", assetId, f.CompanyId)
 	if f.Action != nil {
 		str := fmt.Sprintf("%v", strings.ToLower(*f.Action))
 		str += "%"
